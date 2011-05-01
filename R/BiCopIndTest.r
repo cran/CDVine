@@ -1,0 +1,13 @@
+BiCopIndTest = function(u1,u2)                                                     
+{
+  if(is.null(u1)==TRUE || is.null(u2)==TRUE) stop("u1 and/or u2 are not set or have length zero.")
+  if(length(u1) != length(u2)) stop("Lengths of 'u1' and 'u2' do not match.")
+  if(length(u1)<2) stop("Number of observations has to be at least 2.")
+
+  tau = cor(u1,u2,method="kendall")
+
+	N = length(u1)
+	f = sqrt((9*N*(N - 1)) / (2*(2*N+ 5))) * abs(tau)
+
+	return(list(statistic=f, p.value=2 * (1 - pnorm(f))))
+}

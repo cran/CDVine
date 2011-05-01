@@ -1,0 +1,122 @@
+\name{BiCopEst}           
+\alias{BiCopEst}      
+
+\title{Parameter estimation for bivariate copula data using inversion of Kendall's tau or maximum likelihood estimation}
+
+\description{
+This function estimates the parameter(s) for a bivariate copula using either inversion of empirical Kendall's tau for single parameter copula families 
+or maximum likelihood estimation for one and two parameter copula families supported in this package.
+}
+
+\usage{
+BiCopEst(u1, u2, family, method="mle", se=FALSE, max.df=30,
+         max.BB=list(BB1=c(5,6),BB7=c(5,6)))
+}
+
+\arguments{
+  \item{u1,u2}{Data vectors of equal length with values in [0,1].}
+  \item{family}{An integer defining the bivariate copula family: \cr
+		\code{0} = independence copula \cr
+    \code{1} = Gaussian copula \cr
+    \code{2} = Student t copula (t-copula) \cr
+    \code{3} = Clayton copula \cr
+    \code{4} = Gumbel copula \cr
+    \code{5} = Frank copula \cr
+    \code{6} = Joe copula \cr 
+		\code{7} = BB1 copula \cr
+		\code{9} = BB7 copula \cr
+		\code{13} = rotated Clayton copula (180 degrees; ``survival Clayton'') \cr
+		\code{14} = rotated Gumbel copula (180 degrees; ``survival Gumbel'') \cr
+		\code{16} = rotated Joe copula (180 degrees; ``survival Joe'') \cr
+		\code{23} = rotated Clayton copula (90 degrees) \cr
+		\code{24} = rotated Gumbel copula (90 degrees) \cr
+		\code{26} = rotated Joe copula (90 degrees) \cr
+		\code{33} = rotated Clayton copula (270 degrees) \cr
+		\code{34} = rotated Gumbel copula (270 degrees) \cr
+		\code{36} = rotated Joe copula (270 degrees)}
+  \item{method}{Character indicating the estimation method:
+    either maximum likelihood estimation (\code{method = "mle"}; default) or inversion of Kendall's tau (\code{method = "itau"}).\cr
+		For \code{method = "itau"} only one parameter bivariate copula families can be used (\code{family = 1,3,4,5,6,13,14,16,23,24,26,33,34} or \code{36}).}
+  \item{se}{Logical; whether standard error(s) of parameter estimates is/are estimated (default: \code{se = FALSE}).}
+  \item{max.df}{Numeric; upper bound for the estimation of the degrees of freedom parameter of the t-copula (default: \code{max.df = 30}).}
+  \item{max.BB}{List; upper bounds for the estimation of the two parameters of the BB1 and BB7 copulas
+    (default: \code{max.BB = list(BB1=c(5,6),BB7=c(5,6))}).}
+}
+
+\details{
+If \code{method = "itau"}, the function computes the empirical Kendall's tau of the given copula data and exploits the one-to-one relationship of copula parameter and Kendall's tau
+which is available for many one parameter bivariate copula families (see \code{\link{BiCopPar2Tau}} and \code{\link{BiCopTau2Par}}).
+The inversion of Kendall's tau is however not available for all bivariate copula families (see above).
+If a two parameter copula family is chosen and \code{method = "itau"}, a warning message is returned and the MLE is calculated.
+
+For \code{method = "mle"} copula parameters are estimated by maximum likelihood using starting values obtained 
+by \code{method = "itau"}. 
+If no starting values are available by inversion of Kendall's tau, starting values have to be provided given expert knowledge and the boundaries
+\code{max.df} and \code{max.BB} respectively.
+
+A warning message is returned if the estimate of the degrees of freedom parameter of the t-copula is larger than \code{max.df}.
+For high degrees of freedom the t-copula is almost indistinguishable from the Gaussian
+and it is advised to use the Gaussian copula in this case.
+As a rule of thumb \code{max.df = 30} typically is a good choice.
+Moreover, standard errors of the degrees of freedom parameter estimate cannot be estimated in this case.
+}
+
+\value{                         
+  \item{par, par2}{Estimated copula parameter(s).}
+  \item{se,se2}{Standard error(s) of the parameter estimate(s) (if \code{se = TRUE}).}
+}
+
+\references{
+Joe, H. (1997).
+Multivariate Models and Dependence Concepts.
+Chapman and Hall, London.
+}
+
+\author{Ulf Schepsmeier, Eike Brechmann, Jakob Stoeber, Carlos Almeida}
+
+\seealso{\code{\link{BiCopPar2Tau}}, \code{\link{BiCopTau2Par}}, \code{\link{CDVineSeqEst}}, \code{\link{BiCopSelect}}}
+
+\examples{
+## Example 1: bivariate Gaussian copula
+dat = BiCopSim(500,1,0.7)
+u1 = dat[,1]
+v1 = dat[,2]
+
+# empirical Kendall's tau
+tau1 = cor(u1,v1,method="kendall")
+
+# inversion of empirical Kendall's tau 
+BiCopTau2Par(1,tau1)
+BiCopEst(u1,v1,family=1,method="itau")$par
+
+# maximum likelihood estimate for comparison
+BiCopEst(u1,v1,family=1,method="mle")$par
+
+
+## Example 2: bivariate Clayton and survival Gumbel copulas
+# simulate from a Clayton copula
+dat = BiCopSim(500,3,2.5)
+u2 = dat[,1]
+v2 = dat[,2]
+
+# empirical Kendall's tau
+tau2 = cor(u2,v2,method="kendall")
+
+# inversion of empirical Kendall's tau for the Clayton copula
+BiCopTau2Par(3,tau2)
+BiCopEst(u2,v2,family=3,method="itau",se=TRUE) 
+
+# inversion of empirical Kendall's tau for the survival Gumbel copula
+BiCopTau2Par(14,tau2)
+BiCopEst(u2,v2,family=14,method="itau",se=TRUE)
+
+# maximum likelihood estimates for comparison
+BiCopEst(u2,v2,family=3,method="mle",se=TRUE)
+BiCopEst(u2,v2,family=14,method="mle",se=TRUE)
+
+## Example 3: fit of a t-copula to standardized residuals of
+## S&P 500 and DAX returns
+data(worldindices)
+BiCopEst(worldindices[,1],worldindices[,4],family=2,method="mle",se=TRUE) 
+}
+
