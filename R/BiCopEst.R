@@ -42,7 +42,8 @@ function(u1,u2,family, method="mle", se=FALSE, max.df=30, max.BB=list(BB1=c(5,6)
 
   if(family!=0)
   {
-	tau <- cor(u1,u2,method="kendall")
+	#tau <- cor(u1,u2,method="kendall")
+	tau <- fasttau(u1,u2)
   }
   
     theta=0
@@ -445,4 +446,27 @@ function(data,start.parm,family,se=FALSE,max.df=30,max.BB=list(BB1=c(5,6),BB7=c(
   }
 
   return(out)
+}
+
+
+fasttau<- function(x, y)
+{
+  m=length(x)
+  n=length(y)
+  if(m == 0 || n == 0) stop("both 'x' and 'y' must be non-empty")
+  if(m != n) stop("'x' and 'y' must have the same length")
+  out <- .C("ktau",
+		x=as.double(x), 
+		y=as.double(y),
+		N=as.integer(n),
+		tau=as.double(0), 
+		S=as.double(0),
+		D=as.double(0),
+		T=as.integer(0),
+		U=as.integer(0),
+		V=as.integer(0),
+		PACKAGE='CDVine')
+  ktau=out$tau
+
+return(ktau)
 }

@@ -28,7 +28,7 @@ if(is.numeric(family))	# Zahl zu Name
 	}
 	else			# langer Name
 	{
-		if(family==0) fam="Independent"
+		if(family==0) fam="Independence"
 		else if(family==1) fam="Gaussian"
 		else if(family==2) fam="t"
 		else if(family==3) fam="Clayton"
@@ -51,7 +51,7 @@ if(is.numeric(family))	# Zahl zu Name
 }
 else	# Name zu Zahl
 {
-	if(family=="I" || family=="Independent") fam=0
+	if(family=="I" || family=="Independence") fam=0
 	else if(family=="N" || family=="Gaussian") fam=1
 	else if(family=="t") fam=2
 	else if(family=="C" || family=="Clayton") fam=3

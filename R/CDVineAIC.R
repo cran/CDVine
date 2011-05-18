@@ -39,11 +39,15 @@ function(data, family, par, par2=rep(0,dim(data)[2]*(dim(data)[2]-1)/2), type)
   	if((family[i]==26 || family[i]==36) && par[i]>=-1) stop("The parameter of the rotated Joe copula has to be in the interval (-oo,-1).")
 	}
   
-  npar = d*(d-1)/2 + sum(family == 2,na.rm=TRUE) + sum(family == 7,na.rm=TRUE) + sum(family == 8,na.rm=TRUE) + sum(family == 9,na.rm=TRUE)
+  npar = sum(family >= 1, na.rm=TRUE) + sum(family == 2,na.rm=TRUE) + sum(family == 7,na.rm=TRUE) + sum(family == 8,na.rm=TRUE) + sum(family == 9,na.rm=TRUE)
+  npar_pair = (family>=1)+(family%in%c(2,7,8,9))
 
-  AIC = -2*CDVineLogLik(data, family, par, par2, type)$loglik + 2*npar 
+  like = CDVineLogLik(data, family, par, par2, type)
+
+  AIC = -2*like$loglik + 2*npar
+  pair.AIC = -2*like$ll + 2*npar_pair
   
-  return(AIC)
+  return(list(AIC=AIC,pair.AIC=pair.AIC))
 }
 
 CDVineBIC <-
@@ -87,10 +91,14 @@ function(data, family, par, par2=rep(0,dim(data)[2]*(dim(data)[2]-1)/2), type)
   	if((family[i]==26 || family[i]==36) && par[i]>=-1) stop("The parameter of the rotated Joe copula has to be in the interval (-oo,-1).")
 	}
   
-  npar = d*(d-1)/2 + sum(family == 2,na.rm=TRUE) + sum(family == 7,na.rm=TRUE) + sum(family == 8,na.rm=TRUE) + sum(family == 9,na.rm=TRUE)
+  npar = sum(family >= 1, na.rm=TRUE) + sum(family == 2,na.rm=TRUE) + sum(family == 7,na.rm=TRUE) + sum(family == 8,na.rm=TRUE) + sum(family == 9,na.rm=TRUE)
+  npar_pair = (family>=1)+(family%in%c(2,7,8,9))
 
-  BIC = -2*CDVineLogLik(data, family, par, par2, type)$loglik + log(T)*npar 
+  like = CDVineLogLik(data, family, par, par2, type)
+
+  BIC = -2*like$loglik + log(T)*npar
+  pair.BIC = -2*like$ll + log(T)*npar_pair
   
-  return(BIC)
+  return(list(BIC=BIC,pair.BIC=pair.BIC))
 }
 

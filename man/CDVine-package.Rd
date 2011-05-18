@@ -63,12 +63,17 @@ Similarly, the pairs of a D-vine are denoted in the following order:\cr\cr
 \eqn{(1,d|2,...,d-1).} 
 }
 
+\section{Empirical Kendall's tau}{
+We like to thank Shing (Eric) Fu, Feng Zhu, Guang (Jack) Yang, and Harry Joe for providing their implementation
+of the method by Knight (1966) for efficiently computing the empirical Kendall's tau.
+}
+
 \details{
 \tabular{ll}{
 Package: \tab CDVine\cr
 Type: \tab Package\cr
-Version: \tab 1.0\cr
-Date: \tab 2011-05-01\cr
+Version: \tab 1.0-1\cr
+Date: \tab 2011-05-18\cr
 License: \tab GPL (>=2)\cr
 Depends: \tab R (>= 2.8.1), MASS, mvtnorm, igraph \cr
 LazyLoad: \tab yes
@@ -104,6 +109,10 @@ Hayward: Institute of Mathematical Statistics.
 Joe, H. (1997).
 Multivariate Models and Dependence Concepts.
 Chapman and Hall, London.
+
+Knight, W. R. (1966).
+A computer method for calculating Kendall's tau with ungrouped data.
+Journal of the American Statistical Association 61 (314), 436-439.
 
 Kurowicka, D. and R. M. Cooke (2006).
 Uncertainty Analysis with High Dimensional Dependence Modelling.

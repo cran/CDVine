@@ -32,6 +32,7 @@
 #include <Rdefines.h> 
 #include <Rmath.h>
 #include <Rinternals.h>
+#include <malloc.h>
 #include "vine.h"
 
 
@@ -42,6 +43,10 @@
 //#define  XINFMAX 1e308
 # define XINFMAX DBL_MAX
 
+/* define boolean type for C */
+typedef unsigned int boolean;
+#define false 0
+#define true (!false)
 
 double **create_matrix(int rows, int columns);
 void free_matrix(double **a, int rows);
@@ -72,5 +77,6 @@ void copLik(int* family, int* n, double* u, double* v, double* theta, double* nu
 void copLik_mod(int* family, int* n, double* u, double* v, double* theta, double* nu, double* coplik);
 void SimulateRVine(int* T, int* d, int* family, int* maxmat, int* matrix, int* conindirect, double* par, double* par2, double* out);
 
+void ktau(double *X, double *Y, int *N, double *tau, double *S, double *D, int *T, int *U, int *V);
 
 #endif

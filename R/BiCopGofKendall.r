@@ -63,7 +63,7 @@ t<-seq(1,n)/(n+0.0001)
 kt<-rep(0, n)
 
 # estimate paramemter for different copula family from (u,v)
-param=BiCopEst(u,v, family=fam)
+param=suppressWarnings({BiCopEst(u,v, family=fam)})
                                         # calulate k(t) and kn(t) of bootstrap sample data
 if (fam==1)	# normal
   {
@@ -78,11 +78,11 @@ if (fam==1)	# normal
 if (fam==2)			# t
   {
     sam<-BiCopSim(n,fam,param$par,param$par2)  # generate data for the simulation of K(t)
-    sam.par<-BiCopEst(sam[,1], sam[,2],family=fam) # parameter estimation of sample data
+    sam.par<-suppressWarnings({BiCopEst(sam[,1], sam[,2],family=fam)}) # parameter estimation of sample data
     sim<-BiCopSim(10000,fam,sam.par$par,sam.par$par2)	# generate data for the simulation of theo. K(t)
     cormat = matrix(c(1,param$par,param$par,1),2,2)
     dcop = rep(0,10000)
-    for(i in 1:10000) dcop[i] = pmvt(upper=c(qt(sim[i,1],df=param[2]),qt(sim[i,2],df=param[2])),corr=cormat,df=param[2])
+    for(i in 1:10000) dcop[i] = pmvt(upper=c(qt(sim[i,1],df=param$par2),qt(sim[i,2],df=param$par2)),corr=cormat,df=param$par2)
     kt<-sapply(t,function(x) (1/10000)*length(which(dcop[1:10000]<=x)))	# simulate K(t) of sample data
   }
 
@@ -173,13 +173,13 @@ t<-seq(1,n)/(n+.0001)
 kt<-rep(0, n)
 
 # estimate paramemter for different copula family from (u,v)
-param = BiCopEst(u,v, family=fam)
+param = suppressWarnings({BiCopEst(u,v, family=fam)})
 
 # calculate observed K(t) of (u,v)
 kt.obs<-rep(0, n)
 if (fam==1) {
   sim<-BiCopSim(10000,1,param$par)	# generate data for the simulation of K(t)
-  cormat = matrix(c(1,param$apr,param$par,1),2,2)
+  cormat = matrix(c(1,param$par,param$par,1),2,2)
   dcop = rep(0,10000)
   for(i in 1:10000) dcop[i] = pmvnorm(upper=c(qnorm(sim[i,1]),qnorm(sim[i,2])),corr=cormat)
   kt.obs<-sapply(t,function(x) (1/10000)*length(which(dcop[1:10000]<=x)))	# simulate K(t) of sample data
@@ -188,7 +188,7 @@ else if (fam==2) {
   sim<-BiCopSim(10000,2,param$par,param$par2)	# generate data for the simulation of K(t)
   cormat = matrix(c(1,param$par,param$par,1),2,2)
   dcop = rep(0,10000)
-  for(i in 1:10000) dcop[i] = pmvt(upper=c(qt(sim[i,1],df=param[2]),qt(sim[i,2],df=param[2])),corr=cormat,df=param[2])
+  for(i in 1:10000) dcop[i] = pmvt(upper=c(qt(sim[i,1],df=param$par2),qt(sim[i,2],df=param$par2)),corr=cormat,df=param$par2)
   kt.obs<-sapply(t,function(x) (1/10000)*length(which(dcop[1:10000]<=x)))	# simulate K(t) of sample data
 }
 else if (fam==3) {kt.obs = t + t*(1 - t^param$par)/param$par}

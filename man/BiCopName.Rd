@@ -15,7 +15,7 @@ BiCopName(family, short=TRUE)
 \item{family}{Bivariate copula family, either its number or its character expression (see table below).
 \tabular{rll}{
 No. \tab Short name \tab Long name \cr
-\code{0} \tab \code{"I"} \tab \code{"Independent"} \cr
+\code{0} \tab \code{"I"} \tab \code{"Independence"} \cr
 \code{1} \tab \code{"N"} \tab \code{"Gaussian"} \cr
 \code{2} \tab \code{"t"} \tab \code{"t"} \cr
 \code{3} \tab \code{"C"} \tab \code{"Clayton"} \cr

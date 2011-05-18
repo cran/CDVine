@@ -45,7 +45,9 @@ CDVineBIC(data, family, par,
 }
 
 \value{
-  The computed AIC or BIC value, respectively.
+  \item{AIC, BIC}{The computed AIC or BIC value, respectively.}
+  \item{pair.AIC, pair.BIC}{An array of individual contributions to the AIC or BIC value
+    for each pair-copula, respectively. Note: \code{AIC = sum(pair.AIC)} and similarly \code{BIC = sum(pair.BIC)}.}
 }
 
 \details{

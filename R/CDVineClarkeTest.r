@@ -87,13 +87,13 @@ B = sum(Model1.ll-Model2.ll > 0)
   B.Schwarz = sum(Model1.ll-Model2.ll-(anz.1-anz.2)*log(N)/(2*N) > 0)
   B.Akaike = sum(Model1.ll-Model2.ll-(anz.1-anz.2)/N > 0)
 
-  if(B == 0) p = 1
+  if(B == 0 | B == N/2) p = 1
   else p = 2*min(pbinom(B, N, 0.5),1 - pbinom(B-1, N, 0.5))
   
-  if(B.Schwarz == 0) p.Schwarz = 1
+  if(B.Schwarz == 0 | B.Schwarz == N/2) p.Schwarz = 1
   else p.Schwarz = 2*min(pbinom(B.Schwarz, N, 0.5),1 - pbinom(B.Schwarz-1, N, 0.5))
   
-  if(B.Akaike == 0) p.Akaike = 1
+  if(B.Akaike == 0 | B.Akaike == N/2) p.Akaike = 1
   else p.Akaike = 2*min(pbinom(B.Akaike, N, 0.5),1 - pbinom(B.Akaike-1, N, 0.5))
 
 Vuong=list(statistic=B,statistic.Akaike=B.Akaike,statistic.Schwarz=B.Schwarz,

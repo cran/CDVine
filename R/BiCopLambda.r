@@ -28,7 +28,7 @@ BiCopLambda<-function(u1=NULL,u2=NULL,family="emp",par=0,par2=0,PLOT=TRUE,...)
 		v<-seq(0.001,1,length.out=length(u1))
 	else
 		v<-seq(0.001,1,0.001)
-	v1<-round(v,3)
+	v1<-v
 	theoLambda<-rep(0,length(v))
 	lambdaFull=rep(0,length(v))
 	main=""
@@ -111,7 +111,7 @@ BiCopLambda<-function(u1=NULL,u2=NULL,family="emp",par=0,par2=0,PLOT=TRUE,...)
 	# Berechnung des empirischen K's
 
 		V1<-V/(n-1)
-		V1<-round(V1,2)
+		V1<-V1
 
 		K<-sapply(v1,function(x) (1/nn)*length(which(V1[1:nn]<=x)))
 
@@ -188,7 +188,7 @@ return(out)
 gtLambda<-function(copula,param, len=1000)
 {
 	v<-seq(0.001,1,length.out=len)
-	v1<-round(v,3)
+	v1<-v
 	n=length(v)
 	nn=len
 	lambda<-rep(0,n)
@@ -235,7 +235,7 @@ gtLambda<-function(copula,param, len=1000)
 	# Berechnung des empirischen K's
 
 		V1<-V/(n-1)
-		V1<-round(V1,2)
+		V1<-V1
 
 		K<-sapply(v1,function(x) (1/nn)*length(which(V1[1:nn]<=x)))
 
@@ -243,6 +243,6 @@ gtLambda<-function(copula,param, len=1000)
 
 		lambda<-v1-K
 
-	lambda=smooth(lambda)
+	#lambda=smooth(lambda)
 return(lambda)
 }

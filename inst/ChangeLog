@@ -1,0 +1,16 @@
+Changes for R-package CDVine
+
+Ulf Schepsmeier and Eike Christian Brechmann <CDVine@ma.tum.de>
+
+
+Version 1.0-1 (May 18, 2011)
+
+- Implementation of a fast computation algorithm for Kendall's tau based on the algorithm of Knight (1966) (references see manual).
+
+- Improvement of the calculation of the lambda-function (BiCopLambda).
+
+- New output of the functions CDVineAIC and CDVineBIC: individual contributions to the AIC or BIC value for each pair-copula, respectively.
+
+- Bug fixes:
+  * fixed the calculation of p-values in CDVineClarkeTest
+  * fixed the calculation of the goodness-of-fit test (BiCopGofKendall)
