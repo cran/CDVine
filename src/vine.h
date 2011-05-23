@@ -32,7 +32,6 @@
 #include <Rdefines.h> 
 #include <Rmath.h>
 #include <Rinternals.h>
-#include <malloc.h>
 #include "vine.h"
 
 

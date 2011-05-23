@@ -72,8 +72,8 @@ of the method by Knight (1966) for efficiently computing the empirical Kendall's
 \tabular{ll}{
 Package: \tab CDVine\cr
 Type: \tab Package\cr
-Version: \tab 1.0-1\cr
-Date: \tab 2011-05-18\cr
+Version: \tab 1.0-2\cr
+Date: \tab 2011-05-23\cr
 License: \tab GPL (>=2)\cr
 Depends: \tab R (>= 2.8.1), MASS, mvtnorm, igraph \cr
 LazyLoad: \tab yes

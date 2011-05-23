@@ -3,6 +3,12 @@ Changes for R-package CDVine
 Ulf Schepsmeier and Eike Christian Brechmann <CDVine@ma.tum.de>
 
 
+Version 1.0-2 (May 23, 2011)
+
+- Bug fix:
+  * fixed compatibility problem with Mac OS X
+
+
 Version 1.0-1 (May 18, 2011)
 
 - Implementation of a fast computation algorithm for Kendall's tau based on the algorithm of Knight (1966) (references see manual).
