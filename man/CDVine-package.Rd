@@ -63,7 +63,7 @@ Similarly, the pairs of a D-vine are denoted in the following order:\cr\cr
 \eqn{(1,d|2,...,d-1).} 
 }
 
-\section{Empirical Kendall's tau}{
+\section{Acknowledgment}{
 We like to thank Shing (Eric) Fu, Feng Zhu, Guang (Jack) Yang, and Harry Joe for providing their implementation
 of the method by Knight (1966) for efficiently computing the empirical Kendall's tau.
 }
@@ -72,8 +72,8 @@ of the method by Knight (1966) for efficiently computing the empirical Kendall's
 \tabular{ll}{
 Package: \tab CDVine\cr
 Type: \tab Package\cr
-Version: \tab 1.0-2\cr
-Date: \tab 2011-05-23\cr
+Version: \tab 1.0-3\cr
+Date: \tab 2011-05-30\cr
 License: \tab GPL (>=2)\cr
 Depends: \tab R (>= 2.8.1), MASS, mvtnorm, igraph \cr
 LazyLoad: \tab yes

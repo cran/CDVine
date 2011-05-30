@@ -24,7 +24,7 @@ BiCopKPlot(u1, u2, PLOT=TRUE, ...)
 
 \details{
 For observations \eqn{u_{i,j},\ i=1,...,N,\ j=1,2,}{u_{i,j}, i=1,...,N, j=1,2,} the K-plot considers two quantities:
-First, the ordered values of the empirical bivariate distribution function \eqn{H_i:=F_{U_1U_2}(u_{i,1},u_{i,2})}
+First, the ordered values of the empirical bivariate distribution function \eqn{H_i:=\hat{F}_{U_1U_2}(u_{i,1},u_{i,2})}
 and, second, \eqn{W_{i:N}}, which are the expected values of the order statistics
 from a random sample of size \eqn{N} of the random variable \eqn{W=C(U_1,U_2)} under the null hypothesis of independence between \eqn{U_1} and \eqn{U_2}.
 \eqn{W_{i:N}} can be calculated as follows

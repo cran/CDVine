@@ -31,16 +31,16 @@ BiCopCDF<-function(u1,u2,family,par,par2=0)
     cdf = function(u,v) pmvt(upper=c(qt(u,df=par2),qt(v,df=par2)), corr=matrix(c(1,par,par,1),2,2), df=par2)
     res = mapply(cdf, u1, u2, SIMPLIFY=TRUE)   
   }else if(family %in% c(3,4,5,6,7,8,9)){
-    cdf = function(u,v) .C("copCdf",as.double(u),as.double(v),as.integer(1),as.double(c(par,par2)),as.integer(family),as.double(0),PACKAGE='CDRVine')[[6]]
+    cdf = function(u,v) .C("copCdf",as.double(u),as.double(v),as.integer(1),as.double(c(par,par2)),as.integer(family),as.double(0),PACKAGE='CDVine')[[6]]
     res = mapply(cdf, u1, u2, SIMPLIFY=TRUE)  
   }else if(family %in% c(13,14,16)){
-    cdf = function(u,v) u+v-1+.C("copCdf",as.double(1-u),as.double(1-v),as.integer(1),as.double(c(par,par2)),as.integer(family-10),as.double(0),PACKAGE='CDRVine')[[6]]
+    cdf = function(u,v) u+v-1+.C("copCdf",as.double(1-u),as.double(1-v),as.integer(1),as.double(c(par,par2)),as.integer(family-10),as.double(0),PACKAGE='CDVine')[[6]]
     res = mapply(cdf, u1, u2, SIMPLIFY=TRUE)  
   }else if(family %in% c(23,24,26)){
-    cdf = function(u,v) v-.C("copCdf",as.double(1-u),as.double(v),as.integer(1),as.double(c(-par,par2)),as.integer(family-20),as.double(0),PACKAGE='CDRVine')[[6]]
+    cdf = function(u,v) v-.C("copCdf",as.double(1-u),as.double(v),as.integer(1),as.double(c(-par,par2)),as.integer(family-20),as.double(0),PACKAGE='CDVine')[[6]]
     res = mapply(cdf, u1, u2, SIMPLIFY=TRUE) 
   }else if(family %in% c(33,34,36)){
-    cdf = function(u,v) u-.C("copCdf",as.double(u),as.double(1-v),as.integer(1),as.double(c(-par,par2)),as.integer(family-30),as.double(0),PACKAGE='CDRVine')[[6]]
+    cdf = function(u,v) u-.C("copCdf",as.double(u),as.double(1-v),as.integer(1),as.double(c(-par,par2)),as.integer(family-30),as.double(0),PACKAGE='CDVine')[[6]]
     res = mapply(cdf, u1, u2, SIMPLIFY=TRUE)
   }
  

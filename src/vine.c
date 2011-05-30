@@ -1355,12 +1355,11 @@ void copLik(int* family, int* n, double* u, double* v, double* theta, double* nu
   {
 	for(j=0;j<*n;j++)
 		{
-		u[j]=1-u[j]; v[j]=1-v[j];
-		f = pow(pow(1-u[j],*theta)+pow(1-v[j],*theta)-pow(1-u[j],*theta)*pow(1-v[j],*theta),1/(*theta)-2)*pow(1-u[j],*theta-1)*pow(1-v[j],*theta-1)*(*theta-1+pow(1-u[j],*theta)+pow(1-v[j],*theta)-pow(1-u[j],*theta)*pow(1-v[j],*theta));
+		dat[0]=1-u[j]; dat[1]=1-v[j];
+		f = pow(pow(1-dat[0],*theta)+pow(1-dat[1],*theta)-pow(1-dat[0],*theta)*pow(1-dat[1],*theta),1/(*theta)-2)*pow(1-dat[0],*theta-1)*pow(1-dat[1],*theta-1)*(*theta-1+pow(1-dat[0],*theta)+pow(1-dat[1],*theta)-pow(1-dat[0],*theta)*pow(1-dat[1],*theta));
 		lik *= f;
 		}
   }
-
   else printError("Error in copLik\t:","Unknown copula family");
   //Free memory:
   Free(dat);
@@ -1566,7 +1565,8 @@ void HNumInvBisect(int* family, double* u, double* v, double* theta, double* nu,
   		Hfunc(family,&in,&ans,v,theta,nu,&val);
   		val -= *u;
   		if(fabs(val)<=tol) br=1;
-  		/*if(fl > 0.0)   # Hfunc is mon. increasing
+  		if(fabs(x0-x1)<=1e-10) br=1; //stop if values become too close (avoid infinite loop)
+  		/*if(fl > 0.0)   // Hfunc is mon. increasing
   		{
   			if(val < 0.0) {x1 = ans; fh = val;}
   			else {x0 = ans; fl = val;}
