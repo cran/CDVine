@@ -3,11 +3,16 @@ Changes for R-package CDVine
 Ulf Schepsmeier and Eike Christian Brechmann <CDVine@ma.tum.de>
 
 
+Version 1.0-4 (June 2, 2011)
+
+- Improvement of the MLE of the bivariate Gaussian copula (BiCopEst).
+
+
 Version 1.0-3 (May 30, 2011)
 
 - Bug fixes:
-  * fixed computation of survival Joe copula density (BiCopPDF)
-  * fixed computation of Archimedean copula distribution functions (BiCopCDF)
+  * fixed the calculation of the survival Joe copula density (BiCopPDF)
+  * fixed the calculation of Archimedean copula distribution functions (BiCopCDF)
 
 
 Version 1.0-2 (May 23, 2011)

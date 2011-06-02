@@ -391,10 +391,11 @@ function(data,start.parm,family,se=FALSE,max.df=30,max.BB=list(BB1=c(5,6),BB7=c(
       up = -1.0001
     }   
     	    
-    if(se == TRUE){      
-      optimout = optim(par=start.parm[1],fn=t_LL,method="L-BFGS-B",control=list(fnscale=-1,maxit = 500),lower=low,upper=up,hessian=TRUE)
+    pscale = ifelse(family==1, 0.001, 1)
+    if(se == TRUE){
+      optimout = optim(par=start.parm[1],fn=t_LL,method="L-BFGS-B",control=list(fnscale=-1,maxit = 500,parscale=pscale),lower=low,upper=up,hessian=TRUE)
     }else{
-      optimout = optim(par=start.parm[1],fn=t_LL,method="L-BFGS-B",control=list(fnscale=-1,maxit = 500),lower=low,upper=up)
+      optimout = optim(par=start.parm[1],fn=t_LL,method="L-BFGS-B",control=list(fnscale=-1,maxit = 500,parscale=pscale),lower=low,upper=up)
     }
 
   } 
