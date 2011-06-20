@@ -1,12 +1,12 @@
-#########################################################
-# gen							#
-# Input:						#
-# u		data vector				#
-# param		copula parameters			#
-# copula	copula family (7=BB1, 8=BB2, 9=BB7)	#
-# Output:						#
-# out		generator				#
-#########################################################
+#################################################################
+# gen								#
+# Input:							#
+# u		data vector					#
+# param		copula parameters				#
+# copula	copula family (7=BB1, 8=BB6, 9=BB7, 10=BB8)	#
+# Output:							#
+# out		generator					#
+#################################################################
 
 gen <- function(u, param, copula)   # param == c(theta, delta)
 {
@@ -18,26 +18,30 @@ gen <- function(u, param, copula)   # param == c(theta, delta)
   } 
   else if (copula == 8)
   {
-    out <- exp(param[2]*(u^-param[1]-1))-1
+    out <- (-log(-(1-u)^param[1]+1))^param[2]
   }
   else if (copula == 9) 
   {
     out <- (1 - (1-u)^param[1])^(-param[2]) - 1
+  }
+  else if (copula == 10)
+  {
+    out <- -log((1-(1-param[2]*u)^param[1])/(1-(1-param[2])^param[1]))
   }
 
   return(out)
 }
 
 
-#########################################################
-# gen.inv						#
-# Input:						#
-# u		data vector				#
-# param		copula parameters			#
-# copula	copula family (7=BB1, 8=BB2, 9=BB7)	#
-# Output:						#
-# out		inverse generator			#
-#########################################################
+#################################################################
+# gen.inv							#
+# Input:							#
+# u		data vector					#
+# param		copula parameters				#
+# copula	copula family (7=BB1, 8=BB6, 9=BB7, 10=BB8)	#
+# Output:							#
+# out		inverse generator				#
+#################################################################
 
 gen.inv <- function(u, param, copula)
 {
@@ -49,26 +53,30 @@ gen.inv <- function(u, param, copula)
   } 
   else if (copula == 8)
   {
-    out <- (1+1/param[2]*log(1+u))^(-1/param[1])
+    out <- 1-(1-exp(-u^(1/param[2])))^(1/param[1])
   }
   else if (copula == 9) 
   {
     out <- 1 - (1 - (1+u)^(-1/param[2]))^(1/param[1])
+  }
+  else if(copula==10)
+  {
+    out <- 1/param[2] * ( 1-(1-(1-(1-param[2])^param[1])*exp(-u))^(1/param[1]) )
   }
 
   return(out)
 }
 
 
-#########################################################
-# gen.drv						#
-# Input:						#
-# u		data vector				#
-# param		copula parameters			#
-# copula	copula family (7=BB1, 8=BB2, 9=BB7)	#
-# Output:						#
-# out		First derivative of the generator	#
-#########################################################
+#################################################################
+# gen.drv							#
+# Input:							#
+# u		data vector					#
+# param		copula parameters				#
+# copula	copula family (7=BB1, 8=BB6, 9=BB7, 10=BB8)	#
+# Output:							#
+# out		First derivative of the generator		#
+#################################################################
 
 gen.drv <- function(u, param, copula)
 {
@@ -80,26 +88,30 @@ gen.drv <- function(u, param, copula)
   } 
   else if (copula == 8)
   {
-    out <- -param[1]*param[2]*u^(-param[1]-1)*exp(param[2]*(u^-param[1]-1))
+    out <- (-log(-(1-u)^param[1]+1))^(param[2]-1)*param[2]*(1-u)^(param[1]-1)*param[1]/((1-u)^param[1]-1)
   }
   else if (copula == 9) 
   {
     out <- -prod(param) * (1-u)^(param[1]-1) * (1 - (1-u)^param[1])^(-1-param[2])
+  }
+  else if(copula == 10)
+  {
+    out <- -prod(param) * ( (1-param[2]*u)^(param[1]-1) ) / ( 1-(1-param[2]*u)^param[1] )
   }
 
   return(out)
 }
 
 
-#########################################################
-# gen.drv2						#
-# Input:						#
-# u		data vector				#
-# param		copula parameters			#
-# copula	copula family (7=BB1, 8=BB2, 9=BB7)	#
-# Output:						#
-# out		Second derivative of the generator	#
-#########################################################
+#################################################################
+# gen.drv2							#
+# Input:							#
+# u		data vector					#
+# param		copula parameters				#
+# copula	copula family (7=BB1, 8=BB6, 9=BB7, 10=BB8)	#
+# Output:							#
+# out		Second derivative of the generator		#
+#################################################################
 
 gen.drv2 <- function(u, param, copula)
 {
@@ -111,30 +123,93 @@ gen.drv2 <- function(u, param, copula)
   } 
   else if (copula == 8)
   {
-    out <- param[1]*param[2]*u^(-param[1]-2)*exp(param[2]*(u^-param[1]-1))*(param[1]+1+param[1]*param[2]*u^-param[1])
+    out <- ( prod(param) * ( 
+    (-log(-(1-u)^param[1]+1))^(param[2]-2) * (1-u)^(2*param[1]-2) * prod(param) - 
+    (-log(-(1-u)^param[1]+1))^(param[2]-2) * (1-u)^(2*param[1]-2) * param[1] - 
+    (-log(-(1-u)^param[1]+1))^(param[2]-1) * (1-u)^(param[1]-2) * param[1] - 
+    (-log(-(1-u)^param[1]+1))^(param[2]-1) * (1-u)^(2*param[1]-2) + 
+    (-log(-(1-u)^param[1]+1))^(param[2]-1) * (1-u)^(param[1]-2) ) ) / ((1-u)^param[1]-1)^2
   }
   else if (copula == 9) 
   {
     out <- prod(param) * (1-u)^(param[1]-2) * (1 - (1-u)^param[1])^(-2-param[2]) * ((1 + prod(param)) * (1-u)^param[1] + param[1] - 1)
+  }
+  else if(copula==10)
+  {
+    out <- ( param[2]^2 * param[1] * ((1-u*param[2])^(param[1]-2)*param[1]+(1-u*param[2])^(2*param[1]-2)-(1-u*param[2])^(param[1]-2)) ) / ( ((1-u*param[2])^param[1]-1)^2 )
   }
 
   return(out)
 }
 
 
-#########################################################
-# cop.cdf						#
-# Input:						#
-# u1,u2		data vectors				#
-# param		copula parameters			#
-# copula	copula family (7=BB1, 8=BB2, 9=BB7)	#
-# Output:						#
-# out		copula					#
-#########################################################
+#################################################################
+# cop.cdf							#
+# Input:							#
+# u1,u2		data vectors					#
+# param		copula parameters				#
+# copula	copula family (7=BB1, 8=BB6, 9=BB7, 10=BB8)	#
+# Output:							#
+# out		copula						#
+#################################################################
 
 cop.cdf <- function(u1, u2, param, copula)
 {
   return(gen.inv(u=gen(u=u1, param=param, copula=copula) + gen(u=u2, param=param, copula=copula), param=param, copula=copula))
+}
+
+
+#########################
+# pdf for BB6		#
+#########################
+
+bb6pdf=function(u,v,th,de)
+{
+  t1 = 1.0-u;
+  t2 = t1^th;
+  t3 = 1.0-t2;
+  t4 = log(t3);
+  t5 = (-t4)^de;
+  t12 = 1/de;
+  t16 = 1/th;
+  t32 = de-1.0;
+  t38 = 2.0*de;
+  t39 = -1.0+t38;
+  t40 = (-t4)^t39;
+  t47 = 3.0*de-1.0;
+  t50 = (-t4)^t32;
+  t61 = (-t4)^t47;
+  t90 = (-t4)^t38;
+  # above depend on u and parameters only
+  # loop below for solving for conditional quantile
+  t6 = 1.0-v;
+  t7 = t6^th;
+  t8 = 1.0-t7;
+  t9 = log(t8);
+  t10 = (-t9)^de;
+  t11 = t5+t10;
+  t13 = t11^t12;
+  t14 = exp(-t13);
+  t15 = 1.0-t14;
+  t17 = t15^t16;
+  t35 = t11^(-2.0*t32*t12);
+  t36 = t35*th;
+  t37 = exp(t13);
+  t42 = (-t9)^t39;
+  t48 = (-t9)^t47;
+  t53 = t13*de;
+  t56 = (-t9)^t32;
+  t57 = t37*t50*t56;
+  t59 = t13*th;
+  t78 = t37-1.0;
+  t80 = (t78*t14)^t16;
+  t87 = t78*t78;
+  t93 = (-t9)^t38;
+  #c21 = -t17*t13*t5*t2/t1/t3/t4/t11*t14/t15;
+  pdf = (2.0*t36*t37*t40*t42+t36*t37*t48*t50+t53*th*t57-t59*t57+
+   t36* t37*t61*t56-2.0*t35*t40*t42-t35*t61*t56-t53*th*t50*t56+t59*t50*t56-
+   t35*t48*t50) *t80*t7*t2/t3/t8/t87/(t90+2.0*t5*t10+t93)/t1/t6;
+  pdf
 }
 
 
@@ -150,9 +225,51 @@ cop.cdf <- function(u1, u2, param, copula)
 
 cop.pdf <- function(u1, u2, param, copula)
 {
-  if(copula==7 | copula==8 | copula==9)
+  if(copula==7 | copula==9 | copula==10)
   {
 	return(-gen.drv2(u=cop.cdf(u1=u1, u2=u2, param=param, copula=copula), param=param, copula=copula) * gen.drv(u=u1, param=param, copula=copula) * gen.drv(u=u2, param=param, copula=copula) / gen.drv(u=cop.cdf(u1=u1, u2=u2, param=param, copula=copula), param=param, copula=copula)^3)
+  }
+  else if(copula==8)
+  {
+	return(bb6pdf(u1,u2,param[1],param[2]))
+  }
+  else if(copula==17 | copula==19 | copula==20)
+  {
+	d1=1-u1
+	d2=1-u2
+	return(-gen.drv2(u=cop.cdf(u1=d1, u2=d2, param=param, copula=copula-10), param=param, copula=copula-10) * gen.drv(u=d1, param=param, copula=copula-10) * gen.drv(u=d2, param=param, copula=copula-10) / gen.drv(u=cop.cdf(u1=d1, u2=d2, param=param, copula=copula-10), param=param, copula=copula-10)^3)
+  }
+  else if(copula==18)
+  {
+	d1=1-u1
+	d2=1-u2
+	return(bb6pdf(d1,d2,param[1],param[2]))
+  }
+  else if(copula==27 | copula==29 | copula==30)
+  {
+	d1=1-u1
+	d2=u2
+	param=-param
+	return(-gen.drv2(u=cop.cdf(u1=d1, u2=d2, param=param, copula=copula-20), param=param, copula=copula-20) * gen.drv(u=d1, param=param, copula=copula-20) * gen.drv(u=d2, param=param, copula=copula-20) / gen.drv(u=cop.cdf(u1=d1, u2=d2, param=param, copula=copula-20), param=param, copula=copula-20)^3)
+  }
+  else if(copula==28)
+  {
+	d1=1-u1
+	d2=u2
+	return(bb6pdf(d1,d2,-param[1],-param[2]))
+  }
+  else if(copula==37 | copula==39 | copula==40)
+  {
+	d1=u1
+	d2=1-u2
+	param=-param
+	return(-gen.drv2(u=cop.cdf(u1=d1, u2=d2, param=param, copula=copula-30), param=param, copula=copula-30) * gen.drv(u=d1, param=param, copula=copula-30) * gen.drv(u=d2, param=param, copula=copula-30) / gen.drv(u=cop.cdf(u1=d1, u2=d2, param=param, copula=copula-30), param=param, copula=copula-30)^3)
+  }
+  else if(copula==38)
+  {
+	d1=u1
+	d2=1-u2
+	return(bb6pdf(d1,d2,-param[1],-param[2]))
   }
   else if(copula==0)	# independent
   {
@@ -196,14 +313,14 @@ cop.pdf <- function(u1, u2, param, copula)
   theta=param
   return( ((1-u1)^(theta)+(1-u2)^(theta)-(1-u1)^(theta)*(1-u2)^(theta))^(1/(theta)-2)*(1-u1)^(theta-1)*(1-u2)^(theta-1)*(theta-1+(1-u1)^(theta)+(1-u2)^(theta)-(1-u1)^(theta)*(1-u2)^(theta)) )
   }
-  else if(copula==13)	# rotated Clayton (180?)
+  else if(copula==13)	# rotated Clayton (180)
   {
   theta=param
   d1=1-u1
   d2=1-u2
   return((1.0+theta)*(d1*d2)^(-1.0-theta)*(d1^(-theta)+d2^(-theta)-1.0)^(-2.0-1.0/theta))
   }
-  else if(copula==14)	# rotated Gumbel (180?)
+  else if(copula==14)	# rotated Gumbel (180)
   {
   theta=param
   d1=1-u1
@@ -212,21 +329,21 @@ cop.pdf <- function(u1, u2, param, copula)
   t2=exp(-t1^(1.0/theta))
   return( t2/(d1*d2)*t1^(-2.0+2.0/theta)*(log(d1)*log(d2))^(theta-1.0)*(1.0+(theta-1.0)*t1^(-1.0/theta)) )
   }
-  else if(copula==16)	# rotated Joe (180?)
+  else if(copula==16)	# rotated Joe (180)
   {
   theta=param
   d1=1-u1
   d2=1-u2
   return( ((1-d1)^(theta)+(1-d2)^(theta)-(1-d1)^(theta)*(1-d2)^(theta))^(1/(theta)-2)*(1-d1)^(theta-1)*(1-d2)^(theta-1)*(theta-1+(1-d1)^(theta)+(1-d2)^(theta)-(1-d1)^(theta)*(1-d2)^(theta)) )
   }
-  else if(copula==23)	# rotated Clayton (90?)
+  else if(copula==23)	# rotated Clayton (90)
   {
   theta=-param
   d1=1-u1
   d2=u2
   return((1.0+theta)*(d1*d2)^(-1.0-theta)*(d1^(-theta)+d2^(-theta)-1.0)^(-2.0-1.0/theta))
   }
-  else if(copula==24)	# rotated Gumbel (90?)
+  else if(copula==24)	# rotated Gumbel (90)
   {
   theta=-param
   d1=1-u1
@@ -235,21 +352,21 @@ cop.pdf <- function(u1, u2, param, copula)
   t2=exp(-t1^(1.0/theta))
   return( t2/(d1*d2)*t1^(-2.0+2.0/theta)*(log(d1)*log(d2))^(theta-1.0)*(1.0+(theta-1.0)*t1^(-1.0/theta)) )
   }
-  else if(copula==26)	# rotated Joe (90?)
+  else if(copula==26)	# rotated Joe (90)
   {
   theta=-param
   d1=1-u1
   d2=u2
   return( ((1-d1)^(theta)+(1-d2)^(theta)-(1-d1)^(theta)*(1-d2)^(theta))^(1/(theta)-2)*(1-d1)^(theta-1)*(1-d2)^(theta-1)*(theta-1+(1-d1)^(theta)+(1-d2)^(theta)-(1-d1)^(theta)*(1-d2)^(theta)) )
   }
-  else if(copula==33)	# rotaed Clayton (270?)
+  else if(copula==33)	# rotaed Clayton (270)
   {
   theta=-param
   d1=u1
   d2=1-u2
   return((1.0+theta)*(d1*d2)^(-1.0-theta)*(d1^(-theta)+d2^(-theta)-1.0)^(-2.0-1.0/theta))
   }
-  else if(copula==34)	# rotated Gumbel (270?)
+  else if(copula==34)	# rotated Gumbel (270)
   {
   theta=-param
   d1=u1
@@ -258,7 +375,7 @@ cop.pdf <- function(u1, u2, param, copula)
   t2=exp(-t1^(1.0/theta))
   return( t2/(d1*d2)*t1^(-2.0+2.0/theta)*(log(d1)*log(d2))^(theta-1.0)*(1.0+(theta-1.0)*t1^(-1.0/theta)) )
   }
-  else if(copula==36)	# rotated Joe
+  else if(copula==36)	# rotated Joe (270)
   {
   theta=-param
   d1=u1
@@ -315,8 +432,8 @@ family="emp", par=0, par2=0, PLOT=TRUE, margins="norm", margins.par=0, xylim=NA,
 {
   if((is.null(u1)==TRUE || is.null(u2)==TRUE) && family=="emp") stop("'u1' and/or 'u2' not set or of length zero.")
   #if(length(u1)!=length(u2)) stop("Lengths of 'u1' and 'u2' do not match.")
-  if(!(family %in% c(0,1,2,3,4,5,6,7,9,13,14,16,23,24,26,33,34,36, "emp"))) stop("Copula family not implemented.")
-  if(c(2,7,8,9) %in% family && par2==0) stop("For t-, BB1 and BB7 copulas, 'par2' must be set.")
+  if(!(family %in% c(0,1,2,3,4,5,6,7,8,9,10,13,14,16,17,18,19,20,23,24,26,27,28,29,30,33,34,36,37,38,39,40, "emp"))) stop("Copula family not implemented.")
+  if(c(2,7,8,9,10,17,18,19,20,27,28,29,30,37,38,39,40) %in% family && par2==0) stop("For t-, BB1 and BB7 copulas, 'par2' must be set.")
   if(c(1,3,4,5,6,13,14,16,23,24,26,33,34,36) %in% family && length(par)<1) stop("'par' not set.")
   
   # size sollte nicht zu gross sein
@@ -328,19 +445,32 @@ family="emp", par=0, par2=0, PLOT=TRUE, margins="norm", margins.par=0, xylim=NA,
   if(bw>5) stop("The bandwidth parameter 'bw' should not be greater than 5.")
   
   # Parameterbereiche abfragen
-  if((family==1 || family==2) && abs(par)>=1) stop("The parameter of the Gaussian and t-copula has to be in the interval (-1,1).")
-  if(family==2 && par2<=1) stop("The degrees of freedom parameter of the t-copula has to be larger than 1.") 
-  if((family==3 || family==13) && par<=0) stop("The parameter of the Clayton copula has to be positive.")
-  if((family==4 || family==14) && par<1) stop("The parameter of the Gumbel copula has to be in the interval [1,oo).")
-  if((family==6 || family==16) && par<=1) stop("The parameter of the Joe copula has to be in the interval (1,oo).")	
-  if(family==5 && par==0) stop("The parameter of the Frank copula has to unequal to 0.")
-  if(family==7 && par<=0) stop("The first parameter of the BB1 copula has to be positive.")
-  if(family==7 && par2<1) stop("The second parameter of the BB1 copula has to be in the interval [1,oo).")
-  if(family==9 && par<1) stop("The first parameter of the BB7 copula has to be in the interval [1,oo).")
-  if(family==9 && par2<=0) stop("The second parameter of the BB7 copula has to be positive.")
-  if((family==23 || family==33) && par>=0) stop("The parameter of the rotated Clayton copula has to be negative.")
-  if((family==24 || family==34) && par>-1) stop("The parameter of the rotated Gumbel copula has to be in the interval (-oo,-1].")
-  if((family==26 || family==36) && par>=-1) stop("The parameter of the rotated Joe copula has to be in the interval (-oo,-1).")
+  if((family==1 || family==2) && abs(par[1])>=1) stop("The parameter of the Gaussian and t-copula has to be in the interval (-1,1).")
+	if(family==2 && par2<=1) stop("The degrees of freedom parameter of the t-copula has to be larger than 1.")
+	if((family==3 || family==13) && par<=0) stop("The parameter of the Clayton copula has to be positive.")
+	if((family==4 || family==14) && par<1) stop("The parameter of the Gumbel copula has to be in the interval [1,oo).")
+	if((family==6 || family==16) && par<=1) stop("The parameter of the Joe copula has to be in the interval (1,oo).")
+	if(family==5 && par==0) stop("The parameter of the Frank copula has to be unequal to 0.")
+	if((family==7 || family==17) && par<=0) stop("The first parameter of the BB1 copula has to be positive.")
+	if((family==7 || family==17) && par2<1) stop("The second parameter of the BB1 copula has to be in the interval [1,oo).")
+	if((family==8 || family==18) && par<=0) stop("The first parameter of the BB6 copula has to be in the interval [1,oo).")
+	if((family==8 || family==18) && par2<1) stop("The second parameter of the BB6 copula has to be in the interval [1,oo).")
+	if((family==9 || family==19) && par<1) stop("The first parameter of the BB7 copula has to be in the interval [1,oo).")
+	if((family==9 || family==19) && par2<=0) stop("The second parameter of the BB7 copula has to be positive.")
+	if((family==10 || family==20) && par<1) stop("The first parameter of the BB8 copula has to be in the interval [1,oo).")
+	if((family==10 || family==20) && (par2<=0 || par2>1)) stop("The second parameter of the BB8 copula has to be in the interval (0,1].")
+	if((family==23 || family==33) && par>=0) stop("The parameter of the rotated Clayton copula has to be negative.")
+	if((family==24 || family==34) && par>-1) stop("The parameter of the rotated Gumbel copula has to be in the interval (-oo,-1].")
+	if((family==26 || family==36) && par>=-1) stop("The parameter of the rotated Joe copula has to be in the interval (-oo,-1).")
+	if((family==27 || family==37) && par>=0) stop("The first parameter of the rotated BB1 copula has to be negative.")
+	if((family==27 || family==37) && par2>-1) stop("The second parameter of the rotated BB1 copula has to be in the interval (-oo,-1].")
+	if((family==28 || family==38) && par>=0) stop("The first parameter of the rotated BB6 copula has to be in the interval (-oo,-1].")
+	if((family==28 || family==38) && par2>-1) stop("The second parameter of the rotated BB6 copula has to be in the interval (-oo,-1].")
+	if((family==29 || family==39) && par>-1) stop("The first parameter of the rotated BB7 copula has to be in the interval (-oo,-1].")
+	if((family==29 || family==39) && par2>=0) stop("The second parameter of the rotated BB7 copula has to be negative.")
+	if((family==30 || family==40) && par>-1) stop("The first parameter of the rotated BB8 copula has to be in the interval (-oo,-1].")
+	if((family==30 || family==40) && (par2>=0 || par2<(-1))) stop("The second parameter of the rotated BB8 copula has to be in the interval [-1,0).")
+
 
   if(PLOT!=TRUE && PLOT!=FALSE) stop("The parameter 'PLOT' has to be set to 'TRUE' or 'FALSE'.")
 
@@ -395,7 +525,7 @@ family="emp", par=0, par2=0, PLOT=TRUE, margins="norm", margins.par=0, xylim=NA,
 
   if(family!="emp")
   {
-  if(family %in% c(2,7,8,9))
+  if(family %in% c(2,7,8,9,10,17,18,19,20,27,28,29,30,37,38,39,40))
 	 z <- matrix(data=meta.dens(x1=rep(x=x, each=size), x2=rep(x=y, times=size), param=c(par,par2), copula=family, 
    margins=margins, margins.par=margins.par), nrow=size, byrow=TRUE)
   else

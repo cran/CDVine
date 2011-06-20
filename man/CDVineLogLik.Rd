@@ -16,23 +16,38 @@ CDVineLogLik(data, family, par,
   \item{data}{An N x d data matrix (with uniform margins).}
   \item{family}{A d*(d-1)/2 integer vector of C-/D-vine pair-copula families with values \cr
 		\code{0} = independence copula \cr
-    \code{1} = Gaussian copula \cr
-    \code{2} = Student t copula (t-copula) \cr
-    \code{3} = Clayton copula \cr
-    \code{4} = Gumbel copula \cr
-    \code{5} = Frank copula \cr
-    \code{6} = Joe copula \cr 
+	        \code{1} = Gaussian copula \cr
+	        \code{2} = Student t copula (t-copula) \cr
+	        \code{3} = Clayton copula \cr
+	        \code{4} = Gumbel copula \cr
+	        \code{5} = Frank copula \cr
+	        \code{6} = Joe copula \cr 
 		\code{7} = BB1 copula \cr
+		\code{8} = BB6 copula \cr
 		\code{9} = BB7 copula \cr
+		\code{10} = BB8 copula \cr
 		\code{13} = rotated Clayton copula (180 degrees; ``survival Clayton'') \cr
 		\code{14} = rotated Gumbel copula (180 degrees; ``survival Gumbel'') \cr
-		\code{16} = rotated Joe copula (180 degrees; ``survival Joe'') \cr
+		\code{16} = rotated Joe copula (180 degrees; ``survival Joe'') \cr 
+		\code{17} = rotated BB1 copula (180 degrees; ``survival BB1'')\cr
+		\code{18} = rotated BB6 copula (180 degrees; ``survival BB6'')\cr
+		\code{19} = rotated BB7 copula (180 degrees; ``survival BB7'')\cr
+		\code{20} = rotated BB8 copula (180 degrees; ``survival BB8'')\cr
 		\code{23} = rotated Clayton copula (90 degrees) \cr
 		\code{24} = rotated Gumbel copula (90 degrees) \cr
 		\code{26} = rotated Joe copula (90 degrees) \cr
+		\code{27} = rotated BB1 copula (90 degrees) \cr
+		\code{28} = rotated BB6 copula (90 degrees) \cr
+		\code{29} = rotated BB7 copula (90 degrees) \cr
+		\code{30} = rotated BB8 copula (90 degrees) \cr
 		\code{33} = rotated Clayton copula (270 degrees) \cr
 		\code{34} = rotated Gumbel copula (270 degrees) \cr
-		\code{36} = rotated Joe copula (270 degrees)}
+		\code{36} = rotated Joe copula (270 degrees) \cr
+		\code{37} = rotated BB1 copula (270 degrees) \cr
+		\code{38} = rotated BB6 copula (270 degrees) \cr
+		\code{39} = rotated BB7 copula (270 degrees) \cr
+		\code{40} = rotated BB8 copula (270 degrees)
+		}
   \item{par}{A d*(d-1)/2 vector of pair-copula parameters.}
   \item{par2}{A d*(d-1)/2 vector of second parameters for two parameter pair-copula families
   (default: \code{par2 = rep(0,dim(data)[2]*(dim(data)[2]-1)/2)}).}
@@ -101,6 +116,7 @@ where \eqn{ll_{k}} are the individual contributions to the log-likelihood of eac
   \item{loglik}{The calculated log-likelihood value of the C- or D-vine copula model.}
   \item{ll}{An array of individual contributions to the log-likelihood
     for each pair-copula. Note: \code{loglik = sum(ll)}.}
+  \item{vv}{The stored transformations (h-functions) which may be used for posterior updates.}
 }
 
 \references{ 
@@ -111,7 +127,7 @@ Insurance: Mathematics and Economics 44 (2), 182-198.
 
 \author{Carlos Almeida, Ulf Schepsmeier}
 
-\seealso{\code{\link{CDVineAIC}}, \code{\link{CDVineBIC}}, \code{\link{BiCopHfunc}}}
+\seealso{\code{\link{BiCopHfunc}}, \code{\link{CDVineMLE}}, \code{\link{CDVineAIC}}, \code{\link{CDVineBIC}}}
 
 \examples{
 ## Example 1: 3-dimensional D-vine model with Gaussian pair-copulas

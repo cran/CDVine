@@ -15,11 +15,11 @@ Data is assumed to lie in the unit hypercube (so-called copula data).
 
 \section{Bivariate copula families}{
 In this package several bivariate copula families are included for bivariate analysis as well as for multivariate analysis using vine copulas.
-It provides functionality of elliptical (Gaussian and Student t) as well as Archimedean (Clayton, Gumbel, Frank, Joe, BB1 and BB7) copulas
+It provides functionality of elliptical (Gaussian and Student t) as well as Archimedean (Clayton, Gumbel, Frank, Joe, BB1, BB6, BB7 and BB8) copulas
 to cover a large bandwidth of possible dependence structures.
-For the one parameter Archimedean copula families rotated versions are included to cover negative dependence too.
-The two parameter BB1 and BB7 copulas are however numerically instable for large parameters.
-From experience we recommend that the respective first parameters are chosen smaller than 5 and the second parameters smaller than 6.
+For the Archimedean copula families rotated versions are included to cover negative dependence too.
+The two parameter BB1, BB6, BB7 and BB8 copulas are however numerically instable for large parameters,
+in particular, if BB6, BB7 and BB8 copulas are close to the Joe copula which is a boundary case of these three copula families.
 In general, the user should be careful with extreme parameter choices.
 
 The following table shows the parameter ranges of bivariate copula families with parameters \code{par} and \code{par2}:
@@ -34,9 +34,15 @@ Frank \tab \eqn{R\backslash\{0\}} \tab - \cr
 Rotated Clayton (90 and 270 degrees) \tab \eqn{(-\infty,0)} \tab - \cr
 Rotated Gumbel (90 and 270 degrees)\tab \eqn{(-\infty,-1]} \tab - \cr
 Rotated Joe (90 and 270 degrees) \tab \eqn{(-\infty,-1)} \tab - \cr
-Clayton-Gumbel (BB1) \tab \eqn{(0,\infty)} \tab \eqn{[1,\infty)} \cr
-Joe-Clayton (BB7) \tab \eqn{[1,\infty)} \tab \eqn{(0,\infty)} \cr
-} 
+(Survival) Clayton-Gumbel (BB1) \tab \eqn{(0,\infty)} \tab \eqn{[1,\infty)} \cr
+(Survival) Joe-Gumbel (BB6) \tab \eqn{[1,\infty)} \tab \eqn{[1,\infty)} \cr
+(Survival) Joe-Clayton (BB7) \tab \eqn{[1,\infty)} \tab \eqn{(0,\infty)} \cr
+(Survival) Joe-Frank (BB8) \tab \eqn{[1,\infty)} \tab \eqn{(0,1]} \cr
+Rotated Clayton-Gumbel (90 and 270 degrees) \tab \eqn{(-\infty,0)} \tab \eqn{-\infty,-1]} \cr
+Rotated Joe-Gumbel (90 and 270 degrees) \tab \eqn{(-\infty,-1]} \tab \eqn{(-\infty,-1]} \cr
+Rotated Joe-Clayton (90 and 270 degrees) \tab \eqn{(-\infty,-1]} \tab \eqn{(-\infty,0)} \cr
+Rotated Joe-Frank (90 and 270 degrees) \tab \eqn{(-\infty,-1]} \tab \eqn{[-1,0)} \cr
+}  
 }
 
 \section{C- and D-vine copula models}{
@@ -64,18 +70,23 @@ Similarly, the pairs of a D-vine are denoted in the following order:\cr\cr
 }
 
 \section{Acknowledgment}{
-We like to thank Shing (Eric) Fu, Feng Zhu, Guang (Jack) Yang, and Harry Joe for providing their implementation
+A first version of this package was based on and inspired by code from Daniel Berg
+(Norwegian Computing Center; \url{http://www.danielberg.no}) provided by personal communication.
+We further acknowledge substantial contributions by our working group at Technische Universitaet Muenchen,
+in particular by Carlos Almeida and Aleksey Min.
+In addition, we like to thank Shing (Eric) Fu, Feng Zhu, Guang (Jack) Yang, and Harry Joe for providing their implementation
 of the method by Knight (1966) for efficiently computing the empirical Kendall's tau.
+We are especially grateful to Harry Joe for his contributions to the implementation of the bivariate Archimedean copulas.
 }
 
 \details{
 \tabular{ll}{
 Package: \tab CDVine\cr
 Type: \tab Package\cr
-Version: \tab 1.0-4\cr
-Date: \tab 2011-06-02\cr
+Version: \tab 1.1\cr
+Date: \tab 2011-06-20\cr
 License: \tab GPL (>=2)\cr
-Depends: \tab R (>= 2.8.1), MASS, mvtnorm, igraph \cr
+Depends: \tab R (\eqn{\geq 2.8.1}{>= 2.8.1}), MASS, mvtnorm, igraph \cr
 LazyLoad: \tab yes
 }
 }
@@ -96,10 +107,24 @@ Bedford, T. and R. M. Cooke (2002).
 Vines - a new graphical model for dependent random variables.
 Annals of Statistics 30, 1031-1068.
 
+Brechmann, E. C., C. Czado, and K. Aas (2010).
+Truncated regular vines in high dimensions with applications to financial data.
+Submitted for publication.
+\url{http://www-m4.ma.tum.de/Papers/Brechmann/vinetrunc.pdf}.
+
+Brechmann, E. C. and C. Czado (2011).
+Extending the CAPM using pair copulas: The Regular Vine Market Sector model.
+Submitted for publication.
+\url{http://www-m4.ma.tum.de/Papers/Brechmann/RVMS.pdf}.
+
 Czado, C., U. Schepsmeier, and A. Min (2011).
 Maximum likelihood estimation of mixed C-vines with application to exchange rates.
 Submitted for publication.
 \url{http://www-m4.ma.tum.de/Papers/Schepsmeier/Paper.pdf}.
+
+Dissmann, J. F., E. C. Brechmann, C. Czado, and D. Kurowicka (2011).
+Selecting and estimating regular vine copulae and application to financial returns.
+In preparation.
 
 Joe, H. (1996).
 Families of m-variate distributions with given margins and m(m-1)/2 bivariate dependence parameters.

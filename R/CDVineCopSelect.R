@@ -5,7 +5,7 @@ CDVineCopSelect <- function(data,familyset=NA,type,selectioncrit="AIC",indeptest
 
 	if(n<2) stop("Number of observations has to be at least 2.")
 	if(d<3) stop("Dimension has to be at least 3.")
-  if(!is.na(familyset[1])) for(i in 1:length(familyset)) if(!(familyset[i] %in% c(0,1,2,3,4,5,6,7,9,13,14,16,23,24,26,33,34,36))) stop("Copula family not implemented.")
+  if(!is.na(familyset[1])) for(i in 1:length(familyset)) if(!(familyset[i] %in% c(0,1,2,3,4,5,6,7,8,9,10,13,14,16,17,18,19,20,23,24,26,27,28,29,30,33,34,36,37,38,39,40))) stop("Copula family not implemented.")
   if(selectioncrit != "AIC" && selectioncrit != "BIC") stop("Selection criterion not implemented.")
   if(level < 0 & level > 1) stop("Significance level has to be between 0 and 1.")
   

@@ -34,12 +34,10 @@
 #include <Rinternals.h>
 #include "vine.h"
 
-
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 
 #define pi 3.14159265358979
-//#define  XINFMAX 1e308
 # define XINFMAX DBL_MAX
 
 /* define boolean type for C */
@@ -53,29 +51,41 @@ int **create_intmatrix(int rows, int columns);
 void free_intmatrix(int **a, int rows);
 double ***create_3darray(int d1, int d2, int d3);
 void free_3darray(double ***a, int d1, int d2);
+
+void printError(char *text, char filename[200]);
 double StableGammaDivision(double x1, double x2);
+void ktau(double *X, double *Y, int *N, double *tau, double *S, double *D, int *T, int *U, int *V);
 
 
-void Hfunc(int* family, int* n, double* u, double* v, double* theta, double* nu, double* out);
-void LL(int* family, int* n, double* u, double* v, double* theta, double* nu, double* loglik);
-void Hderiv(int* family, double* u, double* v, double* theta, double* nu, double* out);
-void HNumInv(int* family, double* u, double* v, double* theta, double* nu, double* out);
-void HNumInvBisect(int* family, double* u, double* v, double* theta, double* nu, double* out);
-void Hinv(int* family, int* n, double* u, double* v, double* theta, double* nu, double* out);
-void pcc(int* n, int* d, int* family, int* type, double* par, double* nu, double* out);
-void VineLogLikm(int* T, int* d, int* type, int* family, double* par, double* data, double* out, double* ll, double* vv);
-
+void archCDF(double* u, double* v, int* n, double* param, int* copula, double* out);
 void LL_mod(int* family, int* n, double* u, double* v, double* theta, double* nu, double* loglik);
 void LL_mod2(int* family, int* n, double* u, double* v, double* theta, double* nu, double* loglik);
-void Hfunc1(int* family,int* n,double* u,double* v,double* theta,double* nu,double* out);
-void Hfunc2(int* family,int* n,double* v,double* u,double* theta,double* nu,double* out);
-void Hinv1(int* family, int* n, double* u, double* v, double* theta, double* nu, double* out);
-void Hinv2(int* family, int* n, double* v, double* u, double* theta, double* nu, double* out);
-
+void LL(int* family, int* n, double* u, double* v, double* theta, double* nu, double* loglik);
 void copLik(int* family, int* n, double* u, double* v, double* theta, double* nu, double* coplik);
 void copLik_mod(int* family, int* n, double* u, double* v, double* theta, double* nu, double* coplik);
-void SimulateRVine(int* T, int* d, int* family, int* maxmat, int* matrix, int* conindirect, double* par, double* par2, double* out);
+void LL_mod_seperate(int* family, int* n, double* u, double* v, double* theta, double* nu, double* loglik);
+void dbb1(double* u, double* v, int* n, double* param, double* out);
+void dbb6(double* u, double* v, int* n, double* param, double* out);
+void dbb7(double* u, double* v, int* n, double* param, double* out);
+void dbb8(double* u, double* v, int* n, double* param, double* out);
 
-void ktau(double *X, double *Y, int *N, double *tau, double *S, double *D, int *T, int *U, int *V);
+void Hfunc1(int* family,int* n,double* u,double* v,double* theta,double* nu,double* out);
+void Hfunc2(int* family,int* n,double* v,double* u,double* theta,double* nu,double* out);
+void Hfunc(int* family, int* n, double* u, double* v, double* theta, double* nu, double* out);
+void Hinv1(int* family, int* n, double* u, double* v, double* theta, double* nu, double* out);
+void Hinv2(int* family, int* n, double* v, double* u, double* theta, double* nu, double* out);
+void Hinv(int* family, int* n, double* u, double* v, double* theta, double* nu, double* out);
+void HNumInv(int* family, double* u, double* v, double* theta, double* nu, double* out);
+void pcondbb1(double* u, double* v, int* n, double* param, double* out);
+void pcondbb6(double* u, double* v, int* n, double* param, double* out);
+void pcondbb7(double* u, double* v, int* n, double* param, double* out);
+void pcondbb8(double* u, double* v, int* n, double* param, double* out);
+
+void pcc(int* n, int* d, int* family, int* type, double* par, double* nu, double* out);
+void VineLogLikm(int* T, int* d, int* type, int* family, double* par, double* data, double* out, double* ll, double* vv);
+void VineLogLikmP(int* T, int* d, int* type, int* family, double* par, int* mpar, double* data,  double* out, double* ll, double* vv);
+void SimulateVine(int* T, int* d, int* family, int* maxmat, int* matrix, int* conindirect, double* par, double* par2, double* out);
+
+void condsim(int* n, int* d, int* d1, double* u1, int* family, double* par, double* nu, double* out);
 
 #endif

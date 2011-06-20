@@ -1,5 +1,5 @@
 CDVineMLE <-
-function(data,family,start=NULL, start2=NULL, type,maxit=200,max.df=30, max.BB=list(BB1=c(5,6),BB7=c(5,6)))
+function(data,family,start=NULL, start2=NULL, type,maxit=200,max.df=30, max.BB=list(BB1=c(5,6),BB6=c(6,6),BB7=c(5,6),BB8=c(6,1)))
 {
   if(type == "CVine") type = 1
   else if(type == "DVine") type = 2
@@ -13,8 +13,12 @@ function(data,family,start=NULL, start2=NULL, type,maxit=200,max.df=30, max.BB=l
   if(!is.list(max.BB)) stop("'max.BB' has to be a list.")
   if(max.BB$BB1[1] < 0.001) stop("The upper bound for the first parameter of the BB1 copula should be greater than 0.001 (lower bound for estimation).")
   if(max.BB$BB1[2] < 1.001) stop("The upper bound for the second parameter of the BB1 copula should be greater than 1.001 (lower bound for estimation).")
+  if(max.BB$BB6[1] < 1.001) stop("The upper bound for the first parameter of the BB6 copula should be greater than 1.001 (lower bound for estimation).")
+  if(max.BB$BB6[2] < 1.001) stop("The upper bound for the second parameter of the BB6 copula should be greater than 1.001 (lower bound for estimation).")
   if(max.BB$BB7[1] < 1.001) stop("The upper bound for the first parameter of the BB7 copula should be greater than 1.001 (lower bound for estimation).")
   if(max.BB$BB7[2] < 0.001) stop("The upper bound for the second parameter of the BB7 copula should be greater than 0.001 (lower bound for estimation).")
+  if(max.BB$BB8[1] < 1.001) stop("The upper bound for the first parameter of the BB1 copula should be greater than 0.001 (lower bound for estimation).")
+  if(max.BB$BB8[2] < 0.001 || max.BB$BB8[2] > 1) stop("The upper bound for the second parameter of the BB1 copula should be in the interval [0,1].")
 
   if(length(family) != d*(d-1)/2) stop("Number of copula families incorrect.")
 
@@ -24,23 +28,35 @@ function(data,family,start=NULL, start2=NULL, type,maxit=200,max.df=30, max.BB=l
 	# Sicherheitsabfrage
 	for(i in 1:(d*(d-1)/2))
 	{
-	if(!(family[i] %in% c(0,1,2,3,4,5,6,7,9,13,14,16,23,24,26,33,34,36))) stop("Copula family not implemented.")
+	if(!(family[i] %in% c(0,1:10,13,14,16:20,23,24,26:30,33,34,36:40))) stop("Copula family not implemented.")
 	if(!is.null(start))
   {
     # Parameterbereiche abfragen
     if((family[i]==1 || family[i]==2) && abs(start[i])>=1) stop("The parameter of the Gaussian and t-copula has to be in the interval (-1,1).")
-    if(family[i]==2 && start2[i]<=1) stop("The degrees of freedom parameter of the t-copula has to be larger than 1.")
-    if((family[i]==3 || family[i]==13) && start[i]<=0) stop("The parameter of the Clayton copula has to be positive.")
-    if((family[i]==4 || family[i]==14) && start[i]<1) stop("The parameter of the Gumbel copula has to be in the interval [1,oo).")
-    if((family[i]==6 || family[i]==16) && start[i]<=1) stop("The parameter of the Joe copula has to be in the interval (1,oo).")	
-    if(family[i]==5 && start[i]==0) stop("The parameter of the Frank copula has to be unequal to 0.")
-    if(family[i]==7 && start[i]<=0) stop("The first parameter of the BB1 copula has to be positive.")
-    if(family[i]==7 && start2[i]<1) stop("The second parameter of the BB1 copula has to be in the interval [1,oo).")
-    if(family[i]==9 && start[i]<1) stop("The first parameter of the BB7 copula has to be in the interval [1,oo).")
-    if(family[i]==9 && start2[i]<=0) stop("The second parameter of the BB7 copula has to be positive.")
-    if((family[i]==23 || family[i]==33) && start[i]>=0) stop("The parameter of the rotated Clayton copula has to be negative.")
-    if((family[i]==24 || family[i]==34) && start[i]>-1) stop("The parameter of the rotated Gumbel copula has to be in the interval (-oo,-1].")
-    if((family[i]==26 || family[i]==36) && start[i]>=-1) stop("The parameter of the rotated Joe copula has to be in the interval (-oo,-1).")
+	if(family[i]==2 && start2[i]<=1) stop("The degrees of freedom parameter of the t-copula has to be larger than 1.")  	
+  	if((family[i]==3 || family[i]==13) && start[i]<=0) stop("The parameter of the Clayton copula has to be positive.")
+  	if((family[i]==4 || family[i]==14) && start[i]<1) stop("The parameter of the Gumbel copula has to be in the interval [1,oo).")
+  	if((family[i]==6 || family[i]==16) && start[i]<=1) stop("The copula parameter of the Joe copula has to be in the interval (1,oo).")	
+  	if(family[i]==5 && start[i]==0) stop("The parameter of the Frank copula has to be unequal to 0.")
+  	if((family[i]==7 || family[i]==17) && start[i]<=0) stop("The first parameter of the BB1 copula has to be positive.")
+  	if((family[i]==7 || family[i]==17) && start2[i]<1) stop("The second parameter of the BB1 copula has to be in the interval [1,oo).")
+	if((family[i]==8 || family[i]==18) && start[i]<=0) stop("The first parameter of the BB6 copula has to be in the interval [1,oo).")
+	if((family[i]==8 || family[i]==18) && start2[i]<1) stop("The second parameter of the BB6 copula has to be in the interval [1,oo).")
+  	if((family[i]==9 || family[i]==19) && start[i]<1) stop("The first parameter of the BB7 copula has to be in the interval [1,oo).")
+  	if((family[i]==9 || family[i]==19) && start2[i]<=0) stop("The second parameter of the BB7 copula has to be positive.")
+	if((family[i]==10 || family[i]==20) && start[i]<1) stop("The first parameter of the BB8 copula has to be in the interval [1,oo).")
+	if((family[i]==10 || family[i]==20) && (start2[i]<=0 || start2[i]>1)) stop("The second parameter of the BB8 copula has to be in the interval (0,1].")
+  	if((family[i]==23 || family[i]==33) && start[i]>=0) stop("The parameter of the rotated Clayton copula has to be negative.")
+  	if((family[i]==24 || family[i]==34) && start[i]>-1) stop("The parameter of the rotated Gumbel copula has to be in the interval (-oo,-1].")
+  	if((family[i]==26 || family[i]==36) && start[i]>=-1) stop("The parameter of the rotated Joe copula has to be in the interval (-oo,-1).")
+	if((family[i]==27 || family[i]==37) && start[i]>=0) stop("The first parameter of the rotated BB1 copula has to be negative.")
+	if((family[i]==27 || family[i]==37) && start2[i]>-1) stop("The second parameter of the rotated BB1 copula has to be in the interval (-oo,-1].")
+	if((family[i]==28 || family[i]==38) && start[i]>=0) stop("The first parameter of the rotated BB6 copula has to be in the interval (-oo,-1].")
+	if((family[i]==28 || family[i]==38) && start2[i]>-1) stop("The second parameter of the rotated BB6 copula has to be in the interval (-oo,-1].")
+	if((family[i]==29 || family[i]==39) && start[i]>-1) stop("The first parameter of the rotated BB7 copula has to be in the interval (-oo,-1].")
+	if((family[i]==29 || family[i]==39) && start2[i]>=0) stop("The second parameter of the rotated BB7 copula has to be negative.")
+	if((family[i]==30 || family[i]==40) && start[i]>-1) stop("The first parameter of the rotated BB8 copula has to be in the interval (-oo,-1].")
+	if((family[i]==30 || family[i]==40) && (start2[i]>=0 || start2[i]<(-1))) stop("The second parameter of the rotated BB8 copula has to be in the interval [-1,0).")
   }
   }
 	if(T<2) stop("Number of observations has to be at least 2.")
@@ -48,7 +64,9 @@ function(data,family,start=NULL, start2=NULL, type,maxit=200,max.df=30, max.BB=l
 	if(Maxiter<1) stop("'maxit' has to be greater than zero.")
 
     dd <- d*(d-1)/2
-    tt <- sum(family==2)+sum(family==7)+sum(family==8)+sum(family==9)
+    tt <- sum(family==2)+sum(family==7)+sum(family==8)+sum(family==9)+sum(family==10)+sum(family==17)+sum(family==18)
+    +sum(family==19)+sum(family==20)+sum(family==27)+sum(family==28)+sum(family==29)+sum(family==20)+sum(family==37)
+    +sum(family==38)+sum(family==39)+sum(family==40)
     start_par=list()
     if(is.null(start))
       start_par <- CDVineSeqEst(data,family,type, max.df=max.df)
@@ -62,11 +80,25 @@ function(data,family,start=NULL, start2=NULL, type,maxit=200,max.df=30, max.BB=l
 parm0=start_par$par
 for(k in 1:dd)
 {
-	if(family[k]==2 || family[k]==7 || family[k]==8 || family[k]==9)
+	if(family[k] %in% c(2,7,8,9,10,17,18,19,20,27,28,29,30,37,38,39,40))
 	{
 	parm0=c(parm0,start_par$par2[k])
 	}
 }
+
+
+
+# Transformation of the starting values
+#kk=1
+#for (j in 1:dd)
+#{
+#	parm0[j]=trafo1(parm0[j],family[j],1)
+#	if(family[j]==2 || family[j]==7 || family[j]==8 || family[j]==9)
+#	{
+#		parm0[dd+kk]=trafo1(parm0[dd+kk], family[j],2)
+#		kk=kk+1
+#	}
+#}
 
 
     param1=parm0[family!=0]		# Die independent copulas rausnehmen
@@ -84,13 +116,26 @@ for(k in 1:dd)
 		}
 	}
 
+	# Transformation
+	#kk=1
+	#for (jj in 1:dd)
+	#{
+	#	parm[jj]=trafo2(parm[jj],family[jj],1)
+	#	if((family[jj]==1 || family[jj]==2) && parm[jj] == 1) parm[jj] = 1-.Machine$double.eps
+	#	if((family[jj]==1 || family[jj]==2) && parm[jj] == -1) parm[jj] = -1+.Machine$double.eps
+	#	if(family[jj]==2 || family[jj]==7 || family[jj]==8 || family[jj]==9)
+	#	{
+	#		parm[dd+kk]=trafo2(parm[dd+kk], family[jj],2)
+	#		kk=kk+1
+	#	}
+	#}
 
 	parm1=parm[1:dd]
 	nu=numeric()
 	kk=1
 	for(k in 1:dd)
 	{
-		if(family[k]==2 || family[k]==7 || family[k]==8 || family[k]==9)
+		if(family[k] %in% c(2,7,8,9,10,17,18,19,20,27,28,29,30,37,38,39,40))
 		{
 			nu[k]=parm[dd+kk]
 			kk=kk+1
@@ -113,17 +158,22 @@ for(k in 1:dd)
         else if (family[j]==4 | family[j]==14){l[j]=1.0001; u[j]=Inf;}
 	else if (family[j]==5){l[j]=-Inf; u[j]=Inf;}
 	else if (family[j]==6 | family[j]==16){l[j]=1; u[j]=Inf;}
-	else if (family[j]==7){l[j]=0.001; u[j]=max.BB$BB1[1];}
-	else if (family[j]==8){l[j]=1.001; u[j]=5;}
-	else if (family[j]==9){l[j]=1.001; u[j]=max.BB$BB7[1];}
+	else if (family[j]==7 | family[j]==17){l[j]=0.001; u[j]=max.BB$BB1[1];}
+	else if (family[j]==8 | family[j]==18){l[j]=1.001; u[j]=max.BB$BB6[1];}
+	else if (family[j]==9 | family[j]==19){l[j]=1.001; u[j]=max.BB$BB7[1];}
+	else if (family[j]==10 | family[j]==20){l[j]=1.001; u[j]=max.BB$BB8[1];}
 	else if (family[j]==23 | family[j]==33){l[j]=-Inf; u[j]=-0.0001;}
 	else if (family[j]==24 | family[j]==34){l[j]=-Inf; u[j]=-1.0001;}
 	else if (family[j]==26 | family[j]==36){l[j]=-Inf; u[j]=-1;}
+	else if (family[j]==27 | family[j]==37){l[j]=-max.BB$BB1[1]; u[j]=-0.001;}
+	else if (family[j]==28 | family[j]==38){l[j]=-max.BB$BB6[1]; u[j]=-1.001;}
+	else if (family[j]==29 | family[j]==39){l[j]=-max.BB$BB7[1]; u[j]=-1.001;}
+	else if (family[j]==30 | family[j]==40){l[j]=-max.BB$BB8[1]; u[j]=-1.001;}
 	else if (family[j]==0)		# independent copula => no parameter
 	{
 		l[j]=0; u[j]=0
 	}
-        else stop("copula not implemented")
+        else stop("Copula family not implemented.")
 	}
 
     l=l[family!=0]
@@ -135,20 +185,45 @@ for(k in 1:dd)
         l <- c(l,1.0001)
         u <- c(u,max.df)
 	}
-	if(family[j]==7)
+	else if(family[j]==7 | family[j]==17)
 	{
 	l <- c(l,1.001)
         u <- c(u,max.BB$BB1[2])
 	}
-	else if (family[j]==8)
+	else if(family[j]==8 | family[j]==18)
 	{
-	l <- c(l,0.001)
-	u <- c(u,5)
+	l <- c(l,1.001)
+	u <- c(u,max.BB$BB6[2])
 	}
-	else if (family[j]==9)
+	else if(family[j]==9 | family[j]==19)
 	{
 	l <- c(l,0.001)
 	u <- c(u,max.BB$BB7[2])
+	}
+	else if(family[j]==10 | family[j]==20)
+	{
+	l <- c(l,0.001)
+	u <- c(u,max.BB$BB8[2])
+	}
+	else if(family[j]==27 | family[j]==37)
+	{
+	l <- c(l,-max.BB$BB1[2])
+        u <- c(u,-1.001)
+	}
+	else if(family[j]==28 | family[j]==38)
+	{
+	l <- c(l,-max.BB$BB6[2])
+	u <- c(u,-1.001)
+	}
+	else if(family[j]==29 | family[j]==39)
+	{
+	l <- c(l,-max.BB$BB7[2])
+	u <- c(u,-0.001)
+	}
+	else if(family[j]==30 | family[j]==40)
+	{
+	l <- c(l,-max.BB$BB8[2])
+	u <- c(u,-0.001)
 	}
     }
 
@@ -168,6 +243,19 @@ for(k in 1:dd)
 		}
 	}
 
+# Ruecktrafo
+
+#kk=1
+#for (ll in 1:dd)
+#{
+#	out$par[ll]=trafo2(out$par[ll],family[ll],1)
+#	if(family[ll]==2 || family[ll]==7 || family[ll]==8 || family[ll]==9)
+#	{
+#		out$par[dd+kk]=trafo2(out$par[dd+kk], family[ll],2)
+#		kk=kk+1
+#	}
+#}
+
 
 # Parameter ordentlich ausgeben
 theta=out$par[1:dd]
@@ -175,7 +263,7 @@ nu=numeric()
 kk=1
 for(k in 1:dd)
 {
-	if(family[k]==2 || family[k]==7 || family[k]==8 || family[k]==9)
+	if(family[k] %in% c(2,7,8,9,10,17,18,19,20,27,28,29,30,37,38,39,40))
 	{
 		nu[k]=out$par[dd+kk]
 		kk=kk+1

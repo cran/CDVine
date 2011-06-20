@@ -22,10 +22,12 @@ BiCopLambda(u1=NULL, u2=NULL, family="emp", par=0, par2=0,
     \code{4} = Gumbel copula \cr
     \code{5} = Frank copula \cr
     \code{6} = Joe copula \cr 
-	  \code{7} = BB1 copula \cr
-    \code{9} = BB7 copula}
+    \code{7} = BB1 copula \cr
+    \code{8} = BB6 copula \cr
+    \code{9} = BB7 copula \cr
+    \code{10} = BB8 copula}
   \item{par}{Copula parameter; if the empirical lambda-function is chosen, \code{par = NULL} or \code{0} (default).}
-  \item{par2}{Second copula parameter for t-, BB1 and BB7 copulas (default: \code{par2 = 0}).}
+  \item{par2}{Second copula parameter for t-, BB1, BB6, BB7 and BB8 copulas (default: \code{par2 = 0}).}
   \item{PLOT}{Logical; whether the results are plotted. If \code{PLOT = FALSE}, the values \cr \code{empLambda} and/or \code{theoLambda} are returned (see below; default: \code{PLOT = TRUE}).}
   \item{...}{Additional plot arguments.}
 }

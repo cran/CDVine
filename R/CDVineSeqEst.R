@@ -1,5 +1,5 @@
 CDVineSeqEst <-
-function(data,family,type, method="mle", se=FALSE, max.df=30, max.BB=list(BB1=c(5,6),BB7=c(5,6)), progress=FALSE)
+function(data,family,type, method="mle", se=FALSE, max.df=30, max.BB=list(BB1=c(5,6),BB6=c(6,6),BB7=c(5,6),BB8=c(6,1)), progress=FALSE)
 {
   # Function that estimates the parameter(s)
   # by stages, It can be used as starting values
@@ -27,8 +27,12 @@ function(data,family,type, method="mle", se=FALSE, max.df=30, max.BB=list(BB1=c(
   if(!is.list(max.BB)) stop("'max.BB' has to be a list.")
   if(max.BB$BB1[1] < 0.001) stop("The upper bound for the first parameter of the BB1 copula should be greater than 0.001 (lower bound for estimation).")
   if(max.BB$BB1[2] < 1.001) stop("The upper bound for the second parameter of the BB1 copula should be greater than 1.001 (lower bound for estimation).")
+  if(max.BB$BB6[1] < 1.001) stop("The upper bound for the first parameter of the BB6 copula should be greater than 1.001 (lower bound for estimation).")
+  if(max.BB$BB6[2] < 1.001) stop("The upper bound for the second parameter of the BB6 copula should be greater than 1.001 (lower bound for estimation).")
   if(max.BB$BB7[1] < 1.001) stop("The upper bound for the first parameter of the BB7 copula should be greater than 1.001 (lower bound for estimation).")
   if(max.BB$BB7[2] < 0.001) stop("The upper bound for the second parameter of the BB7 copula should be greater than 0.001 (lower bound for estimation).")
+  if(max.BB$BB8[1] < 1.001) stop("The upper bound for the first parameter of the BB1 copula should be greater than 0.001 (lower bound for estimation).")
+  if(max.BB$BB8[2] < 0.001 || max.BB$BB8[2] > 1) stop("The upper bound for the second parameter of the BB1 copula should be in the interval [0,1].")
 
 
   n = dim(data)[1]
@@ -40,7 +44,7 @@ function(data,family,type, method="mle", se=FALSE, max.df=30, max.BB=list(BB1=c(
   if(length(family) != d*(d-1)/2) stop("Number of copula families incorrect.")
   for(i in 1:(d*(d-1)/2))
 	{
-	if(!(family[i] %in% c(0,1,2,3,4,5,6,7,8,9,13,14,16,23,24,26,33,34,36))) stop("Copula family not implemented.")
+	if(!(family[i] %in% c(0,1:10,13,14,16:20,23,24,26:30,33,34,36:40))) stop("Copula family not implemented.")
 	}
 
   nuMat = matrix(0,nrow=d-1,ncol=d-1)
@@ -69,14 +73,16 @@ if(type==1)# C-Vine
 
 	for(i in 1:(d-1))
 	{
-		if(w[1,i]==2 | w[1,i]==7 | w[1,i]==8 | w[1,i]==9)
+		if(w[1,i] %in% c(2,7,8,9,10,17,18,19,20,27,28,29,30,37,38,39,40))
 		{
 			if(progress == TRUE) message(1,",",i+1)
 			par.out <- BiCopEst(data[,1],data[,i+1],w[1,i],method,se,max.df, max.BB=max.BB)
+			#par1 <- par.out$par
 			rhoMat[1,i]  <- par.out$par
 			nuMat[1,i] <- par.out$par2
 			if(se==TRUE)
 			{
+			#se1 <- par.out$se
 			seMat1[1,i] <- par.out$se
 			seMat2[1,i] <- par.out$se2
 			}
@@ -98,14 +104,16 @@ if(type==1)# C-Vine
 	{
 		for(i in 1:(d-j))
 		{
-			if(w[j,i]==7 | w[j,i]==8 | w[j,i]==2 | w[j,i]==9)
+			if(w[j,i] %in% c(2,7,8,9,10,17,18,19,20,27,28,29,30,37,38,39,40))
 			{
 				if(progress == TRUE) message(j,",",j+i,"|",paste(1:(j-1),collapse=","))
 				par.out <- BiCopEst(v[j-1,1,],v[j-1,i+1,],w[j,i], method, se, max.df, max.BB=max.BB)
+				#par1 <- par.out$par
 				rhoMat[j,i]  <- par.out$par
 				nuMat[j,i] <- par.out$par2
 				if(se==TRUE)
 				{
+				#se1 <- par.out$se
 				seMat1[j,i] <- par.out$se
 				seMat2[j,i] <- par.out$se2
 				}
@@ -134,14 +142,16 @@ else # D-Vine
 
     for(i in 1:(d-1))
     {
-		if(w[1,i]==7 | w[1,i]==8 | w[1,i]==2 | w[1,i]==9)
+		if(w[1,i] %in% c(2,7,8,9,10,17,18,19,20,27,28,29,30,37,38,39,40))
 		{
 			if(progress == TRUE) message(i,",",i+1)
 			par.out <- BiCopEst(data[,i],data[,i+1],w[1,i],method,se,max.df, max.BB=max.BB)
+			#par1 <- par.out$par
 			rhoMat[1,i]  <- par.out$par
 			nuMat[1,i] <- par.out$par2
 			if(se==TRUE)
 			{
+				#se1 <- par.out$se
 				seMat1[1,i] <- par.out$se
 				seMat2[1,i] <- par.out$se2
 			}
@@ -172,14 +182,16 @@ else # D-Vine
     {
 		for(i in 1:(d-j))
 		{
-			if(w[j,i]==7 | w[j,i]==8 | w[j,i]==2 | w[j,i]==9)
+			if(w[j,i] %in% c(2,7,8,9,10,17,18,19,20,27,28,29,30,37,38,39,40))
 			{
 				if(progress == TRUE) message(i,",",i+j,"|",paste((i+1):(i+j-1),collapse=","))
 				par.out <- BiCopEst(v[j-1,2*i-1,],v[j-1,2*i,],w[j,i], method, se, max.df, max.BB=max.BB)
+				#par1 <- par.out$par
 				rhoMat[j,i]  <- par.out$par
 				nuMat[j,i] <- par.out$par2
 				if(se==TRUE)
 				{
+				#se1 <- par.out$se
 				seMat1[j,i] <- par.out$se
 				seMat2[j,i] <- par.out$se2
 				}
@@ -230,7 +242,7 @@ for(j in 1:(d-1))
     {
       for(i in 1:(d-j))
       {
-	if(w[j,i]==2 | w[j,i]==7 | w[j,i]==8 | w[j,i]==9)
+	if(w[j,i] %in% c(2,7,8,9,10,17,18,19,20,27,28,29,30,37,38,39,40))
 	{
 		nu0[k] = nuMat[j,i]
 		if(se==TRUE)
@@ -246,7 +258,7 @@ kk=1
 dd=d*(d-1)/2
 for(k in 1:dd)
 {
-	if(family[k]==2 || family[k]==7 || family[k]==8 || family[k]==9)
+	if(family[k] %in% c(2,7,8,9,10,17,18,19,20,27,28,29,30,37,38,39,40))
 	{
 		nu1[k]=nu0[kk]
 		if(se==TRUE)

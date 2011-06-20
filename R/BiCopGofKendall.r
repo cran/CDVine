@@ -3,17 +3,17 @@ BiCopGofKendall = function(u1,u2,family,B=100,level=0.05){
   if(is.null(u1)==TRUE || is.null(u2)==TRUE) stop("u1 and/or u2 are not set or have length zero.")
   if(length(u1) != length(u2)) stop("Lengths of 'u1' and 'u2' do not match.")
   if(length(u1)<2) stop("Number of observations has to be at least 2.")
-  if(!(family %in% c(1,2,3,4,5,6,7,9,13,14,16,23,24,26,33,34,36))) stop("Copula family not implemented.")
+  if(!(family %in% c(0,1,2,3,4,5,6,7,8,9,10,13,14,16,17,18,19,20,23,24,26,27,28,29,30,33,34,36,37,38,39,40))) stop("Copula family not implemented.")
   if(level < 0 & level > 1) stop("Significance level has to be between 0 and 1.") 
   
-  if(family %in% c(13,14,16)){
+  if(family %in% c(13,14,16,17,18,19,20)){
     u1 = 1-u1
     u2 = 1-u2
     family = family - 10
-  }else if(family %in% c(23,24,26)){
+  }else if(family %in% c(23,24,26,27,28,29,30)){
     u1 = 1-u1
     family = family - 20
-  }else if(family %in% c(33,34,36)){
+  }else if(family %in% c(33,34,36,37,38,39,40)){
     u2 = 1-u2
     family = family - 30
   }
@@ -113,7 +113,7 @@ else if (fam==6)
     kt = t - (log(1-(1-t)^sam.par)*(1-(1-t))^sam.par)/(sam.par*(1-t)^(sam.par-1))
   }  
 
-else if (fam==7)			# BB1
+else if (fam==7)		# BB1
   {
     sam<-BiCopSim(n,7,param$par,param$par2)  # generate sample data
     sam.par<-BiCopEst(sam[,1],sam[,2],family=fam)			# estimate parameter of sample data
@@ -121,8 +121,16 @@ else if (fam==7)			# BB1
     delta=sam.par$par2
     kt<-t + 1/(theta*delta)*(t^(-theta)-1)/(t^(-1-theta))
   }
+else if (fam==8)		# BB6
+  {
+    sam<-BiCopSim(n,8,param$par,param$par2)  # generate sample data
+    sam.par<-BiCopEst(sam[,1],sam[,2],family=fam)			# estimate parameter of sample data
+    theta=sam.par$par
+    delta=sam.par$par2
+    kt<-t + log(-(1-t)^theta+1)*(1-t-(1-t)^(-theta)+(1-t)^(-theta)*t)/(delta*theta)
+  }
 
-else if (fam==9)                            # BB7
+else if (fam==9)                # BB7
   {
     sam<-BiCopSim(n,9,param$par,param$par2)  # generate sample data
     sam.par<-BiCopEst(sam[,1],sam[,2],family=fam)			# estimate parameter of sample data
@@ -130,7 +138,14 @@ else if (fam==9)                            # BB7
     delta=sam.par$par2
     kt<-t + 1/(theta*delta)*((1-(1-t)^theta)^(-delta)-1)/((1-t)^(theta-1)*(1-(1-t)^theta)^(-delta-1))
   }
-
+else if (fam==10)		# BB8
+  {
+    sam<-BiCopSim(n,10,param$par,param$par2)  # generate sample data
+    sam.par<-BiCopEst(sam[,1],sam[,2],family=fam)			# estimate parameter of sample data
+    theta=sam.par$par
+    delta=sam.par$par2
+    kt<-t + log(((1-t*delta)^theta-1)/((1-delta)^theta-1))*(1-t*delta-(1-t*delta)^(-theta)+(1-t*delta)^(-theta)*t*delta)/(theta*delta)
+  }
 
     # calculate emp. Kn
 w<-rep(0, n)
@@ -200,10 +215,20 @@ else if (fam==7) {
   delta=param$par2
   kt.obs<-t + 1/(theta*delta)*(t^(-theta)-1)/(t^(-1-theta))
 }
+else if (fam==8) {
+  theta=param$par
+  delta=param$par2
+  kt.obs<-t + log(-(1-t)^theta+1)*(1-t-(1-t)^(-theta)+(1-t)^(-theta)*t)/(delta*theta)
+}
 else if (fam==9) {
   theta=param$par
   delta=param$par2
   kt.obs<-t + 1/(theta*delta)*((1-(1-t)^theta)^(-delta)-1)/((1-t)^(theta-1)*(1-(1-t)^theta)^(-delta-1))
+}
+else if (fam==10) {
+  theta=param$par
+  delta=param$par2
+  kt.obs<-t+log(((1-t*delta)^theta-1)/((1-delta)^theta-1))*(1-t*delta-(1-t*delta)^(-theta)+(1-t*delta)^(-theta)*t*delta)/(theta*delta)
 }
                                         # calculation of observed Kn
 w<-rep(0, n)

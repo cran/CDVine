@@ -10,37 +10,52 @@ or maximum likelihood estimation for one and two parameter copula families suppo
 
 \usage{
 BiCopEst(u1, u2, family, method="mle", se=FALSE, max.df=30,
-         max.BB=list(BB1=c(5,6),BB7=c(5,6)))
+         max.BB=list(BB1=c(5,6),BB6=c(6,6),BB7=c(5,6),BB8=c(6,1)))
 }
 
 \arguments{
   \item{u1,u2}{Data vectors of equal length with values in [0,1].}
   \item{family}{An integer defining the bivariate copula family: \cr
 		\code{0} = independence copula \cr
-    \code{1} = Gaussian copula \cr
-    \code{2} = Student t copula (t-copula) \cr
-    \code{3} = Clayton copula \cr
-    \code{4} = Gumbel copula \cr
-    \code{5} = Frank copula \cr
-    \code{6} = Joe copula \cr 
+	        \code{1} = Gaussian copula \cr
+	        \code{2} = Student t copula (t-copula) \cr
+	        \code{3} = Clayton copula \cr
+	        \code{4} = Gumbel copula \cr
+	        \code{5} = Frank copula \cr
+	        \code{6} = Joe copula \cr 
 		\code{7} = BB1 copula \cr
+		\code{8} = BB6 copula \cr
 		\code{9} = BB7 copula \cr
+		\code{10} = BB8 copula \cr
 		\code{13} = rotated Clayton copula (180 degrees; ``survival Clayton'') \cr
 		\code{14} = rotated Gumbel copula (180 degrees; ``survival Gumbel'') \cr
-		\code{16} = rotated Joe copula (180 degrees; ``survival Joe'') \cr
+		\code{16} = rotated Joe copula (180 degrees; ``survival Joe'') \cr 
+		\code{17} = rotated BB1 copula (180 degrees; ``survival BB1'')\cr
+		\code{18} = rotated BB6 copula (180 degrees; ``survival BB6'')\cr
+		\code{19} = rotated BB7 copula (180 degrees; ``survival BB7'')\cr
+		\code{20} = rotated BB8 copula (180 degrees; ``survival BB8'')\cr
 		\code{23} = rotated Clayton copula (90 degrees) \cr
 		\code{24} = rotated Gumbel copula (90 degrees) \cr
 		\code{26} = rotated Joe copula (90 degrees) \cr
+		\code{27} = rotated BB1 copula (90 degrees) \cr
+		\code{28} = rotated BB6 copula (90 degrees) \cr
+		\code{29} = rotated BB7 copula (90 degrees) \cr
+		\code{30} = rotated BB8 copula (90 degrees) \cr
 		\code{33} = rotated Clayton copula (270 degrees) \cr
 		\code{34} = rotated Gumbel copula (270 degrees) \cr
-		\code{36} = rotated Joe copula (270 degrees)}
+		\code{36} = rotated Joe copula (270 degrees) \cr
+		\code{37} = rotated BB1 copula (270 degrees) \cr
+		\code{38} = rotated BB6 copula (270 degrees) \cr
+		\code{39} = rotated BB7 copula (270 degrees) \cr
+		\code{40} = rotated BB8 copula (270 degrees) 
+		}
   \item{method}{Character indicating the estimation method:
     either maximum likelihood estimation (\code{method = "mle"}; default) or inversion of Kendall's tau (\code{method = "itau"}).\cr
 		For \code{method = "itau"} only one parameter bivariate copula families can be used (\code{family = 1,3,4,5,6,13,14,16,23,24,26,33,34} or \code{36}).}
   \item{se}{Logical; whether standard error(s) of parameter estimates is/are estimated (default: \code{se = FALSE}).}
   \item{max.df}{Numeric; upper bound for the estimation of the degrees of freedom parameter of the t-copula (default: \code{max.df = 30}).}
-  \item{max.BB}{List; upper bounds for the estimation of the two parameters of the BB1 and BB7 copulas
-    (default: \code{max.BB = list(BB1=c(5,6),BB7=c(5,6))}).}
+  \item{max.BB}{List; upper bounds for the estimation of the two parameters (in absolute values) of the BB1, BB6, BB7 and BB8 copulas \cr
+    (default: \code{max.BB = list(BB1=c(5,6),BB6=c(6,6),BB7=c(5,6),BB8=c(6,1))}).}
 }
 
 \details{

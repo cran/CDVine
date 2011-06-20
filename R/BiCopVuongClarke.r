@@ -46,8 +46,8 @@ vuong.clarke.sim<-function(xy,cop.model1,cop.model2,correction,level)
     }
     else if(cop.model1!=cop.model2[i])
     {
-      if(cop.model1 %in% c(2,7,8,9)){ p1<-2}
-      if(cop.model2[i] %in% c(2,7,8,9)){p2<-2}
+      if(cop.model1 %in% c(2,7:10,17:20,27:30,37:40)){ p1<-2}
+      if(cop.model2[i] %in% c(2,7:10,17:20,27:30,37:40)){p2<-2}
   
       vuong.result.temp[[i]]<-vuong.test(loglik.model1,loglik.model2[,i],alpha=level,p1=p1,p2=p2,print.result=FALSE,correction)
       names(vuong.result.temp)[i]<-cop.model2[i]
@@ -78,7 +78,7 @@ T=dim(data)[1]
 
 	# Parameter sch?tzen
 	par=BiCopEst(data[,1],data[,2],fam)
-	if(fam %in% c(2,7,8,9))
+	if(fam %in% c(2,7:10,17:20,27:30,37:40))
 	{
 		theta=par$par
 		nu=par$par2
@@ -263,14 +263,14 @@ score<-function(dat)
 BiCopVuongClarke<-function(u1,u2,familyset=NA,correction=FALSE,level=0.05)
 {
 
-  if(is.na(familyset[1])) familyset = c(1:7,9,13,14,16,23,24,26,33,34,36)
+  if(is.na(familyset[1])) familyset = c(1:10,13,14,16:20,23,24,26:30,33,34,36:40)
 # Sicherheitsabfragen
   if(is.null(u1)==TRUE || is.null(u2)==TRUE) stop("u1 and/or u2 are not set or have length zero.")
   if(length(u1) != length(u2)) stop("Lengths of 'u1' and 'u2' do not match.")
   if(length(u1)<2) stop("Number of observations has to be at least 2.")
 for(i in 1:length(familyset))
 	{
-	if(!(familyset[i] %in% c(1,2,3,4,5,6,7,9,13,14,16,23,24,26,33,34,36))) stop("Copula family not implemented.")
+	if(!(familyset[i] %in% c(1:10,13,14,16:20,23,24,26:30,33,34,36:40))) stop("Copula family not implemented.")
 	}
 
 xy=cbind(u1,u2)

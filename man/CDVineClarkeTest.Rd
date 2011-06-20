@@ -22,27 +22,42 @@ CDVineClarkeTest(data, Model1.order=1:dim(data)[2],
     or of the C-vine root nodes in models 1 and 2
     (default: \code{Model1.order} and \code{Model2.order = 1:dim(data)[2]}, i.e., standard order).}
   \item{Model1.family, Model2.family}{Two d*(d-1)/2 numeric vectors of the pair-copula families of models 1 and 2, respectively, with values\cr		
-    \code{0} = independence copula \cr
-    \code{1} = Gaussian copula \cr
-    \code{2} = Student t copula (t-copula) \cr
-    \code{3} = Clayton copula \cr
-    \code{4} = Gumbel copula \cr
-    \code{5} = Frank copula \cr
-    \code{6} = Joe copula \cr 
+		\code{0} = independence copula \cr
+	        \code{1} = Gaussian copula \cr
+	        \code{2} = Student t copula (t-copula) \cr
+	        \code{3} = Clayton copula \cr
+	        \code{4} = Gumbel copula \cr
+	        \code{5} = Frank copula \cr
+	        \code{6} = Joe copula \cr 
 		\code{7} = BB1 copula \cr
+		\code{8} = BB6 copula \cr
 		\code{9} = BB7 copula \cr
+		\code{10} = BB8 copula \cr
 		\code{13} = rotated Clayton copula (180 degrees; ``survival Clayton'') \cr
 		\code{14} = rotated Gumbel copula (180 degrees; ``survival Gumbel'') \cr
-		\code{16} = rotated Joe copula (180 degrees; ``survival Joe'') \cr
+		\code{16} = rotated Joe copula (180 degrees; ``survival Joe'') \cr 
+		\code{17} = rotated BB1 copula (180 degrees; ``survival BB1'')\cr
+		\code{18} = rotated BB6 copula (180 degrees; ``survival BB6'')\cr
+		\code{19} = rotated BB7 copula (180 degrees; ``survival BB7'')\cr
+		\code{20} = rotated BB8 copula (180 degrees; ``survival BB8'')\cr
 		\code{23} = rotated Clayton copula (90 degrees) \cr
 		\code{24} = rotated Gumbel copula (90 degrees) \cr
 		\code{26} = rotated Joe copula (90 degrees) \cr
+		\code{27} = rotated BB1 copula (90 degrees) \cr
+		\code{28} = rotated BB6 copula (90 degrees) \cr
+		\code{29} = rotated BB7 copula (90 degrees) \cr
+		\code{30} = rotated BB8 copula (90 degrees) \cr
 		\code{33} = rotated Clayton copula (270 degrees) \cr
 		\code{34} = rotated Gumbel copula (270 degrees) \cr
-		\code{36} = rotated Joe copula (270 degrees)}
+		\code{36} = rotated Joe copula (270 degrees) \cr
+		\code{37} = rotated BB1 copula (270 degrees) \cr
+		\code{38} = rotated BB6 copula (270 degrees) \cr
+		\code{39} = rotated BB7 copula (270 degrees) \cr
+		\code{40} = rotated BB8 copula (270 degrees)
+		}
   \item{Model1.par, Model2.par}{Two d*(d-1)/2 numeric vectors of the (first) copula parameters of models 1 and 2, respectively.}
   \item{Model1.par2, Model2.par2}{Two d*(d-1)/2 numeric vectors of the second copula parameters of models 1 and 2, respectively;
-    necessary for t, BB1 and BB7 copulas. If no such families are included in \code{Model1.family}/\code{Model2.family},
+    necessary for t, BB1, BB6, BB7 and BB8 copulas. If no such families are included in \code{Model1.family}/\code{Model2.family},
     these arguments do not need to be specified
     (default: \code{Model1.par2} and \code{Model2.par2 = rep(0,dim(data)[2]*(dim(data)[2]-1)/2)}).}
   \item{Model1.type, Model2.type}{Type of the respective vine model:\cr

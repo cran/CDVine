@@ -27,26 +27,41 @@ BiCopMetaContour(u1=NULL, u2=NULL, bw=1, size=100,
     \code{levels = c(0.005,0.01,0.03,0.05,0.07,0.09)}.}
   \item{family}{An integer defining the bivariate copula family or indicating an empirical contour plot: \cr
     \code{"emp"} = empirical contour plot (default; margins can be specified by \code{margins}) \cr
-    \code{0} = independence copula \cr
-    \code{1} = Gaussian copula \cr
-    \code{2} = Student t copula (t-copula) \cr
-    \code{3} = Clayton copula \cr
-    \code{4} = Gumbel copula \cr
-    \code{5} = Frank copula \cr
-    \code{6} = Joe copula \cr 
+		\code{0} = independence copula \cr
+	        \code{1} = Gaussian copula \cr
+	        \code{2} = Student t copula (t-copula) \cr
+	        \code{3} = Clayton copula \cr
+	        \code{4} = Gumbel copula \cr
+	        \code{5} = Frank copula \cr
+	        \code{6} = Joe copula \cr 
 		\code{7} = BB1 copula \cr
+		\code{8} = BB6 copula \cr
 		\code{9} = BB7 copula \cr
+		\code{10} = BB8 copula \cr
 		\code{13} = rotated Clayton copula (180 degrees; ``survival Clayton'') \cr
 		\code{14} = rotated Gumbel copula (180 degrees; ``survival Gumbel'') \cr
-		\code{16} = rotated Joe copula (180 degrees; ``survival Joe'') \cr
+		\code{16} = rotated Joe copula (180 degrees; ``survival Joe'') \cr 
+		\code{17} = rotated BB1 copula (180 degrees; ``survival BB1'')\cr
+		\code{18} = rotated BB6 copula (180 degrees; ``survival BB6'')\cr
+		\code{19} = rotated BB7 copula (180 degrees; ``survival BB7'')\cr
+		\code{20} = rotated BB8 copula (180 degrees; ``survival BB8'')\cr
 		\code{23} = rotated Clayton copula (90 degrees) \cr
 		\code{24} = rotated Gumbel copula (90 degrees) \cr
 		\code{26} = rotated Joe copula (90 degrees) \cr
+		\code{27} = rotated BB1 copula (90 degrees) \cr
+		\code{28} = rotated BB6 copula (90 degrees) \cr
+		\code{29} = rotated BB7 copula (90 degrees) \cr
+		\code{30} = rotated BB8 copula (90 degrees) \cr
 		\code{33} = rotated Clayton copula (270 degrees) \cr
 		\code{34} = rotated Gumbel copula (270 degrees) \cr
-		\code{36} = rotated Joe copula (270 degrees)}
+		\code{36} = rotated Joe copula (270 degrees) \cr
+		\code{37} = rotated BB1 copula (270 degrees) \cr
+		\code{38} = rotated BB6 copula (270 degrees) \cr
+		\code{39} = rotated BB7 copula (270 degrees) \cr
+		\code{40} = rotated BB8 copula (270 degrees) 
+		}
   \item{par}{Copula parameter; if empirical contour plot, \code{par = NULL} or \code{0} (default).}
-  \item{par2}{Second copula parameter for t-, BB1 and BB7 copulas (default: \code{par2 = 0}).}
+  \item{par2}{Second copula parameter for t-, BB1, BB6, BB7 and BB8 copulas (default: \code{par2 = 0}).}
   \item{PLOT}{Logical; whether the results are plotted.
     If \code{PLOT = FALSE}, the values \code{x}, \code{y} and \code{z} are returned (see below; default: \code{PLOT = TRUE}).}
   \item{margins}{Character; margins for the bivariate copula contour plot. Possible margins are:\cr

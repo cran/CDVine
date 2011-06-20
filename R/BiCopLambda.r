@@ -6,23 +6,27 @@ BiCopLambda<-function(u1=NULL,u2=NULL,family="emp",par=0,par2=0,PLOT=TRUE,...)
 {
 	if(is.null(u1)==TRUE && is.null(u2)==TRUE && (family==0 || par==0)) stop("Either 'u1' and 'u2' have to be set for the emp. lambda-function or 'family' and 'par' for the theo. lambda-function.")
 	if(length(u1)!=length(u2)) stop("Lengths of 'u1' and 'u2' do not match.")
-	if(!(family %in% c(1,2,3,4,5,6,7,9, "emp"))) stop("Copula family not implemented.")
-	if(c(2,7,8,9) %in% family && par2==0) stop("For t-, BB1 and BB7 copulas, 'par2' must be set.")
+	if(!(family %in% c(1,2,3,4,5,6,7,8,9,10, "emp"))) stop("Copula family not implemented.")
+	if(c(2,7,8,9,10) %in% family && par2==0) stop("For t-, BB1 and BB7 copulas, 'par2' must be set.")
 	if(c(1,3,4,5,6,13,14,16,23,24,26,33,34,36) %in% family && length(par)<1) stop("'par' not set.")
 
-  if(PLOT!=TRUE && PLOT!=FALSE) stop("The parameter 'PLOT' has to be set to 'TRUE' or 'FALSE'.")
+	if(PLOT!=TRUE && PLOT!=FALSE) stop("The parameter 'PLOT' has to be set to 'TRUE' or 'FALSE'.")
 
 	# Parameterbereiche abfragen
-  if((family==1 || family==2) && abs(par)>=1) stop("The parameter of the Gaussian and t-copula has to be in the interval (-1,1).")
-  if(family==2 && par2<=1) stop("The degrees of freedom parameter of the t-copula has to be larger than 1.")
-  if(family==3 && par<=0) stop("The parameter of the Clayton copula has to be positive.")
-  if(family==4 && par<1) stop("The parameter of the Gumbel copula has to be in the interval [1,oo).")
-  if(family==6 && par<=1) stop("The parameter of the Joe copula has to be in the interval (1,oo).")	
-  if(family==5 && par==0) stop("The parameter of the Frank copula has to be unequal to 0.")
-  if(family==7 && par<=0) stop("The first parameter of the BB1 copula has to be positive.")
-  if(family==7 && par2<1) stop("The second parameter of the BB1 copula has to be in the interval [1,oo).")
-  if(family==9 && par<1) stop("The first parameter of the BB7 copula has to be in the interval [1,oo).")
-  if(family==9 && par2<=0) stop("The second parameter of the BB7 copula has to be positive.")
+	if((family==1 || family==2) && abs(par)>=1) stop("The parameter of the Gaussian and t-copula has to be in the interval (-1,1).")
+	if(family==2 && par2<=1) stop("The degrees of freedom parameter of the t-copula has to be larger than 1.")
+	if(family==3 && par<=0) stop("The parameter of the Clayton copula has to be positive.")
+	if(family==4 && par<1) stop("The parameter of the Gumbel copula has to be in the interval [1,oo).")
+	if(family==6 && par<=1) stop("The parameter of the Joe copula has to be in the interval (1,oo).")	
+	if(family==5 && par==0) stop("The parameter of the Frank copula has to be unequal to 0.")
+	if((family==7 || family==17) && par<=0) stop("The first parameter of the BB1 copula has to be positive.")
+	if((family==7 || family==17) && par2<1) stop("The second parameter of the BB1 copula has to be in the interval [1,oo).")
+	if((family==8 || family==18) && par<=0) stop("The first parameter of the BB6 copula has to be in the interval [1,oo).")
+	if((family==8 || family==18) && par2<1) stop("The second parameter of the BB6 copula has to be in the interval [1,oo).")
+	if((family==9 || family==19) && par<1) stop("The first parameter of the BB7 copula has to be in the interval [1,oo).")
+	if((family==9 || family==19) && par2<=0) stop("The second parameter of the BB7 copula has to be positive.")
+	if((family==10 || family==20) && par<1) stop("The first parameter of the BB8 copula has to be in the interval [1,oo).")
+	if((family==10 || family==20) && (par2<=0 || par2>1)) stop("The second parameter of the BB8 copula has to be in the interval (0,1].")
 
 	if(!is.null(u1))
 		v<-seq(0.001,1,length.out=length(u1))
@@ -60,18 +64,34 @@ BiCopLambda<-function(u1=NULL,u2=NULL,family="emp",par=0,par2=0,PLOT=TRUE,...)
 		}
 		else if(family==7)
 		{
-		theta=par[1]
+		theta=par
 		delta=par2
 		theoLambda[i]=-1/(theta*delta)*(v[i]^(-theta)-1)/(v[i]^(-1-theta))
 		main="BB1 copula"
 		lambdaFull[i]=(v1[i]*log(v1[i],exp(1)))
 		}
+		else if(family==8)
+		{
+		theta=par
+		delta=par2
+		theoLambda[i]=-log(-(1-v[i])^theta+1)*(1-v[i]-(1-v[i])^(-theta)+(1-v[i])^(-theta)*v[i])/(delta*theta)
+		main="BB6 copula"
+		lambdaFull[i]=(v1[i]*log(v1[i],exp(1)))
+		}
 		else if(family==9)
 		{
-		theta=par[1]
+		theta=par
 		delta=par2
 		theoLambda[i]=-1/(theta*delta)*((1-(1-v[i])^theta)^(-delta)-1)/((1-v[i])^(theta-1)*(1-(1-v[i])^theta)^(-delta-1))
 		main="BB7 copula"
+		lambdaFull[i]=(v1[i]*log(v1[i],exp(1)))
+		}
+		else if(family==10)
+		{
+		theta=par
+		delta=par2
+		theoLambda[i]=-log(((1-v[i]*delta)^theta-1)/((1-delta)^theta-1))*(1-v[i]*delta-(1-v[i]*delta)^(-theta)+(1-v[i]*delta)^(-theta)*v[i]*delta)/(theta*delta)
+		main="BB8 copula"
 		lambdaFull[i]=(v1[i]*log(v1[i],exp(1)))
 		}
 

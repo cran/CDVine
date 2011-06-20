@@ -3,6 +3,27 @@ Changes for R-package CDVine
 Ulf Schepsmeier and Eike Christian Brechmann <CDVine@ma.tum.de>
 
 
+Version 1.1 (June 15, 2011)
+
+- Inclusion of the package vignette.
+
+- Faster implementation of the C-vine simulation algorithm.
+
+- Implementation of the BB6 and BB8 copulas.
+
+- Implementation of the rotated versions of the BB1, BB6, BB7 and BB8 copulas (rotation by 90, 180 and 270 degrees).
+  (Rotation by 180 degrees corresponds to the survival copula.)
+
+- Improvement of the MLE of the bivariate t-copula (BiCopEst), especially of the degrees of freedom (par2).
+
+- Stability improvement of the calculation of the inverse h-function (conditional distribution function).
+
+- Bug fixes:
+  * fixed the calculation of the CDFs at the boundaries (BiCopCDF)
+  * fixed the calculation of the PDFs at the boundaries (BICopPDF)
+  * general improvement of the calculation of the CDF, PDF and log-likelihood of the BB1 and BB7 copulas
+
+
 Version 1.0-4 (June 2, 2011)
 
 - Improvement of the MLE of the bivariate Gaussian copula (BiCopEst).
