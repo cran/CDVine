@@ -116,7 +116,7 @@ void ktau(double *X, double *Y, int *N, double *tau, double *S, double *D, int *
 	  I++;
 	  L++;
 	};
-	if((!Iflag & Jflag) | (Iflag & Jflag & Xflag))
+	if((!Iflag && Jflag) | (Iflag & Jflag & Xflag))
 	{
 	  X2[L] = X[J];
 	  Y2[L] = Y[J];
@@ -184,7 +184,7 @@ void ktau(double *X, double *Y, int *N, double *tau, double *S, double *D, int *
 	  I++;
 	  L++;
 	};
-	if((!Iflag & Jflag) | (Iflag & Jflag & Xflag))
+	if((!Iflag && Jflag) | (Iflag & Jflag & Xflag))
 	{
 	  X2[L] = X[J];
 	  Y2[L] = Y[J];

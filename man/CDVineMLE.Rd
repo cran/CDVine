@@ -9,7 +9,7 @@ This function calculates the MLE of C- or D-vine copula model parameters using s
 
 \usage{
 CDVineMLE(data, family, start=NULL, start2=NULL, type, maxit=200,
-          max.df=30, max.BB=list(BB1=c(5,6),BB6=c(6,6),BB7=c(5,6),BB8=c(6,1)))
+          max.df=30, max.BB=list(BB1=c(5,6),BB6=c(6,6),BB7=c(5,6),BB8=c(6,1)), ...)
 }
 
 \arguments{
@@ -60,6 +60,7 @@ CDVineMLE(data, family, start=NULL, start2=NULL, type, maxit=200,
     (default: \code{max.df = 30}; for more details see \code{\link{BiCopEst}}).}
   \item{max.BB}{List; upper bounds for the estimation of the two parameters (in absolute values) of the BB1, BB6, BB7 and BB8 copulas \cr
     (default: \code{max.BB = list(BB1=c(5,6),BB6=c(6,6),BB7=c(5,6),BB8=c(6,1))}).}
+  \item{...}{Additional control parameters for \code{\link{optim}}.}
 }
 
 \value{

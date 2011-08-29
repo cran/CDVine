@@ -1,5 +1,5 @@
 CDVineMLE <-
-function(data,family,start=NULL, start2=NULL, type,maxit=200,max.df=30, max.BB=list(BB1=c(5,6),BB6=c(6,6),BB7=c(5,6),BB8=c(6,1)))
+function(data,family,start=NULL, start2=NULL, type,maxit=200,max.df=30, max.BB=list(BB1=c(5,6),BB6=c(6,6),BB7=c(5,6),BB8=c(6,1)),...)
 {
   if(type == "CVine") type = 1
   else if(type == "DVine") type = 2
@@ -64,9 +64,9 @@ function(data,family,start=NULL, start2=NULL, type,maxit=200,max.df=30, max.BB=l
 	if(Maxiter<1) stop("'maxit' has to be greater than zero.")
 
     dd <- d*(d-1)/2
-    tt <- sum(family==2)+sum(family==7)+sum(family==8)+sum(family==9)+sum(family==10)+sum(family==17)+sum(family==18)
-    +sum(family==19)+sum(family==20)+sum(family==27)+sum(family==28)+sum(family==29)+sum(family==20)+sum(family==37)
-    +sum(family==38)+sum(family==39)+sum(family==40)
+    tt <- sum(family==2)+sum(family==7)+sum(family==8)+sum(family==9)+sum(family==10)+sum(family==17)+sum(family==18)+
+    sum(family==19)+sum(family==20)+sum(family==27)+sum(family==28)+sum(family==29)+sum(family==20)+sum(family==37)+
+    sum(family==38)+sum(family==39)+sum(family==40)
     start_par=list()
     if(is.null(start))
       start_par <- CDVineSeqEst(data,family,type, max.df=max.df)
@@ -102,6 +102,14 @@ for(k in 1:dd)
 
 
     param1=parm0[family!=0]		# Die independent copulas rausnehmen
+
+	pscale1=numeric()
+	for(i in 1:dd)
+	{
+		pscale1[i] = ifelse(family[i] == 1, 0.01, 1)
+	}
+	pscale1=c(pscale1,rep(1,tt))
+	pscale=pscale1[family!=0]
 
 
     func <- function(parm,data,family,type)
@@ -227,10 +235,12 @@ for(k in 1:dd)
 	}
     }
 
+	if(!exists("factr")) factr=1e8
+
     
     out <- optim(par=param1, fn=func, gr=NULL, data=data, family=family, type=type,
                  method="L-BFGS-B", lower=l, upper=u,
-                 control=list(fnscale=-1,maxit=Maxiter))
+                 control=list(fnscale=-1,maxit=Maxiter,parscale=pscale,factr=factr,...))
     ## fnscale=-1 turns the problem into a maximization problem, maxit defines the maximal number of iterations
 
 	for(kk in 1:dd)		# Die independent copula wieder einfuegen

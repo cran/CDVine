@@ -3,6 +3,25 @@ Changes for R-package CDVine
 Ulf Schepsmeier and Eike Christian Brechmann <CDVine@ma.tum.de>
 
 
+Version 1.1-1 (August 29, 2011)
+
+- Additional control parameters for optim can be specified in CDVineMLE.
+
+- Faster calculation of
+  * CDFs
+  * PDFs
+  * log-likelihoods
+  * h-functions
+
+- Implementation of closed form of the inverse conditional cdf of the Frank copula.
+
+- Higher upper bound for the calculation of the copula parameter by inversion of Kendall's tau for the Frank and Joe copulas (BiCopTau2Par and BiCopEst). Now a Kendall's tau up to 0.996 is possible.
+
+- Bug fixes:
+  * fixed the calculation of log-likelihood of the survival BB8 copula
+  * fixed the output of CDVineCopulaSelect (second parameter of the BB copula and its rotated versions)
+
+
 Version 1.1 (June 15, 2011)
 
 - Inclusion of the package vignette.
@@ -20,7 +39,7 @@ Version 1.1 (June 15, 2011)
 
 - Bug fixes:
   * fixed the calculation of the CDFs at the boundaries (BiCopCDF)
-  * fixed the calculation of the PDFs at the boundaries (BICopPDF)
+  * fixed the calculation of the PDFs at the boundaries (BiCopPDF)
   * general improvement of the calculation of the CDF, PDF and log-likelihood of the BB1 and BB7 copulas
 
 

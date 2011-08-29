@@ -9,7 +9,7 @@
 
 \author{Eike Christian Brechmann\\Technische Universit\"at M\"unchen \And
         Ulf Schepsmeier\\Technische Universit\"at M\"unchen}
-\title{Dependence modeling with C- and D-vine copulas: The \proglang{R}-package \pkg{CDVine}}
+\title{Modeling dependence with C- and D-vine copulas: The \proglang{R}-package \pkg{CDVine}}
 
 \Plainauthor{Eike Christian Brechmann, Ulf Schepsmeier}
 \Plaintitle{Modeling dependence with C- and D-vine copulas: The R-package CDVine}
@@ -597,7 +597,7 @@ and similarly a score of "-1" if the other copula model is determined to be supe
 No score is assigned, if the respective test cannot discriminate between two copula models.
 The total score is the sum of the scores from all pairwise comparisons.
 
-The Vuong and the Clarke tests are suitable to compare two models, which are not necessarily nested.
+The Vuong and the Clarke tests are suitable to compare two models, which are non-nested.
 Both are likelihood ratio based and related to the common Kullback-Leibler information criterion,
 which measures the distance between two statistical models.
 In the following let $c_1$ and $c_2$ be two competing bivariate copula densities with estimated parameters $\hat{\boldsymbol{\theta}}_1$ and $\hat{\boldsymbol{\theta}}_2$, respectively.
@@ -645,7 +645,8 @@ and a set of copula families to compare, as specified by the argument \code{fami
 BiCopVuongClarke(u1, u2, familyset, correction, level)
 @
 
-Commonly used alternative criteria to discriminate among models are the above-mentioned AIC and BIC. They are however less reliable when non-nested models are compared.
+Commonly used alternative criteria to discriminate among models are the above-mentioned AIC and BIC.
+They are however less reliable when non-nested models are compared.
 By correcting the log-likelihood for the number of parameters used in a model,
 they allow for an efficient comparison based on single numbers,
 namely among a class of models the model with smallest AIC/BIC is chosen.

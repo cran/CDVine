@@ -26,45 +26,29 @@ void pcondbb1(double* u, double* v, int* n, double* param, double* out)
 {
 	int i;
 	double th, de;
-	double *t1, *t2, *t3, *t16, *t17, *t4, *t5, *t6, *t7, *t9, *t10, *t12, *t13, *t20;
-	t1 = Calloc(*n,double);
-	t2 = Calloc(*n,double);
-	t3 = Calloc(*n,double);
-	t16 = Calloc(*n,double);
-	t17 = Calloc(*n,double);
-	t4 = Calloc(*n,double);
-	t5 = Calloc(*n,double);
-	t6 = Calloc(*n,double);
-	t7 = Calloc(*n,double);
-	t9 = Calloc(*n,double);
-	t10 = Calloc(*n,double);
-	t12 = Calloc(*n,double);
-	t13 = Calloc(*n,double);
-	t20 = Calloc(*n,double);
+	double t1, t2, t3, t16, t17, t4, t5, t6, t7, t9, t10, t12, t13, t20;
 
 	th = param[0];
 	de = param[1];
 	for(i=0;i<*n;i++)
 		{
-		  t1[i] = pow(u[i],-th);
-		  t2[i] = t1[i]-1.;
-		  t3[i] = pow(t2[i],de);
-		  t16[i] = 1./u[i];
-		  t17[i] = 1./t2[i];
-		  t4[i] = pow(v[i],-th);
-		  t5[i] = t4[i]-1.;
-		  t6[i] = pow(t5[i],de);
-		  t7[i] = t3[i]+t6[i];
-		  t9[i] = pow(t7[i],1/de);
-		  t10[i] = 1.0+t9[i];
-		  t12[i] = pow(t10[i],-1/th);
-		  t13[i] = t12[i]*t9[i];
-		  t20[i] = 1./t10[i];
-		  out[i] = t13[i]*t3[i]*t1[i]*t16[i]*t17[i]/t7[i]*t20[i];
+		  t1 = pow(u[i],-th);
+		  t2 = t1-1.;
+		  t3 = pow(t2,de);
+		  t16 = 1./u[i];
+		  t17 = 1./t2;
+		  t4 = pow(v[i],-th);
+		  t5 = t4-1.;
+		  t6 = pow(t5,de);
+		  t7 = t3+t6;
+		  t9 = pow(t7,1/de);
+		  t10 = 1.0+t9;
+		  t12 = pow(t10,-1/th);
+		  t13 = t12*t9;
+		  t20 = 1./t10;
+		  out[i] = t13*t3*t1*t16*t17/t7*t20;
 		}
 
-  Free(t1);Free(t2);Free(t3);Free(t16);Free(t17);Free(t4);Free(t5);Free(t6);Free(t7);
-  Free(t9);Free(t10);Free(t13);Free(t20);
 }
 
 
@@ -73,54 +57,34 @@ void pcondbb6(double* u, double* v, int* n, double* param, double* out)
 {
 	int i;
 	double th, de;
-	double *t1, *t2, *t3, *t4, *t5, *t12, *t16, *t6, *t7, *t8,*t9, *t10, *t11, *t13, *t14, *t15, *t17;
-	t1 = Calloc(*n,double);
-	t2 = Calloc(*n,double);
-	t3 = Calloc(*n,double);
-	t4 = Calloc(*n,double);
-	t5 = Calloc(*n,double);
-	t12 = Calloc(*n,double);
-	t16 = Calloc(*n,double);
-	t6 = Calloc(*n,double);
-	t7 = Calloc(*n,double);
-	t8 = Calloc(*n,double);
-	t9 = Calloc(*n,double);
-	t10 = Calloc(*n,double);
-	t11 = Calloc(*n,double);
-	t13 = Calloc(*n,double);
-	t14 = Calloc(*n,double);
-	t15 = Calloc(*n,double);
-	t17 = Calloc(*n,double);
+	double t1, t2, t3, t4, t5, t12, t16, t6, t7, t8, t9, t10, t11, t13, t14, t15, t17;
 
 	th = param[0];
 	de = param[1];
 
 	for(i=0;i<*n;i++)
 	{
-		  t1[i] = 1.0-u[i];
-		  t2[i] = pow(t1[i],th);
-		  t3[i] = 1.0-t2[i];
-		  t4[i] = log(t3[i]);
-		  t5[i] = pow(-t4[i],de);
-		  t12[i] = 1/de;
-		  t16[i] = 1/th;
-		  t6[i] = 1.0-v[i];
-		  t7[i] = pow(t6[i],th);
-		  t8[i] = 1.0-t7[i];
-		  t9[i] = log(t8[i]);
-		  t10[i] = pow(-t9[i],de);
-		  t11[i] = t5[i]+t10[i];
-		  t13[i] = pow(t11[i],t12[i]);
-		  t14[i] = exp(-t13[i]);
-		  t15[i] = 1.0-t14[i];
-		  t17[i] = pow(t15[i],t16[i]);
+		  t1 = 1.0-u[i];
+		  t2 = pow(t1,th);
+		  t3 = 1.0-t2;
+		  t4 = log(t3);
+		  t5 = pow(-t4,de);
+		  t12 = 1/de;
+		  t16 = 1/th;
+		  t6 = 1.0-v[i];
+		  t7 = pow(t6,th);
+		  t8 = 1.0-t7;
+		  t9 = log(t8);
+		  t10 = pow(-t9,de);
+		  t11 = t5+t10;
+		  t13 = pow(t11,t12);
+		  t14 = exp(-t13);
+		  t15 = 1.0-t14;
+		  t17 = pow(t15,t16);
 
-		  out[i] = -t17[i]*t13[i]*t5[i]*t2[i]/t1[i]/t3[i]/t4[i]/t11[i]*t14[i]/t15[i];
+		  out[i] = -t17*t13*t5*t2/t1/t3/t4/t11*t14/t15;
 	}
 
-	Free(t1);Free(t2);Free(t3);Free(t4);Free(t5);Free(t12);Free(t16);
-	Free(t6);Free(t7);Free(t8);Free(t9);Free(t10);
-	Free(t11);Free(t13);Free(t14);Free(t15);Free(t17);
 }
 
 
@@ -128,41 +92,27 @@ void pcondbb7(double* u, double* v, int* n, double* param, double* out)
 {
 	int i;
 	double th, de;
-	double *t1, *t2, *t3, *t4, *t6, *t8, *t9, *t11, *t12, *t13, *t14;
-	t1 = Calloc(*n,double);
-	t2 = Calloc(*n,double);
-	t3 = Calloc(*n,double);
-	t4 = Calloc(*n,double);
-	t6 = Calloc(*n,double);
-	t8 = Calloc(*n,double);
-	t9 = Calloc(*n,double);
-	t11 = Calloc(*n,double);
-	t12 = Calloc(*n,double);
-	t13 = Calloc(*n,double);
-	t14 = Calloc(*n,double);
+	double t1, t2, t3, t4, t6, t8, t9, t11, t12, t14;
 
 	th = param[0];
 	de = param[1];
 
 	for(i=0;i<*n;i++)
 	{
-		  t1[i] = 1.0-u[i];
-		  t2[i] = pow(t1[i],1.0*th);
-		  t3[i] = 1.0-t2[i];
-		  t4[i] = pow(t3[i],-1.0*de);
-		  t6[i] = pow(1.0-v[i],1.0*th);
-		  t8[i] = pow(1.0-t6[i],-1.0*de);
-		  t9[i] = t4[i]+t8[i]-1.0;
-		  t11[i] = pow(t9[i],-1.0/de);
-		  t12[i] = 1.0-t11[i];
-		  t14[i] = pow(t12[i],1.0/th);
+		  t1 = 1.0-u[i];
+		  t2 = pow(t1,1.0*th);
+		  t3 = 1.0-t2;
+		  t4 = pow(t3,-1.0*de);
+		  t6 = pow(1.0-v[i],1.0*th);
+		  t8 = pow(1.0-t6,-1.0*de);
+		  t9 = t4+t8-1.0;
+		  t11 = pow(t9,-1.0/de);
+		  t12 = 1.0-t11;
+		  t14 = pow(t12,1.0/th);
 
-		  out[i] = t14[i]*t11[i]*t4[i]*t2[i]/t1[i]/t3[i]/t9[i]/t12[i];
+		  out[i] = t14*t11*t4*t2/t1/t3/t9/t12;
 	}
 
-	Free(t1);Free(t2);Free(t3);Free(t6);
-	Free(t8);Free(t9);Free(t11);Free(t12);
-	Free(t13);Free(t14);
 }
 
 
@@ -170,44 +120,29 @@ void pcondbb8(double* u, double* v, int* n, double* param, double* out)
 {
 	int i;
 	double th, de;
-	double *t2, *t3, *t12, *t16, *t6, *t7, *t8, *t10, *t11, *t13, *t15, *t17;
-	t2 = Calloc(*n,double);
-	t3 = Calloc(*n,double);
-	t12 = Calloc(*n,double);
-	t16 = Calloc(*n,double);
-	t6 = Calloc(*n,double);
-	t7 = Calloc(*n,double);
-	t8 = Calloc(*n,double);
-	t10 = Calloc(*n,double);
-	t11 = Calloc(*n,double);
-	t13 = Calloc(*n,double);
-	t15 = Calloc(*n,double);
-	t17 = Calloc(*n,double);
+	double t2, t3, t12, t16, t6, t7, t8, t10, t11, t13, t15, t17;
 
 	th = param[0];
 	de = param[1];
 
 	for(i=0;i<*n;i++)
 	{
-		  t2[i] = 1.0-de*u[i];
-		  t3[i] = pow(t2[i],th);
-		  t10[i] = 1.0-de;
-		  t11[i] = pow(t10[i],th);
-		  t12[i] = 1.0-t11[i];
-		  t13[i] = 1/t12[i];
-		  t16[i] = 1/th;
-		  t6[i] = 1.0-de*v[i];
-		  t7[i] = pow(t6[i],th);
-		  t8[i] = 1.0-t7[i];
-		  t15[i] = 1.0-(1.0-t3[i])*t8[i]*t13[i];
-		  t17[i] = pow(t15[i],t16[i]);
+		  t2 = 1.0-de*u[i];
+		  t3 = pow(t2,th);
+		  t10 = 1.0-de;
+		  t11 = pow(t10,th);
+		  t12 = 1.0-t11;
+		  t13 = 1/t12;
+		  t16 = 1/th;
+		  t6 = 1.0-de*v[i];
+		  t7 = pow(t6,th);
+		  t8 = 1.0-t7;
+		  t15 = 1.0-(1.0-t3)*t8*t13;
+		  t17 = pow(t15,t16);
 
-		  out[i] = t17[i]*t3[i]/t2[i]*t8[i]*t13[i]/t15[i];
+		  out[i] = t17*t3/t2*t8*t13/t15;
 	}
 
-	Free(t2);Free(t3);Free(t12);Free(t16);
-	Free(t6);Free(t7);Free(t8);Free(t10);
-	Free(t11);Free(t13);Free(t15);Free(t17);
 }
 
 
@@ -805,10 +740,9 @@ void Hinv(int* family, int* n, double* u, double* v, double* theta, double* nu, 
 	  double nu=0.0;
       HNumInv(family,&u[j],&v[j],theta,&nu,&hinv[j]);
     }
-    else if(*family==5) //frank - numerical inversion
+    else if(*family==5) //frank
     {
-	  double nu=0.0;
-      HNumInv(family,&u[j],&v[j],theta,&nu,&hinv[j]);
+	   hinv[j] = -1/(*theta)*log(1-(1-exp(-*theta)) / ((1/u[j]-1)*exp(-*theta*v[j])+1));
     }
     else if(*family==6) //joe - numerical inversion
     {

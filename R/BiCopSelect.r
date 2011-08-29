@@ -12,7 +12,7 @@ BiCopSelect <- function(u1,u2,familyset=NA,selectioncrit="AIC",indeptest=FALSE,l
   data1 = u1
   data2 = u2
 
-  if(!is.na(familyset[1]) & familyset[1] == 0){
+  if(!is.na(familyset[1]) & any(familyset == 0)){
 
     out$p.value.indeptest = NA
     out$family = 0

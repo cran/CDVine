@@ -317,7 +317,7 @@ tau<- -tau}
 f = function(x) {
 x/(exp(x) - 1)}
 tauF=function(x) 1 - 4/x + 4/x^2 * integrate(f, lower = 0+.Machine$double.eps^0.5, upper = x)$value
-v<-uniroot(function(x) tau - tauF(x) ,lower=0,upper=100, tol = .Machine$double.eps^0.5)$root
+v<-uniroot(function(x) tau - tauF(x) ,lower=0,upper=500, tol = .Machine$double.eps^0.5)$root
 return(a*v)
 }
 
@@ -334,7 +334,7 @@ return(1.000001)
 	}
 
 
-v<-uniroot(function(x) tau - tauF(x) ,lower=1,upper=100, tol = .Machine$double.eps^0.5)$root
+v<-uniroot(function(x) tau - tauF(x) ,lower=1,upper=500, tol = .Machine$double.eps^0.5)$root
 return(v)}
 }
 
