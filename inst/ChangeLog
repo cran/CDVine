@@ -3,6 +3,14 @@ Changes for R-package CDVine
 Ulf Schepsmeier and Eike Christian Brechmann <CDVine@ma.tum.de>
 
 
+Version 1.1-2 (October 12, 2011)
+
+- Bug fixes:
+  * fixed the rotation in BiCopPDF
+  * fixed BIC-penalty term in BiCopSelect
+  * fixed Frank copula in BiCopTau2Par for tau=0
+  
+
 Version 1.1-1 (August 29, 2011)
 
 - Additional control parameters for optim can be specified in CDVineMLE.

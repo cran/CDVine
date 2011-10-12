@@ -1202,6 +1202,6 @@ void LL_mod_seperate(int* family, int* n, double* u, double* v, double* theta, d
 {
     int kk=1;
     for(int i=0; i<(*n); i++){
-        LL_mod(family,&kk,&u[i],&v[i],theta,nu,&loglik[i]);
+        LL_mod2(family,&kk,&u[i],&v[i],theta,nu,&loglik[i]);
     };
 }

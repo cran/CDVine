@@ -580,9 +580,9 @@ BiCopSelect <- function(u1,u2,familyset=NA,selectioncrit="AIC",indeptest=FALSE,l
 
   		  for(i in todo){
   		    if(i %in% c(2,7:10,17:20,27:30,37:40)){
-  		      BICs[i] = -2*optiout[[i]]$value + 2*length(data1)
+  		      BICs[i] = -2*optiout[[i]]$value + 2*log(length(data1))
           }else{
-            BICs[i] = -2*optiout[[i]]$value + length(data1)
+            BICs[i] = -2*optiout[[i]]$value + log(length(data1))
           }
         }
 

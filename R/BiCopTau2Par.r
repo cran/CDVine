@@ -13,6 +13,7 @@ BiCopTau2Par<-function(family,tau){
     if(tau<0) stop("Gumbel copula cannot be used for tau<0.")
     par = 1/(1-tau)
   }else if(family == 5){
+    if(tau==0) stop("Frank copula cannot be used for tau=0.")
     par = Frank.itau.JJ(tau)
   }else if(family %in% c(6,16)){
     if(tau<=0) stop("Joe copula cannot be used for tau<=0.")
