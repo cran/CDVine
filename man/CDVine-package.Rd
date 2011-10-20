@@ -83,10 +83,10 @@ We are especially grateful to Harry Joe for his contributions to the implementat
 \tabular{ll}{
 Package: \tab CDVine\cr
 Type: \tab Package\cr
-Version: \tab 1.1-2\cr
-Date: \tab 2011-10-12\cr
+Version: \tab 1.1-3\cr
+Date: \tab 2011-10-20\cr
 License: \tab GPL (>=2)\cr
-Depends: \tab R (\eqn{\geq 2.8.1}{>= 2.8.1}), MASS, mvtnorm, igraph \cr
+Depends: \tab R (\eqn{\geq 2.11.0}{>= 2.11.0}), MASS, mvtnorm, igraph \cr
 LazyLoad: \tab yes
 }
 }

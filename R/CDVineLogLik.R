@@ -51,12 +51,18 @@ function(data, family, par, par2=rep(0,dim(data)[2]*(dim(data)[2]-1)/2), type)
 	if((family[i]==30 || family[i]==40) && (par2[i]>=0 || par2[i]<(-1))) stop("The second parameter of the rotated BB8 copula has to be in the interval [-1,0).")
 	}
 
-    ll <- rep(0.,d*(d-1)/2)
-    if(type==1) vv <- rep(0,T*(((d-1)*d)/2-1))
-    else vv <- rep(0,T*(d-1)*(d-2))
-    w1 <- family 
+  ll <- rep(0.,d*(d-1)/2)
+  if(d>2){
+  	if(type==1) vv <- rep(0,T*(((d-1)*d)/2-1))
+  	else vv <- rep(0,T*(d-1)*(d-2))
+  }else{
+    vv=0
+  }
+  w1 <- family 
 
-th=c(par,par2)
+  th=c(par,par2)
+  
+  if(d>2){
 
     out <- .C("VineLogLikm",
               as.integer(T),
@@ -72,10 +78,21 @@ th=c(par,par2)
     ll=out[[8]]
     ll[ll %in% c(NA,NaN,-Inf)] <- 1e10
     loglik <- -out[[7]]
+
+  }else{
+
+    ll=log(BiCopPDF(data[,1],data[,2],family,par,par2))
+  	loglik=sum(ll)
+
+  }
+    
+    
     if (loglik %in% c(NA,NaN,-Inf)) loglik <- -1e10
-    vv=out[[9]]
-    vv[vv >.99999999] <- .99999999
-    vv[vv <.00000001] <- .00000001
+    if(d>2){
+	    vv=out[[9]]
+	    vv[vv >.99999999] <- .99999999
+	    vv[vv <.00000001] <- .00000001
+    }
     res = list(loglik=loglik,ll=ll,vv=vv)
     return(res)
 }

@@ -3,6 +3,12 @@ Changes for R-package CDVine
 Ulf Schepsmeier and Eike Christian Brechmann <CDVine@ma.tum.de>
 
 
+Version 1.1-3 (October 20, 2011)
+
+- Bug fix:
+  * fixed CDVineLogLik for d=2
+
+
 Version 1.1-2 (October 12, 2011)
 
 - Bug fixes:

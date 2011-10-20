@@ -1,4 +1,4 @@
-\name{CDVineAIC/BIC}        
+\name{CDVineAIC-BIC}
 \alias{CDVineAIC}
 \alias{CDVineBIC}                
 

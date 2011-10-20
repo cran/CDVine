@@ -196,7 +196,7 @@ void dbb6(double* u, double* v, int* n, double* param, double* out)
 {
 	int i;
 	double th, de;
-	double t1, t2, t3, t4, t5, t12, t16, t32, t38, t39, t40, t47, t50, t61, t90, t6, t7, t8, t9, t10, t11, t13, t14, t15, t17, t35, t36, t37, t42, t48, t53, t56, t57, t59, t78, t80, t87, t93;
+	double t1, t2, t3, t4, t5, t12, t16, t32, t38, t39, t40, t47, t50, t61, t90, t6, t7, t8, t9, t10, t11, t13, t14, t15, t35, t36, t37, t42, t48, t53, t56, t57, t59, t78, t80, t87, t93;
 
 	th = param[0];
 	de = param[1];
@@ -227,7 +227,7 @@ void dbb6(double* u, double* v, int* n, double* param, double* out)
 		  t13 = pow(t11,t12);
 		  t14 = exp(-t13);
 		  t15 = 1.0-t14;
-		  t17 = pow(t15,t16);
+		  //t17 = pow(t15,t16);
 		  t35 = pow(t11,-2.0*t32*t12);
 		  t36 = t35*th;
 		  t37 = exp(t13);
@@ -300,7 +300,7 @@ void dbb8(double* u, double* v, int* n, double* param, double* out)
 {
 	int i;
 	double th, de;
-	double t2, t3, t4, t12, t16, t6, t7, t8, t10, t11, t13, t15, t17, t33, t38, t39, t49, t59, t69, t25, t26, t29, t44, t45, t50, t54, t62, t67;
+	double t2, t3, t12, t16, t6, t7, t8, t10, t11, t13, t15, t33, t38, t39, t49, t59, t69, t25, t26, t29, t44, t45, t50, t54, t62, t67;
 
 	th = param[0];
 	de = param[1];
@@ -309,7 +309,7 @@ void dbb8(double* u, double* v, int* n, double* param, double* out)
 	{
 		  t2 = 1.0-de*u[i];
 		  t3 = pow(t2,th);
-		  t4 = 1.0-t3;
+		  //t4 = 1.0-t3;
 		  t10 = 1.0-de;
 		  t11 = pow(t10,th);
 		  t12 = 1.0-t11;
@@ -325,7 +325,7 @@ void dbb8(double* u, double* v, int* n, double* param, double* out)
 		  t7 = pow(t6,th);
 		  t8 = 1.0-t7;
 		  t15 = 1.0-(1.0-t3)*t8*t13;
-		  t17 = pow(t15,t16);
+		  //t17 = pow(t15,t16);
 		  t25 = t3*t7;
 		  t26 = t11-t7-t3+t25;
 		  t29 = pow(-t26/t12,t16);

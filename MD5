@@ -1,5 +1,5 @@
-5d69221010abc19e2b9c10815f1841dd *CDVine.pdf
-ef297218b233858a468260fcfe9ef197 *DESCRIPTION
+2a571b623b6e202525977ec62b38f774 *CDVine.pdf
+caaf1bf34544b88bfd860939fdb3e8af *DESCRIPTION
 73e9c097634e2321e29de581acc49196 *NAMESPACE
 9a566a01bcad5d8b66aa4d9e597c9147 *R/BiCopCDF.r
 cc7f9fdd0d3890410f05e689e8527e7f *R/BiCopChiPlot.r
@@ -20,7 +20,7 @@ d1cf303424e4260669d84a83a3b59edc *R/BiCopMetaContour.r
 9b9f1f4ff693c2ecc3f72f8f90cfb353 *R/CDVineAIC.R
 b5eb0e83207eaa6a2dab1b3b277c5e25 *R/CDVineClarkeTest.r
 9706b43fd05741ed235ded02177c3006 *R/CDVineCopSelect.R
-04eb359e940b9c6248e872842d2e95fa *R/CDVineLogLik.R
+44ea641b1d9a78b233e6a1c2cb8b22c0 *R/CDVineLogLik.R
 b1130e8414217e2bb6e91efc3617cff9 *R/CDVineMLE.R
 ec3f3f39694b0fa420eb1ab48d5b739e *R/CDVinePar2Tau.r
 19ddd7d2eeb1795560b0795c5fc9aeeb *R/CDVineSeqEst.R
@@ -29,8 +29,8 @@ dd7160168306bd06da7dee2d90a23997 *R/CDVineSim.R
 962ce9458c1ccab018b86dd9db7e5cf9 *R/CDVineVuongTest.r
 83fc557d46113604f36d75963d5963ab *R/zzz.R
 acee73c43b92e0aa3066683bd11f2bd3 *data/worldindices.RData
-ac12d64333a849fac5d18d258b5bb237 *inst/ChangeLog
-f450a962b724fdcd446c9a4ac420e672 *inst/doc/CDVine-package.pdf
+5732754268cb15ba33b230cfa02c0cb4 *inst/ChangeLog
+dca7aadefac436e517d0ee302ec67302 *inst/doc/CDVine-package.pdf
 7e6906c22b6c1732e94068715a7cb2c1 *inst/doc/CDVine-package.rnw
 acdfd122463175a6b2943f5790994b71 *inst/doc/cvine.pdf
 8d9456042b031ca3a53c9b96e7fa1a23 *inst/doc/dvine.pdf
@@ -55,8 +55,8 @@ ca03a7c4e62589b87bc052d8f26b69fa *man/BiCopName.Rd
 8b8ec39774404d54f3d6fa3ca1781e7f *man/BiCopSim.Rd
 3af026a402b5477e76eca2e6e5686a79 *man/BiCopTau2Par.Rd
 21be23a4c2e37fa7cee269e73a8fc1fb *man/BiCopVuongClarke.Rd
-7dcecaff1079970296afff8bfd043457 *man/CDVine-package.Rd
-1b56a9f1b28ac053a5d28b6ceaaaa441 *man/CDVineAICBIC.Rd
+16cbddc2570b21428be4ce9d8ef884e1 *man/CDVine-package.Rd
+8f588b405b5e2ca076f56a88eb323655 *man/CDVineAICBIC.Rd
 c514523a3bcb94a1c2a5f109b7bb6c3c *man/CDVineClarkeTest.Rd
 a4ac6c24ff0c257d9d04fef6e5cd8cce *man/CDVineCopSelect.Rd
 d67e4dc4fb5258cbac2aff3ec99e2019 *man/CDVineLogLik.Rd
@@ -69,7 +69,7 @@ e981f93ee0fdb7dc8c02343694a5b4cb *man/CDVineTreePlot.Rd
 b7d45f10121876a9dccf1a85ab1a9731 *man/worldindices.Rd
 e60f031d57b1620a720903b761add1e0 *src/cdvine.c
 41f12a3c2221a827f897d579a0463a7e *src/hfunc.c
-a01af3cd0d2c6c982627ad3792e4db8b *src/likelihood.c
+08e3ea89b9f45ccc209d237e504dbfe3 *src/likelihood.c
 58b1e218ea0eb38370df95c54e346332 *src/memoryhandling.c
 873da178e41dc99397545ffbcc06dbf2 *src/tools.c
 538f09502c7bf37b75471e08cb759e5a *src/vine.h
