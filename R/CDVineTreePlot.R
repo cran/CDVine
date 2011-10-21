@@ -27,7 +27,7 @@ type, method="mle", max.df=30, max.BB=list(BB1=c(5,6),BB6=c(6,6),BB7=c(5,6),BB8=
 	d=(1+sqrt(1+8*dd))/2 
 	anz_trees=d-1
 
-  if(max.df<=1) stop("The upper bound for the degrees of freedom parameter has to be larger than 1.")
+  if(max.df<=2) stop("The upper bound for the degrees of freedom parameter has to be larger than 2.")
   if(!is.list(max.BB)) stop("'max.BB' has to be a list.")
   if(max.BB$BB1[1] < 0.001) stop("The upper bound for the first parameter of the BB1 copula should be greater than 0.001 (lower bound for estimation).")
   if(max.BB$BB1[2] < 1.001) stop("The upper bound for the second parameter of the BB1 copula should be greater than 1.001 (lower bound for estimation).")
@@ -61,7 +61,7 @@ type, method="mle", max.df=30, max.BB=list(BB1=c(5,6),BB6=c(6,6),BB7=c(5,6),BB8=
 		if(any(par!=0))
 		{
   	if((family[i]==1 || family[i]==2) && abs(par[i])>=1) stop("The parameter of the Gaussian and t-copula has to be in the interval (-1,1).")
-	if(family[i]==2 && par2[i]<=1) stop("The degrees of freedom parameter of the t-copula has to be larger than 1.")  	
+	if(family[i]==2 && par2[i]<=2) stop("The degrees of freedom parameter of the t-copula has to be larger than 2.")
   	if((family[i]==3 || family[i]==13) && par[i]<=0) stop("The parameter of the Clayton copula has to be positive.")
   	if((family[i]==4 || family[i]==14) && par[i]<1) stop("The parameter of the Gumbel copula has to be in the interval [1,oo).")
   	if((family[i]==6 || family[i]==16) && par[i]<=1) stop("The copula parameter of the Joe copula has to be in the interval (1,oo).")	

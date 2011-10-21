@@ -23,7 +23,7 @@ function(data,family,type, method="mle", se=FALSE, max.df=30, max.BB=list(BB1=c(
   if(method!="mle" && method!="itau") stop("Estimation method has to be either 'mle' or 'itau'.")
   if(is.logical(se)==FALSE) stop("'se' has to be a logical variable (TRUE or FALSE).")
 
-  if(max.df<=1) stop("The upper bound for the degrees of freedom parameter has to be larger than 1.")
+  if(max.df<=2) stop("The upper bound for the degrees of freedom parameter has to be larger than 2.")
   if(!is.list(max.BB)) stop("'max.BB' has to be a list.")
   if(max.BB$BB1[1] < 0.001) stop("The upper bound for the first parameter of the BB1 copula should be greater than 0.001 (lower bound for estimation).")
   if(max.BB$BB1[2] < 1.001) stop("The upper bound for the second parameter of the BB1 copula should be greater than 1.001 (lower bound for estimation).")

@@ -26,7 +26,7 @@ The following table shows the parameter ranges of bivariate copula families with
 \tabular{lll}{
 Copula family \tab \code{par} \tab \code{par2} \cr
 Gaussian \tab \eqn{(-1,1)} \tab - \cr
-Student t \tab \eqn{(-1,1)} \tab \eqn{(1,\infty)} \cr
+Student t \tab \eqn{(-1,1)} \tab \eqn{(2,\infty)} \cr
 (Survival) Clayton \tab \eqn{(0,\infty)} \tab - \cr
 (Survival) Gumbel \tab \eqn{[1,\infty)} \tab - \cr
 Frank \tab \eqn{R\backslash\{0\}} \tab - \cr
@@ -83,8 +83,8 @@ We are especially grateful to Harry Joe for his contributions to the implementat
 \tabular{ll}{
 Package: \tab CDVine\cr
 Type: \tab Package\cr
-Version: \tab 1.1-3\cr
-Date: \tab 2011-10-20\cr
+Version: \tab 1.1-4\cr
+Date: \tab 2011-10-21\cr
 License: \tab GPL (>=2)\cr
 Depends: \tab R (\eqn{\geq 2.11.0}{>= 2.11.0}), MASS, mvtnorm, igraph \cr
 LazyLoad: \tab yes

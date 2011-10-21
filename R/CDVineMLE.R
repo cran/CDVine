@@ -9,7 +9,7 @@ function(data,family,start=NULL, start2=NULL, type,maxit=200,max.df=30, max.BB=l
   T=dim(data)[1]
   Maxiter=floor(maxit)
 
-  if(max.df<=1) stop("The upper bound for the degrees of freedom parameter has to be larger than 1.")
+  if(max.df<=2) stop("The upper bound for the degrees of freedom parameter has to be larger than 2.")
   if(!is.list(max.BB)) stop("'max.BB' has to be a list.")
   if(max.BB$BB1[1] < 0.001) stop("The upper bound for the first parameter of the BB1 copula should be greater than 0.001 (lower bound for estimation).")
   if(max.BB$BB1[2] < 1.001) stop("The upper bound for the second parameter of the BB1 copula should be greater than 1.001 (lower bound for estimation).")
@@ -33,7 +33,7 @@ function(data,family,start=NULL, start2=NULL, type,maxit=200,max.df=30, max.BB=l
   {
     # Parameterbereiche abfragen
     if((family[i]==1 || family[i]==2) && abs(start[i])>=1) stop("The parameter of the Gaussian and t-copula has to be in the interval (-1,1).")
-	if(family[i]==2 && start2[i]<=1) stop("The degrees of freedom parameter of the t-copula has to be larger than 1.")  	
+	if(family[i]==2 && start2[i]<=2) stop("The degrees of freedom parameter of the t-copula has to be larger than 2.")
   	if((family[i]==3 || family[i]==13) && start[i]<=0) stop("The parameter of the Clayton copula has to be positive.")
   	if((family[i]==4 || family[i]==14) && start[i]<1) stop("The parameter of the Gumbel copula has to be in the interval [1,oo).")
   	if((family[i]==6 || family[i]==16) && start[i]<=1) stop("The copula parameter of the Joe copula has to be in the interval (1,oo).")	
@@ -190,7 +190,7 @@ for(k in 1:dd)
     for (j in 1:dd) {
 	if (family[j]==2)
 	{
-        l <- c(l,1.0001)
+        l <- c(l,2.0001)
         u <- c(u,max.df)
 	}
 	else if(family[j]==7 | family[j]==17)

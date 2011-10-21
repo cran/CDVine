@@ -153,7 +153,7 @@ function(u1,u2,family, method="mle", se=FALSE, max.df=30, max.BB=list(BB1=c(5,6)
 	if(family==2) ## t
 	{
 		theta1 <- sin(tau*pi/2)
-    delta1 <- (max.df-1)/2       # Nehme die Mitte zwischen 1 und max.df So kann man mit dem Startwert auch nicht außerhalb des vom User gesetzten Bereiches sein.
+    delta1 <- (max.df+2)/2       # Nehme die Mitte zwischen 2 und max.df So kann man mit dem Startwert auch nicht außerhalb des vom User gesetzten Bereiches sein.
     delta = MLE_intern(cbind(u1,u2),c(theta1,delta1),family=family,se=FALSE,max.df,max.BB,cor.fixed=TRUE)$par[2]
   }
 	else if(family==7 || family==17)	## BB1
@@ -329,8 +329,9 @@ return(1.000001)
 }else{
 
 	tauF=function(a){
-		euler=0.5772156649015328606
-		1+((-2+2*euler+2*log(2)+digamma(1/a)+digamma(1/2*(2+a)/a)+a)/(-2+a))
+		#euler=0.5772156649015328606
+		#1+((-2+2*euler+2*log(2)+digamma(1/a)+digamma(1/2*(2+a)/a)+a)/(-2+a))
+		1+4/a^2*integrate(function(x) log(x)*x*(1-x)^(2*(1-a)/a), 0, 1)$value
 	}
 
 
@@ -436,9 +437,9 @@ function(data,start.parm,family,se=FALSE,max.df=30,max.BB=list(BB1=c(5,6),BB6=c(
   		}
 
       if(se == TRUE){
-        optimout = optim(par=start.parm,fn=t_LL,method="L-BFGS-B",control=list(fnscale=-1,maxit = 500),hessian=TRUE,lower=c(-0.9999,1.0001),upper=c(0.9999,max.df))
+        optimout = optim(par=start.parm,fn=t_LL,method="L-BFGS-B",control=list(fnscale=-1,maxit = 500),hessian=TRUE,lower=c(-0.9999,2.0001),upper=c(0.9999,max.df))
       }else{
-        optimout = optim(par=start.parm,fn=t_LL,method="L-BFGS-B",control=list(fnscale=-1,maxit = 500),lower=c(-0.9999,1.0001),upper=c(0.9999,max.df))
+        optimout = optim(par=start.parm,fn=t_LL,method="L-BFGS-B",control=list(fnscale=-1,maxit = 500),lower=c(-0.9999,2.0001),upper=c(0.9999,max.df))
       }
 
       if(optimout$par[2] >= (max.df-0.0001)) warning(paste("Degrees of freedom of the t-copula estimated to be larger than ",max.df,". Consider using the Gaussian copula instead.",sep=""))

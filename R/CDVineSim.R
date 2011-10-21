@@ -34,7 +34,7 @@ function(N,family,par,par2=rep(0,length(family)),type)
 	if(!(family[i] %in% c(0,1:10,13,14,16:20,23,24,26:30,33,34,36:40))) stop("Copula family not implemented.")
 	# Parameterbereiche abfragen
   	if((family[i]==1 || family[i]==2) && abs(par[i])>=1) stop("The parameter of the Gaussian and t-copula has to be in the interval (-1,1).")
-	if(family[i]==2 && par2[i]<=1) stop("The degrees of freedom parameter of the t-copula has to be larger than 1.")  	
+	if(family[i]==2 && par2[i]<=2) stop("The degrees of freedom parameter of the t-copula has to be larger than 2.")
   	if((family[i]==3 || family[i]==13) && par[i]<=0) stop("The parameter of the Clayton copula has to be positive.")
   	if((family[i]==4 || family[i]==14) && par[i]<1) stop("The parameter of the Gumbel copula has to be in the interval [1,oo).")
   	if((family[i]==6 || family[i]==16) && par[i]<=1) stop("The copula parameter of the Joe copula has to be in the interval (1,oo).")	

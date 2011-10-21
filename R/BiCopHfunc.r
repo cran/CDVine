@@ -21,7 +21,7 @@ BiCopHfunc <- function(u1,u2,family,par,par2=0)
 	if(c(1,3,4,5,6,13,14,16,23,24,26,33,34,36) %in% family && length(par)<1) stop("'par' not set.")
 	
 	if((family==1 || family==2) && abs(par[1])>=1) stop("The parameter of the Gaussian and t-copula has to be in the interval (-1,1).")
-	if(family==2 && par2<=1) stop("The degrees of freedom parameter of the t-copula has to be larger than 1.")
+	if(family==2 && par2<=2) stop("The degrees of freedom parameter of the t-copula has to be larger than 2.")
 	if((family==3 || family==13) && par<=0) stop("The parameter of the Clayton copula has to be positive.")
 	if((family==4 || family==14) && par<1) stop("The parameter of the Gumbel copula has to be in the interval [1,oo).")
 	if((family==6 || family==16) && par<=1) stop("The parameter of the Joe copula has to be in the interval (1,oo).")

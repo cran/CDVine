@@ -157,7 +157,7 @@ BiCopSelect <- function(u1,u2,familyset=NA,selectioncrit="AIC",indeptest=FALSE,l
                          ll = -10^300
                      return(ll)
              }
-         optim_start = optim(par=5,fn=t_LL_start,method="L-BFGS-B",lower=1.0001,upper=30,control=list(fnscale=-1,maxit= 500))
+         optim_start = optim(par=5,fn=t_LL_start,method="L-BFGS-B",lower=2.0001,upper=30,control=list(fnscale=-1,maxit= 500))
 
              t_LL = function(param){
                      ll = .C("LL",as.integer(2),as.integer(length(data1)),as.double(data1),as.double(data2),as.double(param[1]),as.double(param[2]),as.double(0),PACKAGE='CDVine')[[7]]
@@ -166,9 +166,9 @@ BiCopSelect <- function(u1,u2,familyset=NA,selectioncrit="AIC",indeptest=FALSE,l
                      return(ll)
              }
              optiout[[2]] = optim(par=c(start[[2]], 
-		     optim_start$par),fn=t_LL,
+		                 optim_start$par),fn=t_LL,
                      method="L-BFGS-B",
-                     lower=c(-0.9999, 1.0001),
+                     lower=c(-0.9999, 2.0001),
                      upper=c(0.9999, 30),
                      control=list(fnscale=-1,maxit = 500))
 

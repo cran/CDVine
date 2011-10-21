@@ -63,9 +63,7 @@ No. \tab Kendall's tau \cr
 \code{4, 14} \tab \eqn{1-\frac{1}{\theta}}{1-1/\theta} \cr
 \code{5} \tab \eqn{1-\frac{4}{\theta}+4\frac{D_1(\theta)}{\theta}}{1-4/\theta + 4 D_1(\theta)/\theta} \cr
 	 \tab with \eqn{D_1(\theta)=\int_0^\theta \frac{c/\theta}{\exp(x)-1}dx}{D_1(\theta)=\int_0^\theta (c/\theta)/(exp(x)-1)dx} (Debey function) \cr
-\code{6, 16} \tab \eqn{\frac{2\theta-4+2\gamma +2\log2+\Psi(\frac{1}{\theta})+\Psi(\frac{2+\theta}{2\theta})}{\theta-2}}{(2\theta-4+2\gamma + 2log2+\Psi(1/\theta)+\Psi((2+\theta)/(2\theta))) / (\theta-2)} \cr
-	 \tab with \eqn{\gamma=\lim_{n\to\infty}(\sum_{i=1}^n \frac{1}{i} -\log n)\approx 0.57}{\gamma=lim_{n->\infty}(\sum_{i=1}^n 1/i - log n) ~= 0.57} (Euler's const.) \cr
-	 \tab and \eqn{\Psi(x)=\frac{d}{dx}\log(\Gamma(x))}{\Psi(x)=d/dx log(\Gamma(x))} (Digamma function) \cr
+\code{6, 16} \tab \eqn{1+\frac{4}{\theta^2}\int_0^1 x\log(x)(1-x)^{2(1-\theta)/\theta}dx}{1+4/\theta^2\int_0^1 x\log(x)(1-x)^{2(1-\theta)/\theta}dx} \cr
 \code{7, 17} \tab \eqn{1-\frac{2}{\delta(\theta+2)}}{1-2/(\delta(\theta+2))} \cr
 \code{8, 18} \tab \eqn{1+4\int_0^1 -\log(-(1-t)^\theta+1)(1-t-(1-t)^{-\theta}+(1-t)^{-\theta}t)/(\delta\theta) dt} \cr
 \code{9, 19} \tab \eqn{1-\frac{2}{\delta(2-\theta)}+\frac{4}{\theta^2 \delta}B(\frac{2-\theta}{\theta},\delta+2)}{1-2/(\delta(2-\theta)) + 4/(\theta^2 \delta) B((2-\theta)/\theta , \delta+2)} \cr
@@ -74,7 +72,7 @@ No. \tab Kendall's tau \cr
 	 \tab \eqn{* (1-t\delta-(1-t\delta)^{-\theta}+(1-t\delta)^{-\theta}t\delta)/(\theta\delta) dt} \cr
 \code{23, 33} \tab \eqn{\frac{\theta}{-\theta+2}}{\theta/(-\theta+2)} \cr
 \code{24, 34} \tab \eqn{-1-\frac{1}{\theta}}{-1-1/\theta} \cr
-\code{26, 36} \tab \eqn{\frac{2\theta+4-2\gamma-2\log2-\Psi(\frac{1}{-\theta})-\Psi(\frac{2-\theta}{-2\theta})}{\theta+2}}{(2\theta + 4 - 2\gamma - 2log2-\Psi(1/-\theta) - \Psi((2-\theta)/(-2\theta))) / (\theta+2)} \cr
+\code{26, 36} \tab \eqn{-1-\frac{4}{\theta^2}\int_0^1 x\log(x)(1-x)^{-2(1+\theta)/\theta}dx}{-1-4/\theta^2\int_0^1 x\log(x)(1-x)^{-2(1+\theta)/\theta}dx} \cr
 \code{27, 37} \tab \eqn{-1+\frac{2}{\delta(\theta+2)}}{1-2/(\delta(\theta+2))} \cr
 \code{28, 38} \tab \eqn{-1-4\int_0^1 -\log(-(1-t)^\theta+1)*(1-t-(1-t)^{-\theta}+(1-t)^{-\theta}t)/(\delta\theta) dt} \cr
 \code{29, 39} \tab \eqn{-1+\frac{2}{\delta(2-\theta)}+\frac{4}{\theta^2 \delta}B(\frac{2-\theta}{\theta},\delta+2)}{1-2/(\delta(2-\theta)) + 4/(\theta^2 \delta) B((2-\theta)/\theta , \delta+2)} \cr

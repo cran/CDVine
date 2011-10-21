@@ -55,7 +55,7 @@ Model1.par2=rep(0,dim(data)[2]*(dim(data)[2]-1)/2),Model2.par2=rep(0,dim(data)[2
 	{
 	if(!(Model1.family[i] %in% c(0,1:10,13,14,16:20,23,24,26:30,33,34,36:40))) stop("Copula family not implemented (in Model1.family).")
   	if((Model1.family[i]==1 || Model1.family[i]==2) && abs(Model1.par[i])>=1) stop("The parameter of the Gaussian and t-copula has to be in the interval (-1,1).")
-	if(Model1.family[i]==2 && Model1.par2[i]<=1) stop("The degrees of freedom parameter of the t-copula has to be larger than 1.")
+	if(Model1.family[i]==2 && Model1.par2[i]<=2) stop("The degrees of freedom parameter of the t-copula has to be larger than 2.")
   	if((Model1.family[i]==3 || Model1.family[i]==13) && Model1.par[i]<=0) stop("The parameter of the Clayton copula has to be positive.")
   	if((Model1.family[i]==4 || Model1.family[i]==14) && Model1.par[i]<1) stop("The parameter of the Gumbel copula has to be in the interval [1,oo).")
   	if((Model1.family[i]==6 || Model1.family[i]==16) && Model1.par[i]<=1) stop("The parameter of the Joe copula has to be in the interval (1,oo).")	
@@ -85,7 +85,7 @@ Model1.par2=rep(0,dim(data)[2]*(dim(data)[2]-1)/2),Model2.par2=rep(0,dim(data)[2
 	{
 	if(!(Model2.family[i] %in% c(0,1:10,13,14,16:20,23,24,26:30,33,34,36:40))) stop("Copula family not implemented (in Model1.family).")
   	if((Model2.family[i]==1 || Model2.family[i]==2) && abs(Model2.par[i])>=1) stop("The parameter of the Gaussian and t-copula has to be in the interval (-1,1).")
-	if(Model2.family[i]==2 && Model2.par2[i]<=1) stop("The degrees of freedom parameter of the t-copula has to be larger than 1.")
+	if(Model2.family[i]==2 && Model2.par2[i]<=2) stop("The degrees of freedom parameter of the t-copula has to be larger than 2.")
   	if((Model2.family[i]==3 || Model2.family[i]==13) && Model2.par[i]<=0) stop("The parameter of the Clayton copula has to be positive.")
   	if((Model2.family[i]==4 || Model2.family[i]==14) && Model2.par[i]<1) stop("The parameter of the Gumbel copula has to be in the interval [1,oo).")
   	if((Model2.family[i]==6 || Model2.family[i]==16) && Model2.par[i]<=1) stop("The parameter of the Joe copula has to be in the interval (1,oo).")	
