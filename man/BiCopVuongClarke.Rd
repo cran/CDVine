@@ -99,7 +99,7 @@ For more and detailed information about the goodness-of-fit test see Belgorodski
 Belgorodski, N. (2010)
 Selecting pair-copula families for regular vines with application to the multivariate analysis of European stock market indices
 Diploma thesis, Technische Universitaet Muenchen.
-\url{http://www-m4.ma.tum.de/Diplarb/diplomarbeiten.html}.
+\url{http://mediatum.ub.tum.de/doc/1079284/1079284.pdf}.
 
 Clarke, K. A. (2007).
 A Simple Distribution-Free Test for Nonnested Model Selection.

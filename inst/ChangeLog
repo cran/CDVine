@@ -3,6 +3,12 @@ Changes for R-package CDVine
 Ulf Schepsmeier and Eike Christian Brechmann <CDVine@ma.tum.de>
 
 
+Version 1.1-5 (December 28, 2011)
+
+- Bug fix:
+  * fixed lower bound of the parameter of the Joe copula in CDVineMLE
+
+
 Version 1.1-4 (October 21, 2011)
 
 - Raised lower bound of the degrees of freedom of the Student-t copula to 2 in order to improve numerical stability.

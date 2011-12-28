@@ -481,7 +481,7 @@ function(data,start.parm,family,se=FALSE,max.df=30,max.BB=list(BB1=c(5,6),BB6=c(
 		}
 		else
 		{
-			ll = .C("LL_mod_seperate",as.integer(family),as.integer(n),as.double(data[,2]), as.double(data[,1]), as.double(param[1]),as.double(param[2]), as.double(rep(0,n)),PACKAGE='CDVine')[[7]]%*%weights
+			ll = .C("LL_mod_seperate",as.integer(family),as.integer(n),as.double(data[,2]), as.double(data[,1]), as.double(param),as.double(0), as.double(rep(0,n)),PACKAGE='CDVine')[[7]]%*%weights
 		}
       if(is.infinite(ll) || is.na(ll) || ll< -10^300) ll = -10^300
 

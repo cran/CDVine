@@ -1,8 +1,8 @@
 Package: CDVine
 Type: Package
 Title: Statistical inference of C- and D-vine copulas
-Version: 1.1-4
-Date: 2011-10-21
+Version: 1.1-5
+Date: 2011-12-28
 Author: Ulf Schepsmeier, Eike Christian Brechmann
 Maintainer: Ulf Schepsmeier, Eike Christian Brechmann
         <CDVine@ma.tum.de>
@@ -17,6 +17,6 @@ Description: This package provides functions for statistical inference
         data).
 License: GPL (>= 2)
 LazyLoad: yes
-Packaged: 2011-10-21 18:40:34 UTC; Eike
+Packaged: 2011-12-28 17:25:07 UTC; Eike
 Repository: CRAN
-Date/Publication: 2011-10-23 10:07:32
+Date/Publication: 2011-12-30 11:22:30

@@ -81,7 +81,7 @@ Journal of the American Statistical Association, 88 (423), 1034-1043.
 Schepsmeier, U. (2010).
 Maximum likelihood estimation of C-vine pair-copula constructions based on bivariate copulas from different families.
 Diploma thesis, Technische Universitaet Muenchen.\cr
-\url{http://www-m4.ma.tum.de/Diplarb/diplomarbeiten.html}.
+\url{http://mediatum.ub.tum.de/doc/1079296/1079296.pdf}.
 }
 
 \seealso{\code{\link{BiCopMetaContour}}, \code{\link{BiCopKPlot}}, \code{\link{BiCopChiPlot}}}

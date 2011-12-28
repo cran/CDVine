@@ -75,7 +75,7 @@ Journal of the American Statistical Association, 88 (423), 1034-1043.
 Luo J. (2011).
 Stepwise estimation of D-vines with arbitrary specified copula pairs and EDA Tools.
 Diploma thesis, Technische Universitaet Muenchen.\cr
-\url{http://www-m4.ma.tum.de/Diplarb/diplomarbeiten.html}.
+\url{http://mediatum.ub.tum.de/doc/1079291/1079291.pdf}.
 
 Wang, W. and M. T. Wells (2000).
 Model selection and semiparametric inference for bivariate failure-time data.

@@ -91,8 +91,7 @@ Chapman and Hall, London.
 
 Czado, C., U. Schepsmeier, and A. Min (2011).
 Maximum likelihood estimation of mixed C-vines with application to exchange rates.
-Submitted for publication.
-\url{http://www-m4.ma.tum.de/Papers/Schepsmeier/Paper.pdf}.
+Statistical Modelling, to appear.
 }
 
 \seealso{\code{\link{CDVinePar2Tau}}, \code{\link{BiCopTau2Par}}}

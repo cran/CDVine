@@ -65,7 +65,7 @@ function(data,family,start=NULL, start2=NULL, type,maxit=200,max.df=30, max.BB=l
 
     dd <- d*(d-1)/2
     tt <- sum(family==2)+sum(family==7)+sum(family==8)+sum(family==9)+sum(family==10)+sum(family==17)+sum(family==18)+
-    sum(family==19)+sum(family==20)+sum(family==27)+sum(family==28)+sum(family==29)+sum(family==20)+sum(family==37)+
+    sum(family==19)+sum(family==20)+sum(family==27)+sum(family==28)+sum(family==29)+sum(family==30)+sum(family==37)+
     sum(family==38)+sum(family==39)+sum(family==40)
     start_par=list()
     if(is.null(start))
@@ -164,20 +164,20 @@ for(k in 1:dd)
         if (family[j]==1 | family[j]==2){l[j]=-0.9999; u[j]=0.9999;}
         else if (family[j]==3 | family[j]==13){l[j]=0.0001; u[j]=Inf;}
         else if (family[j]==4 | family[j]==14){l[j]=1.0001; u[j]=Inf;}
-	else if (family[j]==5){l[j]=-Inf; u[j]=Inf;}
-	else if (family[j]==6 | family[j]==16){l[j]=1; u[j]=Inf;}
-	else if (family[j]==7 | family[j]==17){l[j]=0.001; u[j]=max.BB$BB1[1];}
-	else if (family[j]==8 | family[j]==18){l[j]=1.001; u[j]=max.BB$BB6[1];}
-	else if (family[j]==9 | family[j]==19){l[j]=1.001; u[j]=max.BB$BB7[1];}
-	else if (family[j]==10 | family[j]==20){l[j]=1.001; u[j]=max.BB$BB8[1];}
-	else if (family[j]==23 | family[j]==33){l[j]=-Inf; u[j]=-0.0001;}
-	else if (family[j]==24 | family[j]==34){l[j]=-Inf; u[j]=-1.0001;}
-	else if (family[j]==26 | family[j]==36){l[j]=-Inf; u[j]=-1;}
-	else if (family[j]==27 | family[j]==37){l[j]=-max.BB$BB1[1]; u[j]=-0.001;}
-	else if (family[j]==28 | family[j]==38){l[j]=-max.BB$BB6[1]; u[j]=-1.001;}
-	else if (family[j]==29 | family[j]==39){l[j]=-max.BB$BB7[1]; u[j]=-1.001;}
-	else if (family[j]==30 | family[j]==40){l[j]=-max.BB$BB8[1]; u[j]=-1.001;}
-	else if (family[j]==0)		# independent copula => no parameter
+      	else if (family[j]==5){l[j]=-Inf; u[j]=Inf;}
+      	else if (family[j]==6 | family[j]==16){l[j]=1.0001; u[j]=Inf;}
+      	else if (family[j]==7 | family[j]==17){l[j]=0.001; u[j]=max.BB$BB1[1];}
+      	else if (family[j]==8 | family[j]==18){l[j]=1.001; u[j]=max.BB$BB6[1];}
+      	else if (family[j]==9 | family[j]==19){l[j]=1.001; u[j]=max.BB$BB7[1];}
+      	else if (family[j]==10 | family[j]==20){l[j]=1.001; u[j]=max.BB$BB8[1];}
+      	else if (family[j]==23 | family[j]==33){l[j]=-Inf; u[j]=-0.0001;}
+      	else if (family[j]==24 | family[j]==34){l[j]=-Inf; u[j]=-1.0001;}
+      	else if (family[j]==26 | family[j]==36){l[j]=-Inf; u[j]=-1.0001;}
+      	else if (family[j]==27 | family[j]==37){l[j]=-max.BB$BB1[1]; u[j]=-0.001;}
+      	else if (family[j]==28 | family[j]==38){l[j]=-max.BB$BB6[1]; u[j]=-1.001;}
+      	else if (family[j]==29 | family[j]==39){l[j]=-max.BB$BB7[1]; u[j]=-1.001;}
+      	else if (family[j]==30 | family[j]==40){l[j]=-max.BB$BB8[1]; u[j]=-1.001;}
+      	else if (family[j]==0)		# independence copula => no parameter
 	{
 		l[j]=0; u[j]=0
 	}

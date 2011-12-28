@@ -77,7 +77,7 @@ BiCopSelect <- function(u1,u2,familyset=NA,selectioncrit="AIC",indeptest=FALSE,l
 	    lb[[3]] = 0.0001
 	    lb[[4]] = 1.0001
 	    lb[[5]] = -Inf
-	    lb[[6]] = 1
+	    lb[[6]] = 1.0001
 	    lb[[7]] = c(0.001,1.001)
 	    lb[[8]] = c(1.001,1.001)
 	    lb[[9]] = c(1.001,0.001)
