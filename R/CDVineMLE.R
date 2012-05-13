@@ -8,6 +8,7 @@ function(data,family,start=NULL, start2=NULL, type,maxit=200,max.df=30, max.BB=l
   d=dim(data)[2]
   T=dim(data)[1]
   Maxiter=floor(maxit)
+   if(any(data>1) || any(data<0)) stop("Data has be in the interval [0,1].")
 
   if(max.df<=2) stop("The upper bound for the degrees of freedom parameter has to be larger than 2.")
   if(!is.list(max.BB)) stop("'max.BB' has to be a list.")

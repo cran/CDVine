@@ -1,8 +1,8 @@
 BiCopPar2Tau<-function(family,par,par2=0)
 {
 	if(!(family %in% c(0,1,2,3,4,5,6,7,8,9,10,13,14,16,17,18,19,20,23,24,26,27,28,29,30,33,34,36,37,38,39,40))) stop("Copula family not implemented.")
-	if(c(2,7,8,9,10,17,18,19,20,27,28,29,30,37,38,39,40) %in% family && par2==0) stop("For t-, BB1, BB6, BB7 and BB8 copulas, 'par2' must be set.")
-	if(c(1,3,4,5,6,13,14,16,23,24,26,33,34,36) %in% family && length(par)<1) stop("'par' not set.")
+	if(family %in% c(2,7,8,9,10,17,18,19,20,27,28,29,30,37,38,39,40) && par2==0) stop("For t-, BB1, BB6, BB7 and BB8 copulas, 'par2' must be set.")
+	if(family %in% c(1,3,4,5,6,13,14,16,23,24,26,33,34,36) && length(par)<1) stop("'par' not set.")
 	
 	if((family==1 || family==2) && abs(par[1])>=1) stop("The parameter of the Gaussian and t-copula has to be in the interval (-1,1).")
 	#if(family==2 && par2<=1) stop("The degrees of freedom parameter of the t-copula has to be larger than 1.")
@@ -79,8 +79,9 @@ BiCopPar2Tau<-function(family,par,par2=0)
 	{
 		theta=par
 		delta=par2
-		tau=1-2/(delta*(2-theta))+4/(theta^2*delta)*gamma(delta+2)*gamma((2-2*theta)/(theta)+1)/gamma(delta+3+(2-2*theta)/(theta))
-
+		#tau=1-2/(delta*(2-theta))+4/(theta^2*delta)*gamma(delta+2)*gamma((2-2*theta)/(theta)+1)/gamma(delta+3+(2-2*theta)/(theta))
+    kt<-function(t) {( (1-(1-t)^par)^-par2-1 )/( -par*par2*(1-t)^(par-1)*(1-(1-t)^par)^(-par2-1) )}
+		tau=1+4*integrate(kt,0,1)$value
 	}
 	else if(family==10 || family==20)
 	{
@@ -120,7 +121,9 @@ BiCopPar2Tau<-function(family,par,par2=0)
 	{
 		theta=-par
 		delta=-par2
-		tau=1-2/(delta*(2-theta))+4/(theta^2*delta)*gamma(delta+2)*gamma((2-2*theta)/(theta)+1)/gamma(delta+3+(2-2*theta)/(theta))
+		#tau=1-2/(delta*(2-theta))+4/(theta^2*delta)*gamma(delta+2)*gamma((2-2*theta)/(theta)+1)/gamma(delta+3+(2-2*theta)/(theta))
+		kt<-function(t) {( (1-(1-t)^par)^(-par2)-1 )/( -par*par2*(1-t)^(par-1)*(1-(1-t)^par)^(par2-1) )}
+		tau=1+4*integrate(kt,0,1)$value
 		tau=-tau
 	}
 	else if(family==30 || family==40)

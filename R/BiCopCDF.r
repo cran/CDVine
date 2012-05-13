@@ -1,6 +1,8 @@
 BiCopCDF<-function(u1,u2,family,par,par2=0)
 {
   if(is.null(u1)==TRUE || is.null(u2)==TRUE) stop("u1 and/or u2 are not set or have length zero.")
+  if(any(u1>1) || any(u1<0)) stop("Data has be in the interval [0,1].")
+  if(any(u2>1) || any(u2<0)) stop("Data has be in the interval [0,1].")
 	if(length(u1)!=length(u2)) stop("Lengths of 'u1' and 'u2' do not match.")
 	if(!(family %in% c(0,1,2,3,4,5,6,7,8,9,10,13,14,16,17,18,19,20,23,24,26,27,28,29,30,33,34,36,37,38,39,40))) stop("Copula family not implemented.")
 	if(c(2,7,8,9,10,17,18,19,20,27,28,29,30,37,38,39,40) %in% family && par2==0) stop("For t-, BB1, BB6, BB7 and BB8 copulas, 'par2' must be set.")

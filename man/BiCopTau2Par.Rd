@@ -55,9 +55,9 @@ Joe, H. (1997).
 Multivariate Models and Dependence Concepts.
 Chapman and Hall, London.
 
-Czado, C., U. Schepsmeier, and A. Min (2011).
+Czado, C., U. Schepsmeier, and A. Min (2012).
 Maximum likelihood estimation of mixed C-vines with application to exchange rates.
-Statistical Modelling, to appear.
+Statistical Modelling, 12(3), 229-255.
 }
 
 \seealso{\code{\link{BiCopTau2Par}}}

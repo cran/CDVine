@@ -23,6 +23,7 @@ Model1.par2=rep(0,dim(data)[2]*(dim(data)[2]-1)/2),Model2.par2=rep(0,dim(data)[2
   data=as.matrix(data)
   N = dim(data)[1]
   d = dim(data)[2]
+   if(any(data>1) || any(data<0)) stop("Data has be in the interval [0,1].")
 
   if(Model1.type == "CVine") Model1.type = 1
   else if(Model1.type == "DVine") Model1.type = 2

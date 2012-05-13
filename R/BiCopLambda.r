@@ -6,9 +6,11 @@ BiCopLambda<-function(u1=NULL,u2=NULL,family="emp",par=0,par2=0,PLOT=TRUE,...)
 {
 	if(is.null(u1)==TRUE && is.null(u2)==TRUE && (family==0 || par==0)) stop("Either 'u1' and 'u2' have to be set for the emp. lambda-function or 'family' and 'par' for the theo. lambda-function.")
 	if(length(u1)!=length(u2)) stop("Lengths of 'u1' and 'u2' do not match.")
+	if(is.null(u1)!=TRUE && (any(u1>1) || any(u1<0))) stop("Data has be in the interval [0,1].")
+  if(is.null(u2)!=TRUE && (any(u2>1) || any(u2<0))) stop("Data has be in the interval [0,1].")
 	if(!(family %in% c(1,2,3,4,5,6,7,8,9,10, "emp"))) stop("Copula family not implemented.")
-	if(c(2,7,8,9,10) %in% family && par2==0) stop("For t-, BB1 and BB7 copulas, 'par2' must be set.")
-	if(c(1,3,4,5,6,13,14,16,23,24,26,33,34,36) %in% family && length(par)<1) stop("'par' not set.")
+	if(family %in% c(2,7,8,9,10) && par2==0) stop("For t-, BB1 and BB7 copulas, 'par2' must be set.")
+	if(family %in% c(1,3,4,5,6,13,14,16,23,24,26,33,34,36) && length(par)<1) stop("'par' not set.")
 
 	if(PLOT!=TRUE && PLOT!=FALSE) stop("The parameter 'PLOT' has to be set to 'TRUE' or 'FALSE'.")
 

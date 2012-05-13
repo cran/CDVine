@@ -431,10 +431,12 @@ BiCopMetaContour <- function(u1=NULL, u2=NULL, bw=1, size=100, levels=c(0.01,0.0
 family="emp", par=0, par2=0, PLOT=TRUE, margins="norm", margins.par=0, xylim=NA, ...)
 {
   if((is.null(u1)==TRUE || is.null(u2)==TRUE) && family=="emp") stop("'u1' and/or 'u2' not set or of length zero.")
+  if(is.null(u1)!=TRUE && (any(u1>1) || any(u1<0))) stop("Data has be in the interval [0,1].")
+  if(is.null(u2)!=TRUE && (any(u2>1) || any(u2<0))) stop("Data has be in the interval [0,1].")
   #if(length(u1)!=length(u2)) stop("Lengths of 'u1' and 'u2' do not match.")
   if(!(family %in% c(0,1,2,3,4,5,6,7,8,9,10,13,14,16,17,18,19,20,23,24,26,27,28,29,30,33,34,36,37,38,39,40, "emp"))) stop("Copula family not implemented.")
-  if(c(2,7,8,9,10,17,18,19,20,27,28,29,30,37,38,39,40) %in% family && par2==0) stop("For t-, BB1 and BB7 copulas, 'par2' must be set.")
-  if(c(1,3,4,5,6,13,14,16,23,24,26,33,34,36) %in% family && length(par)<1) stop("'par' not set.")
+  if(family %in% c(2,7,8,9,10,17,18,19,20,27,28,29,30,37,38,39,40) && par2==0) stop("For t-, BB1 and BB7 copulas, 'par2' must be set.")
+  if(family %in% c(1,3,4,5,6,13,14,16,23,24,26,33,34,36) && length(par)<1) stop("'par' not set.")
   
   # size sollte nicht zu gross sein
   if(size>1000) stop("Size parameter should not be greater than 1000. Otherwise computational time and memory space are too large.")

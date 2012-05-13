@@ -83,10 +83,10 @@ We are especially grateful to Harry Joe for his contributions to the implementat
 \tabular{ll}{
 Package: \tab CDVine\cr
 Type: \tab Package\cr
-Version: \tab 1.1-5\cr
-Date: \tab 2011-12-28\cr
+Version: \tab 1.1-6\cr
+Date: \tab 2012-05-13\cr
 License: \tab GPL (>=2)\cr
-Depends: \tab R (\eqn{\geq 2.11.0}{>= 2.11.0}), MASS, mvtnorm, igraph \cr
+Depends: \tab R (\eqn{\geq 2.11.0}{>= 2.11.0}), MASS, mvtnorm, igraph0 \cr
 LazyLoad: \tab yes
 }
 }
@@ -107,19 +107,18 @@ Bedford, T. and R. M. Cooke (2002).
 Vines - a new graphical model for dependent random variables.
 Annals of Statistics 30, 1031-1068.
 
-Brechmann, E. C., C. Czado, and K. Aas (2011).
+Brechmann, E. C., C. Czado, and K. Aas (2012).
 Truncated regular vines in high dimensions with applications to financial data.
-Canadian Journal of Statistics, to appear.
-\url{http://mediatum.ub.tum.de/doc/1079235/1079235.pdf}.
+Canadian Journal of Statistics 40 (1), 68-85.
 
 Brechmann, E. C. and C. Czado (2011).
 Risk Management with High-Dimensional Vine Copulas: An Analysis of the Euro Stoxx 50.
 Submitted for publication.
 \url{http://mediatum.ub.tum.de/doc/1079276/1079276.pdf}.
 
-Czado, C., U. Schepsmeier, and A. Min (2011).
+Czado, C., U. Schepsmeier, and A. Min (2012).
 Maximum likelihood estimation of mixed C-vines with application to exchange rates.
-Statistical Modelling, to appear.
+Statistical Modelling, 12 (3), 229-255.
 
 Dissmann, J. F., E. C. Brechmann, C. Czado, and D. Kurowicka (2011).
 Selecting and estimating regular vine copulae and application to financial returns.

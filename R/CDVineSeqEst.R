@@ -41,6 +41,7 @@ function(data,family,type, method="mle", se=FALSE, max.df=30, max.BB=list(BB1=c(
   # Sicherheitsabfragen
   if(d < 3) stop("Dimension has to be at least 3.")
   if(n < 2) stop("Number of observations has to be at least 2.")
+   if(any(data>1) || any(data<0)) stop("Data has be in the interval [0,1].")
   if(length(family) != d*(d-1)/2) stop("Number of copula families incorrect.")
   for(i in 1:(d*(d-1)/2))
 	{

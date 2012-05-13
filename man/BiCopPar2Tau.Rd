@@ -55,30 +55,28 @@ BiCopPar2Tau(family, par, par2=0)
 \value{
 Theoretical value of Kendall's tau corresponding to the bivariate copula family and parameter(s)
 (\eqn{\theta} for one parameter families and the first parameter of the t-copula,
-\eqn{\theta} and \eqn{\delta} for the two parameter BB1, BB6, BB7 and BB8 copulas). 
+\eqn{\theta} and \eqn{\delta} for the two parameter BB1, BB6, BB7 and BB8 copulas).
 \tabular{ll}{
 No. \tab Kendall's tau \cr
 \code{1, 2} \tab \eqn{\frac{2}{\pi}\arcsin(\theta)}{2 / \pi arcsin(\theta)} \cr
 \code{3, 13} \tab \eqn{\frac{\theta}{\theta+2}}{\theta / (\theta+2)} \cr
 \code{4, 14} \tab \eqn{1-\frac{1}{\theta}}{1-1/\theta} \cr
 \code{5} \tab \eqn{1-\frac{4}{\theta}+4\frac{D_1(\theta)}{\theta}}{1-4/\theta + 4 D_1(\theta)/\theta} \cr
-	 \tab with \eqn{D_1(\theta)=\int_0^\theta \frac{c/\theta}{\exp(x)-1}dx}{D_1(\theta)=\int_0^\theta (c/\theta)/(exp(x)-1)dx} (Debey function) \cr
+	 \tab with \eqn{D_1(\theta)=\int_0^\theta \frac{x/\theta}{\exp(x)-1}dx}{D_1(\theta)=\int_0^\theta (x/\theta)/(exp(x)-1)dx} (Debye function) \cr
 \code{6, 16} \tab \eqn{1+\frac{4}{\theta^2}\int_0^1 x\log(x)(1-x)^{2(1-\theta)/\theta}dx}{1+4/\theta^2\int_0^1 x\log(x)(1-x)^{2(1-\theta)/\theta}dx} \cr
 \code{7, 17} \tab \eqn{1-\frac{2}{\delta(\theta+2)}}{1-2/(\delta(\theta+2))} \cr
 \code{8, 18} \tab \eqn{1+4\int_0^1 -\log(-(1-t)^\theta+1)(1-t-(1-t)^{-\theta}+(1-t)^{-\theta}t)/(\delta\theta) dt} \cr
-\code{9, 19} \tab \eqn{1-\frac{2}{\delta(2-\theta)}+\frac{4}{\theta^2 \delta}B(\frac{2-\theta}{\theta},\delta+2)}{1-2/(\delta(2-\theta)) + 4/(\theta^2 \delta) B((2-\theta)/\theta , \delta+2)} \cr
-	 \tab with \eqn{B(x,y)=\int_0^1 t^{x+1}(t-1)^{y-1}dt} (Beta function) \cr
+\code{9, 19} \tab \eqn{1+4\int_0^1 ( (1-(1-t)^{\theta})^{-\delta} - )/( -\theta\delta(1-t)^{\theta-1}(1-(1-t)^{\theta})^{-\delta-1} ) dt} \cr
 \code{10, 20} \tab \eqn{1+4\int_0^1 -\log \left( ((1-t\delta)^\theta-1)/((1-\delta)^\theta-1) \right) } \cr
 	 \tab \eqn{* (1-t\delta-(1-t\delta)^{-\theta}+(1-t\delta)^{-\theta}t\delta)/(\theta\delta) dt} \cr
-\code{23, 33} \tab \eqn{\frac{\theta}{-\theta+2}}{\theta/(-\theta+2)} \cr
+\code{23, 33} \tab \eqn{\frac{\theta}{2-\theta}}{\theta/(2-\theta)} \cr
 \code{24, 34} \tab \eqn{-1-\frac{1}{\theta}}{-1-1/\theta} \cr
 \code{26, 36} \tab \eqn{-1-\frac{4}{\theta^2}\int_0^1 x\log(x)(1-x)^{-2(1+\theta)/\theta}dx}{-1-4/\theta^2\int_0^1 x\log(x)(1-x)^{-2(1+\theta)/\theta}dx} \cr
-\code{27, 37} \tab \eqn{-1+\frac{2}{\delta(\theta+2)}}{1-2/(\delta(\theta+2))} \cr
-\code{28, 38} \tab \eqn{-1-4\int_0^1 -\log(-(1-t)^\theta+1)*(1-t-(1-t)^{-\theta}+(1-t)^{-\theta}t)/(\delta\theta) dt} \cr
-\code{29, 39} \tab \eqn{-1+\frac{2}{\delta(2-\theta)}+\frac{4}{\theta^2 \delta}B(\frac{2-\theta}{\theta},\delta+2)}{1-2/(\delta(2-\theta)) + 4/(\theta^2 \delta) B((2-\theta)/\theta , \delta+2)} \cr
-	 \tab with \eqn{B(x,y)=\int_0^1 t^{x+1}(t-1)^{y-1}dt} (Beta function) \cr
-\code{30, 40} \tab \eqn{-1-4\int_0^1 -\log \left( ((1-t\delta)^\theta-1)/((1-\delta)^\theta-1) \right)} \cr 
-	 \tab \eqn{* (1-t\delta-(1-t\delta)^{-\theta}+(1-t\delta)^{-\theta}t\delta)/(\theta\delta) dt} \cr
+\code{27, 37} \tab \eqn{-1-\frac{2}{\delta(2-\theta)}}{1-2/(\delta(\theta+2))} \cr
+\code{28, 38} \tab \eqn{-1-4\int_0^1 -\log(-(1-t)^{-\theta}+1)(1-t-(1-t)^{\theta}+(1-t)^{\theta}t)/(\delta\theta) dt} \cr
+\code{29, 39} \tab \eqn{-1-4\int_0^1 ( (1-(1-t)^{-\theta})^{\delta} - )/( -\theta\delta(1-t)^{-\theta-1}(1-(1-t)^{-\theta})^{\delta-1} ) dt} \cr
+\code{30, 40} \tab \eqn{-1-4\int_0^1 -\log \left( ((1+t\delta)^{-\theta}-1)/((1+\delta)^{-\theta}-1) \right)} \cr
+	 \tab \eqn{* (1+t\delta-(1+t\delta)^{\theta}-(1+t\delta)^{\theta}t\delta)/(\theta\delta) dt} \cr
 }
 }
 
@@ -89,9 +87,9 @@ Joe, H. (1997).
 Multivariate Models and Dependence Concepts.
 Chapman and Hall, London.
 
-Czado, C., U. Schepsmeier, and A. Min (2011).
+Czado, C., U. Schepsmeier, and A. Min (2012).
 Maximum likelihood estimation of mixed C-vines with application to exchange rates.
-Statistical Modelling, to appear.
+Statistical Modelling, 12(3), 229-255.
 }
 
 \seealso{\code{\link{CDVinePar2Tau}}, \code{\link{BiCopTau2Par}}}

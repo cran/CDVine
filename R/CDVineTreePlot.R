@@ -22,6 +22,7 @@ type, method="mle", max.df=30, max.BB=list(BB1=c(5,6),BB6=c(6,6),BB7=c(5,6),BB8=
 
   if(edge.labels[1] != FALSE & !all(edge.labels %in% c("family","par","par2","theotau","emptau"))) stop("Edge label not implemented.")
   if(is.null(data) & any(edge.labels == "emptau")) stop("Empirical Kendall's tau values cannot be obtained if no data is provided.")
+   if(is.null(data)!=TRUE && any(data>1) || any(data<0)) stop("Data has be in the interval [0,1].")
 
 	dd=length(family)
 	d=(1+sqrt(1+8*dd))/2 

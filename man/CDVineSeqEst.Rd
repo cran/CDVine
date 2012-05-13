@@ -86,9 +86,9 @@ Aas, K., C. Czado, A. Frigessi, and H. Bakken (2009).
 Pair-copula constructions of multiple dependence.
 Insurance: Mathematics and Economics 44 (2), 182-198.
 
-Czado, C., U. Schepsmeier, and A. Min (2011).
+Czado, C., U. Schepsmeier, and A. Min (2012).
 Maximum likelihood estimation of mixed C-vines with application to exchange rates.
-Statistical Modelling, to appear.
+Statistical Modelling, 12(3), 229-255.
 }
 
 \author{Carlos Almeida, Ulf Schepsmeier}

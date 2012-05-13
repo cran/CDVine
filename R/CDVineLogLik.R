@@ -6,6 +6,7 @@ function(data, family, par, par2=rep(0,dim(data)[2]*(dim(data)[2]-1)/2), type)
   }else{
     data=as.matrix(data)
   }
+   if(any(data>1) || any(data<0)) stop("Data has be in the interval [0,1].")
   if(type == "CVine") type = 1
   else if(type == "DVine") type = 2
   if(type != 1 & type != 2) stop("Vine model not implemented.")  

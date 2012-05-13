@@ -266,6 +266,8 @@ BiCopVuongClarke<-function(u1,u2,familyset=NA,correction=FALSE,level=0.05)
   if(is.na(familyset[1])) familyset = c(1:10,13,14,16:20,23,24,26:30,33,34,36:40)
 # Sicherheitsabfragen
   if(is.null(u1)==TRUE || is.null(u2)==TRUE) stop("u1 and/or u2 are not set or have length zero.")
+  if(any(u1>1) || any(u1<0)) stop("Data has be in the interval [0,1].")
+  if(any(u2>1) || any(u2<0)) stop("Data has be in the interval [0,1].")
   if(length(u1) != length(u2)) stop("Lengths of 'u1' and 'u2' do not match.")
   if(length(u1)<2) stop("Number of observations has to be at least 2.")
 for(i in 1:length(familyset))
