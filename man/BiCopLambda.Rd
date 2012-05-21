@@ -97,7 +97,7 @@ theta = BiCopTau2Par(fam,tau)
 dat = BiCopSim(n,fam,theta)
 
 # create lambda-function plots
-X11(width=16,height=5)
+dev.new(width=16,height=5)
 par(mfrow=c(1,3))
 BiCopLambda(dat[,1],dat[,2])	# empirical lambda-function	
 BiCopLambda(family=fam,par=theta)	# theoretical lambda-function
@@ -111,7 +111,7 @@ dat = BiCopSim(n,fam,theta)
 # rotate the data to standard Clayton copula data
 rot_dat = 1-dat[,1]
 
-X11(width=16,height=5)
+dev.new(width=16,height=5)
 par(mfrow=c(1,3))
 BiCopLambda(rot_dat,dat[,2])  # empirical lambda-function	
 BiCopLambda(family=3,par=-theta)	# theoretical lambda-function

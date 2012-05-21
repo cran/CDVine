@@ -68,8 +68,9 @@ BiCopSelect <- function(u1,u2,familyset=NA,selectioncrit="AIC",indeptest=FALSE,l
       optiout = list()
 
       if(any(todo == 2)){
-        optiout[[2]] = suppressWarnings(MLE_intern(cbind(data1,data2),start[[2]],2))
-        if(optiout[[2]]$par[2] >= 30){
+        optiout[[2]] = suppressWarnings(BiCopEst(data1,data2,family=2, max.df=30))
+        optiout[[2]]$par=c(optiout[[2]]$par,optiout[[2]]$par2)
+        if(optiout[[2]]$par[2] >= 30-0.01){
           todo[todo==2] = 1
           todo = unique(todo)
           optiout[[2]] = list()
@@ -314,12 +315,12 @@ BiCopSelect <- function(u1,u2,familyset=NA,selectioncrit="AIC",indeptest=FALSE,l
   		    if(i %in% c(2,7:10,17:20,27:30,37:40))
           {
             ll=sum(log(BiCopPDF(data1,data2,i, optiout[[i]]$par, optiout[[i]]$par[2])))
-  		      BICs[i] = -2*optiout[[i]]$value + 2*log(length(data1))
+  		      BICs[i] = -2*ll + 2*log(length(data1))
           }
           else
           {
             ll=sum(log(BiCopPDF(data1,data2,i, optiout[[i]]$par)))
-            BICs[i] = -2*optiout[[i]]$value + log(length(data1))
+            BICs[i] = -2*ll + log(length(data1))
           }
         }
 

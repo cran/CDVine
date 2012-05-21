@@ -3,6 +3,15 @@ Changes for R-package CDVine
 Ulf Schepsmeier and Eike Christian Brechmann <CDVine@ma.tum.de>
 
 
+Version 1.1-7 (May 21, 2012)
+
+- Changed X11() to dev.new() in examples.
+
+- Bug fix:
+  * fixed BIC in BiCopSelect
+  * improved estimation of Student-t copula in BiCopSelect
+
+
 Version 1.1-6 (May 13, 2012)
 
 - Changed dependency from "igraph" to "igraph0" because of upcoming major update of the package "igraph", which is not backwards compatible.

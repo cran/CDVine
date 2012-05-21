@@ -85,7 +85,7 @@ theta = BiCopTau2Par(fam,tau)
 dat = BiCopSim(n,fam,theta)	
 
 # create chi-plots
-X11(width=16,height=5)
+dev.new(width=16,height=5)
 par(mfrow=c(1,3))
 BiCopChiPlot(dat[,1],dat[,2],xlim=c(-1,1),ylim=c(-1,1),
              main="General chi-plot")

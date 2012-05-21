@@ -75,7 +75,7 @@ theta2 = BiCopTau2Par(fam2,tau)
 dat2 = BiCopSim(n,fam2,theta2)
 
 # create K-plots
-X11(width=10,height=5)
+dev.new(width=10,height=5)
 par(mfrow=c(1,2))
 BiCopKPlot(dat1[,1],dat1[,2],main="Gaussian copula")
 BiCopKPlot(dat2[,1],dat2[,2],main="Clayton copula")
