@@ -300,7 +300,7 @@ void dbb8(double* u, double* v, int* n, double* param, double* out)
 {
 	int i;
 	double th, de;
-	double t2, t3, t12, t16, t6, t7, t10, t11, t13, t33, t38, t39, t49, t59, t69, t25, t26, t29, t44, t45, t50, t54, t62, t67;
+	double t2, t3, t12, t16, t6, t7, t10, t11, t33, t38, t39, t49, t59, t69, t25, t26, t29, t44, t45, t50, t54, t62, t67;
 
 	th = param[0];
 	de = param[1];
@@ -313,7 +313,7 @@ void dbb8(double* u, double* v, int* n, double* param, double* out)
 		  t10 = 1.0-de;
 		  t11 = pow(t10,th);
 		  t12 = 1.0-t11;
-		  t13 = 1/t12;
+		  //t13 = 1/t12;
 		  t16 = 1/th;
 		  t33 = th*t3;
 		  t38 = 2.0*th;

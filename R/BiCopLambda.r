@@ -6,11 +6,11 @@ BiCopLambda<-function(u1=NULL,u2=NULL,family="emp",par=0,par2=0,PLOT=TRUE,...)
 {
 	if(is.null(u1)==TRUE && is.null(u2)==TRUE && (family==0 || par==0)) stop("Either 'u1' and 'u2' have to be set for the emp. lambda-function or 'family' and 'par' for the theo. lambda-function.")
 	if(length(u1)!=length(u2)) stop("Lengths of 'u1' and 'u2' do not match.")
-	if(is.null(u1)!=TRUE && (any(u1>1) || any(u1<0))) stop("Data has be in the interval [0,1].")
-  if(is.null(u2)!=TRUE && (any(u2>1) || any(u2<0))) stop("Data has be in the interval [0,1].")
 	if(!(family %in% c(1,2,3,4,5,6,7,8,9,10, "emp"))) stop("Copula family not implemented.")
-	if(family %in% c(2,7,8,9,10) && par2==0) stop("For t-, BB1 and BB7 copulas, 'par2' must be set.")
-	if(family %in% c(1,3,4,5,6,13,14,16,23,24,26,33,34,36) && length(par)<1) stop("'par' not set.")
+	if(c(2,7,8,9,10) %in% family && par2==0) stop("For t-, BB1 and BB7 copulas, 'par2' must be set.")
+	if(c(1,3,4,5,6,13,14,16,23,24,26,33,34,36) %in% family && length(par)<1) stop("'par' not set.")
+	if(is.null(u1)==FALSE && (any(u1>1) || any(u1<0))) stop("Data has be in the interval [0,1].")
+	if(is.null(u2)==FALSE && (any(u2>1) || any(u2<0))) stop("Data has be in the interval [0,1].")
 
 	if(PLOT!=TRUE && PLOT!=FALSE) stop("The parameter 'PLOT' has to be set to 'TRUE' or 'FALSE'.")
 
@@ -218,53 +218,64 @@ gtLambda<-function(copula,param, len=1000)
 	V<-rep(0,nn)
 	mu=c(0,0)
 	
-	if(copula==1)
+	if(param[1]==0)
 	{
-		rho=param
-		#sigma=matrix(c(1,rho,rho,1), c(2,2))
-		#Z=rmvnorm(nn, mu, sigma)
-		#u1=pnorm(Z[,1])
-		#u2=pnorm(Z[,2])
+		for(i in 1:n)
+		{
+			lambda[i]=(v1[i]*log(v1[i],exp(1)))
+		}
+	}
+	else
+	{
+		if(copula==1)
+		{
+			rho=param
+			#sigma=matrix(c(1,rho,rho,1), c(2,2))
+			#Z=rmvnorm(nn, mu, sigma)
+			#u1=pnorm(Z[,1])
+			#u2=pnorm(Z[,2])
+			
+			uu1 = runif(nn)
+			vv2 = runif(nn)
+			uu2 = .C("Hinv1",as.integer(1),as.integer(nn),as.double(vv2), as.double(uu1), as.double(rho),as.double(0), as.double(rep(0,nn)),PACKAGE='CDVine')[[7]]
 		
-		uu1 = runif(nn)
-		vv2 = runif(nn)
-		uu2 = .C("Hinv1",as.integer(1),as.integer(nn),as.double(vv2), as.double(uu1), as.double(rho),as.double(0), as.double(rep(0,nn)),PACKAGE='CDVine')[[7]]
+			
+			#x1=qnorm(U1)
+			#x2=qnorm(U2)
+			#C=dmvnorm(cbind(x1,x2), mu, sigma)
+		}
+		else if(copula==2)
+		{
+			rho=param[1]
+			nu=param[2]
+			
+			#sigma=matrix(c(1,rho,rho,1), c(2,2))
+			#Z=rmvt(nn, sigma, nu)
+			#u1=pt(Z[,1], df=nu)
+			#u2=pt(Z[,2], df=nu)
+				
+			uu1 = runif(nn)
+			vv2 = runif(nn)
+			uu2 = .C("Hinv1",as.integer(2),as.integer(nn),as.double(vv2), as.double(uu1), as.double(rho),as.double(nu), as.double(rep(0,nn)),PACKAGE='CDVine')[[7]]
+
+		}
 	
-		
-		#x1=qnorm(U1)
-		#x2=qnorm(U2)
-		#C=dmvnorm(cbind(x1,x2), mu, sigma)
-	}
-	else if(copula==2)
-	{
-		rho=param[1]
-		nu=param[2]
-		
-    #sigma=matrix(c(1,rho,rho,1), c(2,2))
-		#Z=rmvt(nn, sigma, nu)
-		#u1=pt(Z[,1], df=nu)
-		#u2=pt(Z[,2], df=nu)
-    		
-		uu1 = runif(nn)
-		vv2 = runif(nn)
-		uu2 = .C("Hinv1",as.integer(2),as.integer(nn),as.double(vv2), as.double(uu1), as.double(rho),as.double(nu), as.double(rep(0,nn)),PACKAGE='CDVine')[[7]]
 
-	}
+		# Berechnung der konkordanten Paare
+		V[1:nn]<-mapply(function(x,y) length(which(x>uu1&y>uu2)),uu1,uu2)
 
-	# Berechnung der konkordanten Paare
-	V[1:nn]<-mapply(function(x,y) length(which(x>uu1&y>uu2)),uu1,uu2)
-
-	# Berechnung des empirischen K's
+		# Berechnung des empirischen K's
 
 		V1<-V/(n-1)
 		V1<-V1
 
 		K<-sapply(v1,function(x) (1/nn)*length(which(V1[1:nn]<=x)))
 
-	# Berechnung der emp. lambdas
+		# Berechnung der emp. lambdas
 
 		lambda<-v1-K
 
-	#lambda=smooth(lambda)
-return(lambda)
+		#lambda=smooth(lambda)
+	}
+	return(lambda)
 }

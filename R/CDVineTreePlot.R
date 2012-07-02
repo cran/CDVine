@@ -14,7 +14,7 @@
 #################################################
 
 CDVineTreePlot <- function(data=NULL, family, par=rep(0,length(family)), par2=rep(0,length(family)), names=NULL, 
-type, method="mle", max.df=30, max.BB=list(BB1=c(5,6),BB6=c(6,6),BB7=c(5,6),BB8=c(6,1)), tree="ALL", edge.labels=c("family"), P=NULL)
+type, method="mle", max.df=30, max.BB=list(BB1=c(5,6),BB6=c(6,6),BB7=c(5,6),BB8=c(6,1)), tree="ALL", edge.labels=c("family"), P=NULL, ...)
 {
   if(type == "CVine") type = 1
   else if(type == "DVine") type = 2
@@ -148,17 +148,17 @@ for(j in 1:dd)
 # initial edge
   if(edge.labels[1]!=FALSE)
   {
-    for(jj in 1:numlabels)
-    {
-	for(j in 1:dd)
+	for(jj in 1:numlabels)
 	{
-	      if(edge.labels[jj] == "family") elabels[[j]][jj] = BiCopName(family[j])
-	      if(edge.labels[jj] == "par") elabels[[j]][jj] = parVec[j]
-	      if(edge.labels[jj] == "par2") elabels[[j]][jj] = par2Vec[j]
-	      if(edge.labels[jj] == "theotau") elabels[[j]][jj] = theoTauVec[j]
-	      if(edge.labels[jj] == "emptau") elabels[[j]][jj] = empTauVec[j]
-	 }
-    }
+		for(j in 1:dd)
+		{
+			  if(edge.labels[jj] == "family") elabels[[j]][jj] = BiCopName(family[j])
+			  if(edge.labels[jj] == "par") elabels[[j]][jj] = parVec[j]
+			  if(edge.labels[jj] == "par2") elabels[[j]][jj] = par2Vec[j]
+			  if(edge.labels[jj] == "theotau") elabels[[j]][jj] = theoTauVec[j]
+			  if(edge.labels[jj] == "emptau") elabels[[j]][jj] = empTauVec[j]
+		}
+	}
   } 
 
 
@@ -226,8 +226,6 @@ for(t in tree)
 		
 	g=graph.adjacency(adjmatrix,weighted=TRUE,diag=FALSE)
 
-	main=paste("Tree ",t, sep="")
-
 	if(edge.labels[1]!=FALSE){
   		elabel = elabels2[[t]]
   	}else{
@@ -238,8 +236,14 @@ for(t in tree)
   	{
   		P[[t]]=layout.fruchterman.reingold(g)
   	}
-
-  	main=paste("Tree ",t, sep="")
+		
+	if(!exists("main"))
+		main=paste("Tree ",t, sep="")
+	else 
+	{
+		if(main!=paste("Tree ",(t-1), sep=""))
+			main=paste("Tree ",t, sep="")
+	}
 
   	plot(g,layout=P[[t]],
   		vertex.label=V(g)$name,

@@ -12,7 +12,7 @@ CDVineTreePlot(data=NULL, family,
                par=rep(0,length(family)), par2=rep(0,length(family)),
                names=NULL, type, method="mle", max.df=30,
                max.BB=list(BB1=c(5,6),BB6=c(6,6),BB7=c(5,6),BB8=c(6,1)),
-               tree="ALL", edge.labels=c("family"), P=NULL)
+               tree="ALL", edge.labels=c("family"), P=NULL, ...)
 }
 
 \arguments{
@@ -75,6 +75,7 @@ CDVineTreePlot(data=NULL, family,
     \code{"theotau"}: theoretical Kendall's tau values corresponding to pair-copula families and parameters (see \code{\link{BiCopPar2Tau}})\cr
     \code{"emptau"}: empirical Kendall's tau values (only if data is provided!)}
   \item{P}{A list of matrices with two columns for the x-y-coordinates of the nodes in the plot(s) (optional; default: \code{P = NULL}).}
+  \item{...}{further graphical parameters}
 }
 
 \note{

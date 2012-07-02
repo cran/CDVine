@@ -1,3 +1,8 @@
+%\VignetteIndexEntry{Vignette: Modeling dependence with C- and D-vine copulas: The \proglang{R}-package \pkg{CDVine}}
+%\VignetteKeyword{copula, inference, MLE, model fitting, multivariate dependence model, pcc}
+%\VignettePackage{CDVine}
+%\VignetteDepends{MASS, mvtnorm, igraph}
+
 \documentclass[article,nojss]{jss}
 
 %additional packages
@@ -5,21 +10,21 @@
 \usepackage{amsfonts}
 \usepackage{latexsym}
 
-%\VignetteIndexEntry{CDVine}
-
 \author{Eike Christian Brechmann\\Technische Universit\"at M\"unchen \And
         Ulf Schepsmeier\\Technische Universit\"at M\"unchen}
 \title{Modeling dependence with C- and D-vine copulas: The \proglang{R}-package \pkg{CDVine}}
 
 \Plainauthor{Eike Christian Brechmann, Ulf Schepsmeier}
-\Plaintitle{Modeling dependence with C- and D-vine copulas: The R-package CDVine}
-\Shorttitle{Modeling dependence with C- and D-vine copulas}
+\Plaintitle{Modeling Dependence with C- and D-Vine Copulas: The R-Package CDVine}
+\Shorttitle{Modeling Dependence with C- and D-Vine Copulas}
 
 \Abstract{
-Dependence modeling using copulas is very common nowadays.
-While other multivariate copulas suffer from rather inflexible structures,
-vine copulas overcome such limitations and are able to model complex dependency patterns
-by benefiting from the rich variety of bivariate copulas.
+Flexible multivariate distributions are needed in many areas.
+The popular multivariate Gaussian distribution is however very restrictive and cannot account for features like asymmetry and heavy tails.
+Therefore dependence modeling using copulas is nowadays very common to account for such patterns.
+The use of copulas is however challenging in higher dimensions, where standard multivariate copulas suffer from rather inflexible structures.
+Vine copulas overcome such limitations and are able to model complex dependency patterns
+by benefiting from the rich variety of bivariate copulas as building blocks.
 This article presents the \proglang{R}-package \pkg{CDVine}
 which provides functions and tools for statistical inference of canonical vine (C-vine) and D-vine copulas.
 It contains tools for bivariate exploratory data analysis and for bivariate copula selection as well as for selection of pair-copula families in a vine.
@@ -38,6 +43,7 @@ Sampling algorithms and graphical methods are also included.
 %% \Submitdate{2004-09-29}
 %% \Acceptdate{2004-09-29}
 
+
 \Address{
   Eike Christian Brechmann, Ulf Schepsmeier\\
   Lehrstuhl f\"ur Mathematische Statistik\\
@@ -54,18 +60,18 @@ Sampling algorithms and graphical methods are also included.
 \begin{document}
 
 <<options, echo=FALSE>>=
-options(prompt = "R> ", continue = "+  ", width = 80, digits=4, useFancyQuotes = FALSE)
+options(prompt = "R> ", continue = "+  ", width = 78, digits=4, useFancyQuotes = FALSE)
 @
 
 \section{Introduction}\label{sect:intro}
 
-In recent years copula modeling has become increasingly popular in many fields of application.
+In search for flexible multivariate distributions, copula modeling has recently become increasingly popular in many fields of application.
 Standard references on copula theory include the books by \cite{Joe1997} and \cite{Nelsen2006}.
 The most fundamental theorem, which constitutes the important role of copulas for describing dependence in statistics, is the theorem of \cite{Sklar1959}.
 It establishes the link between multivariate distribution functions and their univariate margins.
 
-Let $F$ be a $d$-dimensional distribution function with margins $F_1,...,F_d$.
-Then there exists a copula $C$ such that for all $\boldsymbol{x}=(x_1,...,x_d)^\prime\in(\mathbb{R}\cup\{-\infty,\infty\})^d$,
+Let $F$ be the $d$-dimensional distribution function of the random vector $\boldsymbol{X}=(X_1,...,X_d)^\prime$ with margins $F_1,...,F_d$.
+Then there exists a copula $C$ such that for all $\boldsymbol{x}=(x_1,...,x_d)^\prime\in[-\infty,\infty]^d$,
 \begin{equation}
 F(\boldsymbol{x})=C(F_1(x_1),...,F_d(x_d)).
 \label{eq:sklar}
@@ -75,10 +81,12 @@ Conversely, if $C$ is a copula and $F_1,...,F_d$ are distribution functions,
 then the function $F$ defined by \eqref{eq:sklar} is a joint distribution function with margins $F_1,...,F_d$.
 In particular $C$ can be interpreted as the distribution function of a $d$-dimensional random variable on $[0,1]^d$ with uniform margins.
 Corresponding densities will be denoted by a small letter $c$.
+Furthermore, the random variables $X_1,...,X_d$ will be assumed to be continuous in the following.
 
-While this motivates us to speak of \textit{the} copula of continuous random variables $\mathbf{X}=(X_1,...,X_d)\sim F$,
-the problem in practical applications is how to identify this copula.
-For the bivariate case, a rich variety of copula families is available and well-investigated \citep[cp.][]{Joe1997,Nelsen2006}.
+The pratical implication of Sklar's theorem is that the modeling of the marginal distributions
+can be conveniently separated from the dependence modeling in terms of the copula.
+The problem in practical applications is how to identify this copula.
+For the bivariate case, a rich variety of copula families is available and well-investigated \citep[see][]{Joe1997,Nelsen2006}.
 However, in arbitrary dimension, the choice of adequate families is rather limited.
 Standard multivariate copulas such as the multivariate Gaussian or Student-t as well as exchangeable Archimedean copulas
 lack the flexibility of accurately modeling the dependence among larger numbers of variables.
@@ -88,17 +96,97 @@ and hence exhibit other limitations such as parameter restrictions.
 Vine copulas do not suffer from any of these problems.
 Initially proposed by \cite{Joe1996} and developed in more detail in \cite{BedfordCooke2001, BedfordCooke2002} and in \cite{KurowickaCooke2006},
 vines are a flexible graphical model for describing multivariate copulas built up using a cascade of bivariate copulas, so-called \textit{pair-copulas}.
+Such pair-copula constructions (PCCs) decompose a multivariate probability density into bivariate copulas,
+where each pair-copula can be choosen independently from the others.
+This allows for a enormous flexibility in dependence modeling.
+In particular, asymmetries and tail dependence can be taken into account as well as (conditional) independence to build more parsimonious models.
+Vines thus combine the advantages of multivariate copula modeling, that is separation of marginal and dependence modeling,
+and the flexibility of bivariate copulas.
 Their ``statistical breakthrough'' was due to \cite{AasCzadoFrigessiBakken2009} who described statistical inference techniques
 for the two classes of \textit{canonical (C-)} and \textit{D-vines}.
 
-These are derived as iterative pair-copula constructions, where the $d(d-1)/2$ pair-copulas
-can be arranged in $d-1$ trees (acyclic connected graphs with nodes and edges).
+C- and D-vine copulas have been very successful in many applications, mainly, but not exclusively, in risk management in finance and insurance, see, e.g.,
+\cite{SchirmacherSchirmacher2008}, \cite{CholleteHeinenValdesogo2009}, \cite{HeinenValdesogo2009}, \cite{MendesSemeraroLeal2010},
+\cite{CzadoSchepsmeierMin2011}, and \cite{NikoloulopoulosJoeLi2012}.
+Bayesian approaches are followed by \cite{MinCzado2010}, \cite{MinCzado2011}, \cite{SmithMinCzadoAlmeida2010}, and \cite{HofmannCzado2010}.
+In two comparison studies \cite{BergAas2007} and \cite{FischerKockSchluterWeigert2009} showed the the good performance of vine copulas
+compared to alternative multivariate copulas.
+Recent overviews about the vine methodology can be found in \cite{Czado2010} and \cite{KurowickaJoe2011}, which includes further applications and theory.
+
+So far publicly available and reliable software for C- and D-vine copula inference has been lacking.
+Only the software tool ``Uncertainty analysis with Correlations'' (UNICORN, \url{http://risk2.ewi.tudelft.nl/oursoftware/3-unicorn})
+includes some functionality for vines but only to a rather limited extent.
+We therefore try to fill this gap with the package \pkg{CDVine} for the statistical software \proglang{R} \citep{R2011}.
+It includes functions for statistical inference of C- and D-vine copulas
+as well as, due to the underlying pair-copula structure, tools for bivariate data analysis.
+Some other \proglang{R}-packages for copula modeling are available
+on the Comprehensive \proglang{R} Archive Network (CRAN, \url{http://cran.r-project.org/}):
+the comprehensive package \pkg{copula} described in \cite{Yan2007} and \cite{KojadinovicYan2010a},
+the package \pkg{fCopulae} \citep{Wuertz2009}
+and finally the package \pkg{nacopula} \citep{nacopula} for so-called nested Archimedean copulas, a generalization of Archimedean copulas.
+Furthermore, our package depends on the packages \pkg{igraph} \citep{igraph} for illustrations of vine trees and \pkg{mvtnorm} \citep{mvtnorm},
+which provides efficient implementations of multivariate Gaussian and Student-t distributions.
+These will be loaded (if not already loaded) when loading the package \pkg{CDVine} by
+
+<<library>>=
+library("CDVine")
+@
+
+In the following, we assume that this has been done.
+Additionally, to allow for reproducibility of the results, we preliminarily fix a seed.
+
+<<seed>>=
+set.seed(10)
+@
+
+The remainder of the paper is structured as follows.
+The required methodological background on vine copulas is provided in Section \ref{sect:meth}.
+In Section \ref{sect:methods} we then discuss methods for bivariate data analysis,
+while those for statistical inference of C- and D-vine copulas are treated in Section \ref{sect:cdvines}.
+An illustrative example is presented in Section \ref{sect:example}.
+Section \ref{sect:conclusion} concludes and provides an outlook to further software implementations of the vine copula methodology.
+
+
+\section{Methodological background}\label{sect:meth}
+
+Vines are a graphical representation to specify so-called pair copula constructions (PCCs) as introduced by \cite{AasCzadoFrigessiBakken2009}.
+Before we provide more general expressions for C- and D-vines, we motivate the PCC in three dimensions.
+For this let $\mathbf{X}=(X_1,X_2,X_3)\sim F$ with marginal distribution functions $F_1, F_2$ and $F_3$ and corresponding densities.
+By recursive conditioning we can write
+\begin{equation}
+f(x_1,x_2,x_3)= f_1(x_1)f(x_2|x_1)f(x_3|x_1,x_2).
+\label{eq:pcc0}
+\end{equation}
+By Sklar's theorem \eqref{eq:sklar} we know that
+\begin{equation}
+f(x_2|x_1) = \frac{f(x_1,x_2)}{f_1(x_1)} = \frac{c_{1,2}(F_1(x_1),F_2(x_2))f_1(x_1)f_2(x_2)}{f_1(x_1)} = c_{1,2}(F_1(x_1),F_2(x_2))f_2(x_2),
+\label{eq:pcc1}
+\end{equation}
+and
+\begin{equation*}
+\begin{split}
+f(x_3|x_1,x_2) & = \frac{f(x_2,x_3|x_1)}{f(x_2|x_1)} = \frac{c_{2,3|1}(F(x_2|x_1),F(x_3|x_1))f(x_2|x_1)f(x_3|x_1)}{f(x_2|x_1)}\\
+& = c_{2,3|1}(F(x_2|x_1),F(x_3|x_1))f(x_3|x_1)\\
+& \overset{\text{\eqref{eq:pcc1}}}{=} c_{2,3|1}(F(x_2|x_1),F(x_3|x_1))c_{1,3}(F_1(x_1),F_3(x_3))f_3(x_3).
+\end{split}
+\label{eq:pcc2}
+\end{equation*}
+The three-dimensional joint density \eqref{eq:pcc0} can therefore be represented in terms of bivariate copulas $C_{1,2}, C_{1,3}$ and $C_{2,3|1}$
+with densities $c_{1,2}, c_{1,3}$ and $c_{2,3|1}$, so-called pair-copulas,
+which may be chosen independently of each other to achieve a wide range of different dependence structures.
+Typically it is assumed that the conditional copula $C_{2,3|1}$ is independent of the conditioning variable $X_1$ to facilitate inference
+(see \citet{AasCzadoFrigessiBakken2009} and \citet{HaffAasFrigessi2010}).
+
+Since the decomposition in \eqref{eq:pcc0} is not unique, there exist many such iterative PCCs.
+To classify them \cite{BedfordCooke2001,BedfordCooke2002} introduced the graphical model called \textit{vine},
+which is also treated in detail in \cite{KurowickaCooke2006} and \cite{KurowickaJoe2011}.
+Vines arrange the $d(d-1)/2$ pair-copulas of a $d$-dimensional PCC in $d-1$ linked trees (acyclic connected graphs with nodes and edges).
 In the first C-vine tree, the dependence with respect to one particular variable, the first \textit{root node},
 is modeled using bivariate copulas for each pair.
 Conditioned on this variable, pairwise dependencies with respect to a second variable are modeled, the second root node.
 In general, a root node is chosen in each tree and all pairwise dependencies with respect to this node are modeled conditioned on all previous root nodes,
-i.e., C-vine trees have a star structure.
-This gives the following decomposition of a multivariate density, the \textit{C-vine density} w.l.o.g. root nodes $1,...,d$ (otherwise nodes can be relabeled),
+i.e., C-vine trees have a star structure (see the left panel of Figure \ref{fig:cdvine}).
+This gives the following decomposition of a multivariate density, the \textit{C-vine density} w.l.o.g. with root nodes $1,...,d$ (otherwise nodes can be relabeled),
 \begin{equation}
 f(\boldsymbol{x})=\prod_{k=1}^d f_k(x_k) \times \prod_{i=1}^{d-1} \prod_{j=1}^{d-i} c_{i,i+j|1:(i-1)}(F(x_i|x_{1},...,x_{i-1}),F(x_{i+j}|x_{1},...,x_{i-1})|\boldsymbol{\theta}_{i,i+j|1:(i-1)}),
 \label{eq:cvinedens}
@@ -107,6 +195,9 @@ where $f_k,\ k=1,...,d$, denote the marginal densities and
 $c_{i,i+j|1:(i-1)}$ bivariate copula densities with parameter(s) $\boldsymbol{\theta}_{i,i+j|1:(i-1)}$ (in general $i_k:i_m$ means $i_k,...,i_m$).
 Here, the outer product runs over the $d-1$ trees and root nodes $i$,
 while the inner product refers to the $d-i$ pair-copulas in each tree $i=1,...,d-1$.
+Our three-dimensional example can be interpreted as a C-vine with $X_1$ as first root node.
+A more detailed discussion of the C-vine construction and its likelihood can be found
+in \cite{AasCzadoFrigessiBakken2009} and in \cite{CzadoSchepsmeierMin2011}.
 
 Similarly, D-vines are also constructed by choosing a specific order of the variables.
 Then in the first tree, the dependence of the first and second variable, of the second and third, of the third and fourth, and so on,
@@ -115,7 +206,7 @@ In the second tree, conditional dependence of the first and third given the seco
 the second and fourth given the third (the pair $(2,4|3)$), and so on, is modeled.
 In the same way, pairwise dependencies of variables $a$ and $b$ are modeled in subsequent trees conditioned on those variables
 which lie between the variables $a$ and $b$ in the first tree, e.g., the pair $(1,5|2,3,4)$.
-That is each D-vine tree has a path structure.
+That is each D-vine tree has a path structure (see the right panel of Figure \ref{fig:cdvine}).
 This then leads to the \textit{D-vine density} which also conveniently decomposes a $d$-dimensional density
 (as above the order is w.l.o.g. chosen as $1,...,d$; otherwise nodes can be relabeled):
 \begin{equation}
@@ -126,6 +217,7 @@ This then leads to the \textit{D-vine density} which also conveniently decompose
 \end{split}
 \end{equation}
 Again the outer product runs over the $d-1$ trees, while the pairs in each tree are designated by the inner product.
+By ordering the variables appropriately, the above three-dimensional example corresponds to a D-vine with order $2, 1, 3$.
 
 The crucial question for inference is how to obtain the conditional distribution functions $F(x|\boldsymbol{v})$
 for an $m$-dimensional vector $\boldsymbol{v}$.
@@ -138,12 +230,13 @@ h(x|\boldsymbol{v},\boldsymbol{\theta}):=F(x|\boldsymbol{v})=\frac{\partial C_{x
 where $v_j$ is an arbitrary component of $\boldsymbol{v}$
 and $\boldsymbol{v}_{-j}$ denotes the $(m-1)$-dimensional vector $\boldsymbol{v}$ excluding $v_j$ \citep{Joe1996}.
 Further $C_{xv_j|\boldsymbol{v}_{-j}}$ is a bivariate copula distribution function with parameter(s) $\boldsymbol{\theta}$ specified in tree $m$.
-The notation of the $h$-function is introduced for convenience \citep[cp.][]{AasCzadoFrigessiBakken2009}.
+The notion of the $h$-function is introduced for convenience \citep[see][]{AasCzadoFrigessiBakken2009}.
 
 By allowing arbitrary bivariate copulas for each pair-copula term in the decompositions \eqref{eq:cvinedens} and \eqref{eq:dvinedens},
 the multivariate copulas obtained from C- and D-vine structures, so-called \textit{C-} and \textit{D-vine copulas},
 constitute very flexible models, since bivariate copulas can easily accommodate complex dependence structures
-such as asymmetric dependence or strong joint tail behavior \cite[cp.][]{JoeLiNikoloulopoulos2010}.
+such as asymmetric dependence or strong joint tail behavior \cite[see][]{JoeLiNikoloulopoulos2010}.
+For this purpose a wide range of bivariate copula families is implemented in the package \pkg{CDVine}.
 Examples of five-dimensional C- and D-vine trees are shown in Figure \ref{fig:cdvine}.
 Here, the order of root nodes in the C-vine is $1,...,5$, which also is the order of the first D-vine tree.
 Edge labels show the indices of the corresponding pair-copula terms.
@@ -161,39 +254,19 @@ Edge labels show the indices of the corresponding pair-copula terms.
 \label{fig:cdvine}
 \end{figure}
 
-Since \cite{AasCzadoFrigessiBakken2009}, C- and D-vine copulas have been very successful in many applications, see, e.g.,
-\cite{SchirmacherSchirmacher2008}, \cite{CholleteHeinenValdesogo2009}, \cite{HeinenValdesogo2009}, \cite{MendesSemeraroLeal2010}, and \cite{CzadoSchepsmeierMin2011}
-as well as \cite{MinCzado2010}, \cite{MinCzado2011}, \cite{SmithMinCzadoAlmeida2010}, and \cite{HofmannCzado2010} who take a Bayesian approach.
-Comparison studies of multivariate copulas showing the good performance of vine copulas are \cite{BergAas2007} and \cite{FischerKockSchluterWeigert2009}.
-Recent overviews about the vine methodology can be found in \cite{Czado2010} and \cite{KurowickaJoe2011}, which includes further applications and theory.
+Fitting a vine copula model involves different steps:
+First an appropriate vine tree structure has to be identified.
+Such a structure may either be given by the data itself or has to be selected manually or through expert knowledge.
+For a given vine structure, adequate copulas have to be selected and, in the next step, estimated.
+Finally, models need to be evaluated and compared to alternatives.
+The workflow shown in Figure \ref{fig:workflow} allocates functions in \pkg{CDVine} to these different steps of data analysis and model building.
 
-So far publicly available and reliable software for C- and D-vine copula inference has been lacking.
-Only the software tool ``Uncertainty analysis with Correlations'' (UNICORN, \url{http://risk2.ewi.tudelft.nl/oursoftware/3-unicorn})
-includes some functionality for vines but only to a rather limited extent.
-We therefore try to fill this gap with the package \pkg{CDVine} for the statistical software \proglang{R} \citep{R2011}.
-It includes functions for statistical inference of C- and D-vine copulas
-as well as, due to the underlying pair-copula structure, tools for bivariate data analysis.
-Some other \proglang{R}-packages for copula modeling are available
-on the Comprehensive \proglang{R} Archive Network (CRAN, \url{http://cran.r-project.org/}):
-the comprehensive package \pkg{copula} described in \cite{Yan2007} and \cite{KojadinovicYan2010a},
-the packages \pkg{fCopulae} \citep{Wuertz2009} and \pkg{QRMlib} \citep{McNeilUlman2010}
-and finally the package \pkg{nacopula} \citep{HofertMaechler2010} for so-called nested Archimedean copulas, a generalization of Archimedean copulas.  
-Furthermore, our package depends on the packages \pkg{igraph} \citep{igraph} for illustrations of vine trees and \pkg{mvtnorm} \citep{mvtnorm},
-which provides efficient implementations of multivariate Gaussian and Student-t distributions.
-These will be loaded (if not already loaded) when loading the package \pkg{CDVine} by
-
-<<library>>=
-library("CDVine")
-@ 
-
-In the following, we assume that this has been done.
-
-The remainder of the paper is structured as follows.
-In Section \ref{sect:methods} we discuss methods for bivariate data analysis,
-while those for statistical inference of C- and D-vine copulas are treated in Section \ref{sect:cdvines}.
-An illustrative example is presented in Section \ref{sect:example}.
-Section \ref{sect:conclusion} concludes and provides an outlook to further software implementations of the vine copula methodology.
-
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{workflow1}
+\caption{Proposed data analysis and model building workflow and provided functionality in the package \pkg{CDVine}.}
+\label{fig:workflow}
+\end{figure}
 
 
 \section{Bivariate data analysis methods}\label{sect:methods}
@@ -202,22 +275,17 @@ Since C- and D-vine copulas as pair-copula constructions are based on bivariate 
 \pkg{CDVine} includes a range of tools for bivariate data analysis and inference of bivariate copula families.
 We hence discuss these methods before turning to functions for statistical inference of C- and D-vine copulas in Section \ref{sect:cdvines}.
 
-In the following we further assume that the data we are working with is in $[0,1]$ and has approximately uniform margins, so-called \textit{copula data}.
+In the following we further assume that the data we are working with
+has approximately uniform margins in $[0,1]$, so-called \textit{copula data}.
 For general data sets this is typically established either by non-parametrically transforming the data with the empirical marginal distribution functions
 or by choosing (and fitting) appropriate marginal distributions and then applying the parametric distribution functions to the data
-(cp. Sklar's Theorem \eqref{eq:sklar}).
-
-To allow for reproducibility of the results, we preliminarily fix a seed.
-
-<<seed>>=
-set.seed(10)
-@
+(see Sklar's Theorem \eqref{eq:sklar}).
 
 
 \subsection{Bivariate copula families}\label{sect:bicopfam}
 
-The \pkg{CDVine} package provides a wide range of bivariate copula families
-from the two major classes of elliptical and Archimedean copulas \citep[cp.][]{Joe1997,Nelsen2006}.
+The package \pkg{CDVine} provides a wide range of bivariate copula families
+from the two major classes of elliptical and Archimedean copulas \citep[see][]{Joe1997,Nelsen2006}.
 Elliptical copulas are directly obtained by inverting Sklar's Theorem \eqref{eq:sklar}.
 Given a bivariate distribution function $F$ with invertible margins $F_1$ and $F_2$, then
 \begin{equation*}
@@ -233,7 +301,7 @@ and the bivariate Student-t copula
 \begin{equation*}
 C(u_1,u_2)=t_{\rho,\nu}\left(t_\nu^{-1}(u_1),t_\nu^{-1}(u_2)\right),
 \end{equation*}
-with dependence parameter $\rho\in(-1,1)$ and degrees of freedom parameter $\nu>1$ for the Student-t copula.
+with dependence parameter $\rho\in(-1,1)$ and degrees of freedom parameter $\nu>2$ for the Student-t copula.
 $\Phi_\rho$ denotes the bivariate standard normal distribution function with correlation parameter $\rho$
 and $\Phi^{-1}$ the inverse of the univariate standard normal distribution function.
 Similarly, $t_{\rho,\nu}$ is the bivariate Student-t distribution function with correlation parameter $\rho$ and $\nu$ degrees of freedom,
@@ -266,12 +334,12 @@ The used notation and properties (relationship of parameter(s) to Kendall's $\ta
 as well as to lower and upper tail dependence coefficients; see \citealp{Joe1996,Nelsen2006}, for further details)
 are shown in Table \ref{tab:ellipfam} for bivariate elliptical and in Table \ref{tab:archfam} for bivariate Archimedean copulas, respectively.
 
-\begin{table}[t]
+\begin{table}
 \centering
 \renewcommand{\arraystretch}{1.5}
 \begin{tabular}{lllll}
 \hline
-No. & Elliptical distribution & Parameter range & Kendall's $\tau$ & Tail dependence\\
+\# & Elliptical distribution & Parameter range & Kendall's $\tau$ & Tail dependence\\
 \hline
 \code{1} & Gaussian & $\rho\in(-1,1)$ & $\frac{2}{\pi}\arcsin(\rho)$ & 0\\
 \code{2} & Student-t & $\rho\in(-1,1),\ \nu>2$ & $\frac{2}{\pi}\arcsin(\rho)$ & $2t_{\nu+1}\left(-\sqrt{\nu+1}\sqrt{\frac{1-\rho}{1+\rho}}\right)$\\
@@ -281,31 +349,32 @@ No. & Elliptical distribution & Parameter range & Kendall's $\tau$ & Tail depend
 \label{tab:ellipfam}
 \end{table}
 
-\begin{table}[t]
-\begin{minipage}{\textwidth}
+\begin{table}
 \centering
 \footnotesize
 \renewcommand{\arraystretch}{1.5}
 \begin{tabular}{llllll}
 \hline
-No. & Name & Generator & Parameter & Kendall's $\tau$ & Tail dependence\\
+\# & Name & Generator & Parameter & Kendall's $\tau$ & Tail dep.\\
 & & function & range & & (lower, upper) \\
 \hline
-\code{3} & Clayton & $\frac{1}{\theta}(t^{-\theta}-1)$ & $\theta>0$ & $\frac{\theta}{\theta+2}$ & $(2^{-1/\theta},\ 0)$ \\
-\code{4} & Gumbel & $(-\log t)^\theta$ & $\theta\geq 1$ & $1-\frac{1}{\theta}$ & $(0,\ 2-2^{1/\theta})$ \\
-\code{5} & Frank\footnote{$D_1(\theta)=\int_0^\theta \frac{c/\theta}{\exp(x)-1}dx$ (Debey function)} & $-\log[\frac{e^{-\theta t}-1}{e^{-\theta}-1}]$ & $\theta\in \mathbb{R}\setminus\{0\}$ & $1-\frac{4}{\theta}+4\frac{D_1(\theta)}{\theta}$ & $(0,\ 0)$ \\
-\code{6} & Joe & $-\log[1-(1-t)^\theta]$ & $\theta>1$ & $1+\frac{4}{\theta^2}\int_0^1 t\log(t)(1-t)^{\frac{2(1-\theta)}{\theta}}dt$ & $(0,\ 2-2^{1/\theta})$ \\
-\code{7} & BB1 & $(t^{-\theta}-1)^\delta$ & $\theta>0,\ \delta\geq 1$ & $1-\frac{2}{\delta(\theta+2)}$ & $(2^{-1/(\theta\delta)},\ 2-2^{1/\delta})$ \\
-\code{8} & BB6 & $(-\log [1-(1-t)^{\theta}])^{\delta}$ & $\theta\geq 1, \delta\geq 1$ & $1+4\int_0^1 \big(-\log(-(1-t)^\theta+1)$ & $(0, 2-2^{1/(\theta\delta)})$ \\
-& & & & $\times\frac{(1-t-(1-t)^{-\theta}+t(1-t)^{-\theta})}{\delta\theta}\big) dt$ & \\
-\code{9} & BB7\footnote{$B(x,y)=\int_0^1 t^{x+1}(t-1)^{y-1}dt$ (Beta function)} & $[1-(1-t)^\theta)]^{-\delta}-1$ & $\theta\geq 1,\ \delta>0$ & $1-\frac{2}{\delta(2-\theta)}+\frac{4}{\theta^2 \delta}B(\frac{2-\theta}{\theta},\delta+2)$ & $(2^{-1/\delta},\ 2-2^{1/\theta})$ \\
-\code{10} & BB8 & $-\log \left[\frac{1-(1-\delta t)^{\theta}}{1-(1-\delta)^{\theta}} \right]$ & $\theta\geq 1, 0<\delta\leq 1$ & $1+4\int_0^1 \big(-\log \left( \frac{(1-t\delta)^\theta-1}{(1-\delta)^\theta-1} \right)$ & (0,0\footnote{Except for $\delta=1$, then the upper tail dependence coefficient is $2-2^{1/\theta}$.}) \\
-& & & & $\times \frac{1-t\delta-(1-t\delta)^{-\theta}+t\delta(1-t\delta)^{-\theta}}{\theta\delta}\big) dt$ & \\
+\code{3} & Clayton & $\frac{1}{\theta}(t^{-\theta}-1)$ & $\theta>0$ & $\frac{\theta}{\theta+2}$ & $(2^{-\frac{1}{\theta}},\ 0)$ \\
+\code{4} & Gumbel & $(-\log t)^\theta$ & $\theta\geq 1$ & $1-\frac{1}{\theta}$ & $(0,\ 2-2^{\frac{1}{\theta}})$ \\
+\code{5} & Frank & $-\log[\frac{e^{-\theta t}-1}{e^{-\theta}-1}]$ & $\theta\in \mathbb{R}\setminus\{0\}$ & $1-\frac{4}{\theta}+4\frac{D_1(\theta)}{\theta}$ & $(0,\ 0)$ \\
+\code{6} & Joe & $-\log[1-(1-t)^\theta]$ & $\theta>1$ & $1+\frac{4}{\theta^2}\int_0^1 t\log(t)(1-t)^{2(1-\theta)/\theta}dt$ & $(0,\ 2-2^{\frac{1}{\theta}})$ \\
+\code{7} & BB1 & $(t^{-\theta}-1)^\delta$ & $\theta>0,\ \delta\geq 1$ & $1-\frac{2}{\delta(\theta+2)}$ & $(2^{-\frac{1}{\theta\delta}},\ 2-2^{\frac{1}{\delta}})$ \\
+\code{8} & BB6 & $(-\log [1-(1-t)^{\theta}])^{\delta}$ & $\theta\geq 1, \delta\geq 1$ & $1+\frac{4}{\delta\theta}\int_0^1 \big(-\log(1-(1-t)^\theta)$ & $(0, 2-2^{\frac{1}{\theta\delta}})$ \\
+& & & & $\times(1-t)(1-(1-t)^{-\theta})\big) dt$ & \\
+\code{9} & BB7 & $(1-(1-t)^\theta)^{-\delta}-1$ & $\theta\geq 1,\ \delta>0$ & $1+\frac{4}{\theta\delta}\int_0^1 \big(-(1-(1-t)^{\theta})^{\delta+1}$ & $(2^{-\frac{1}{\delta}},\ 2-2^{\frac{1}{\theta}})$ \\
+& & & & $\times \frac{(1-(1-t)^{\theta})^{-\delta} - 1}{(1-t)^{\theta-1}}\big) dt$ & \\
+\code{10} & BB8 & $-\log \left[\frac{1-(1-\delta t)^{\theta}}{1-(1-\delta)^{\theta}} \right]$ & $\theta\geq 1, \delta\in(0,1]$ & $1+\frac{4}{\theta\delta}\int_0^1 \big(-\log \left( \frac{(1-t\delta)^\theta-1}{(1-\delta)^\theta-1} \right)$ & $(0,0)$ \\
+& & & & $\times (1-t\delta)(1-(1-t\delta)^{-\theta})\big) dt$ & \\
 \hline
 \end{tabular}
-\caption{Denotation and properties of bivariate Archimedean copula families included in \pkg{CDVine}.}
+\caption{Denotation and properties of bivariate Archimedean copula families included in \pkg{CDVine}.
+$D_1(\theta)=\int_0^\theta \frac{c/\theta}{\exp(x)-1}dx$ is the Debye function.
+For $\delta=1$ the upper tail dependence coefficient of the BB8 copula is $2-2^{1/\theta}$.}
 \label{tab:archfam}
-\end{minipage}
 \end{table}
 
 In addition to these families, we also implemented rotated versions of the Clayton (\code{3}), Gumbel (\code{4}), Joe (\code{6}) and the BB families (\code{7,8,9,10}).
@@ -322,7 +391,7 @@ To the survival copulas of the Clayton, Gumbel, Joe and the BB copulas the numbe
 while rotation by 90 degrees is indicated by the numbers \code{23}, \code{24}, \code{26}, \code{27}, \code{28}, \code{29} and \code{30}
 and families \code{33}, \code{34}, \code{36}, \code{37}, \code{38}, \code{39} and \code{40} correspond to rotation by 270 degrees.
 For example, family \code{24} is a Gumbel copula rotated by 90 degrees, while \code{16} denotes the Joe survival copula.
-Note that the parameter ranges of copulas rotated by 90 and 270 degrees are on the negative scale (cp. Table \ref{tab:archfam}),
+Note that the parameter ranges of copulas rotated by 90 and 270 degrees are on the negative scale (see Table \ref{tab:archfam}),
 e.g., the parameter of a rotated Gumbel copula (90/270 degrees) has to be smaller than $-1$.
 
 By \code{0} we denote the independence copula, which is a boundary case of the implemented bivariate copulas,
@@ -330,14 +399,15 @@ e.g., for the elliptical copulas with $\rho=0$ and the Frank copula with $\theta
 As a reminder of the coding of the copula families
 the function \code{BiCopName} transforms a copula family name to its number analogue and vice versa.
 
-The cumulative distribution functions (CDF's) and probability density functions (PDF's)
+The cumulative distribution functions (CDFs) and probability density functions (PDFs)
 of the bivariate copula families can be found in the books of \cite{Joe1997} and \cite{Nelsen2006}
 and are implemented in \pkg{CDVine} as the functions \code{BiCopCDF} and \code{BiCopPDF}, respectively.
 The example code illustrates the CDF and the PDF of a Student-t copula (\code{family = 2}) with
 dependence parameter $\rho=0.7$ (\code{par = 0.7}) and 4 degrees of freedom (\code{par2 = 4}).
 Perspective plots are shown in Figure \ref{fig:cdfpdf}.
+Corresponding code can be found in the appendix.
 
-<<BiCopCDFPDF>>=
+<<BiCopCDFPDF, echo=FALSE>>=
 u1 = seq(0.02,0.98,by=0.02)
 u2 = seq(0.02,0.98,by=0.02)
 copCDF = matrix(0,49,49)
@@ -361,36 +431,20 @@ persp(u1,u2,copPDF,theta=-25,main="Copula PDF",ticktype="detailed",zlab="",ntick
 Conditional bivariate distribution functions, the so-called $h$-functions defined in \eqref{eq:hfunc}, can be
 evaluated using the function \code{BiCopHfunc}.
 For bivariate copula data \code{u1} and \code{u2} and given bivariate copula family (\code{family}) and parameter(s) (\code{par} and \code{par2})
-it returns the $h$-functions of \code{u2} given \code{u1} in the first and of \code{u1} given \code{u2} in the second argument.
-The function call for a bivariate Frank copula (\code{family = 5}) with parameter $\theta=6$ (\code{par = 6}) is as follows,
-where $u_1=0.7$ and $u_2=0.4$ and first $h(u_2|u_1,\boldsymbol{\theta})$ (\code{hfunc1}) and then $h(u_1|u_2,\boldsymbol{\theta})$ (\code{hfunc2}) are returned.
-
-<<BiCopHfunc>>=
-BiCopHfunc(u1=0.7, u2=0.4, family=5, par=6)
-@
+it returns the $h$-functions of \code{u2} given \code{u1}, $h(u_2|u_1,\boldsymbol{\theta})$, in the first (\code{hfunc1})
+and of \code{u1} given \code{u2}, $h(u_1|u_2,\boldsymbol{\theta})$, in the second argument (\code{hfunc2}).
 
 To account for the relationship between bivariate copula parameter(s) and Kendall's $\tau$ and vice versa,
 the package \pkg{CDVine} contains the functions \code{BiCopPar2Tau} and \code{BiCopTau2Par}.
 However note that the inverse relationship (Kendall's $\tau$ to copula parameter(s)) is only well-defined for one parameter bivariate copulas,
 i.e., the families \code{1,3,4,5,6} and the rotated versions of the one parameter Archimedean copulas.
-The following code calculates the Kendall's $\tau$ corresponding to a bivariate Gaussian copula with parameter $\rho=0.7$ and vice versa.
 
-<<BiCopPar2Tau,print=TRUE>>=
-tau1=BiCopPar2Tau(family=1,par=0.7)
-BiCopTau2Par(family=1,tau=tau1)
-@
-
-The relationship between the copula parameter(s) and the tail dependence coefficients as tabulated in Tables \ref{tab:ellipfam} and \ref{tab:archfam}
+Similarly, the relationship between the copula parameter(s) and the tail dependence coefficients as tabulated in Tables \ref{tab:ellipfam} and \ref{tab:archfam}
 is implemented in the function \code{BiCopPar2TailDep}.
-The usage of this function for a BB1 copula with parameters $\theta=0.8$ and $\delta=1.5$ is as follows:
-
-<<BiCopPar2TailDep,print=TRUE>>=
-BiCopPar2TailDep(family=7,par=0.8,par2=1.5)
-@
 
 Simulation of general bivariate copula families can easily be established using the probability integral transform.
 For this, let $C$ be the bivariate copula under consideration with parameter(s) $\boldsymbol{\theta}$.
-Further, let $v_1$ and $v_2$ be two uniform samples. Then $\boldsymbol{u}=(u_1,u_2)^\prime$ given by
+Further, let $v_1$ and $v_2$ be two independent uniform samples. Then $\boldsymbol{u}=(u_1,u_2)^\prime$ given by
 \begin{align*}
 u_1 & = v_1,\\
 u_2 & = h^{-1}(v_2|u_1,\boldsymbol{\theta}),
@@ -401,18 +455,18 @@ This is implemented in the function \code{BiCopSim} which returns a sample of si
 To illustrate rotated bivariate Archimedean copulas, we simulate samples of size \code{N = 500} from Clayton copulas rotated by 0, 90, 180 and 270 degrees, respectively.
 Parameters are chosen according to Kendall's $\tau$ values of $0.5$ for positive dependence (\code{family = 3} and \code{13})
 and $-0.5$ for negative dependence (\code{family = 23} and \code{33}).
+Corresponding scatter plots are shown in Figure \ref{fig:claytonrot}.
+The code can again be found in the appendix.
 
 <<BiCopSim-seed, echo=FALSE>>=
 set.seed(10)
 @
-<<BiCopSim>>=
+<<BiCopSim, echo=FALSE>>=
 dat0 = BiCopSim(N=500,family=3,par=BiCopTau2Par(family=3,tau=0.5))
 dat90 = BiCopSim(N=500,family=23,par=BiCopTau2Par(family=23,tau=-0.5))
 dat180 = BiCopSim(N=500,family=13,par=BiCopTau2Par(family=13,tau=0.5))
 dat270 = BiCopSim(N=500,family=33,par=BiCopTau2Par(family=33,tau=-0.5))
 @
-
-Corresponding scatter plots are shown in Figure \ref{fig:claytonrot}.
 
 \begin{figure}[t]
 \begin{center}
@@ -433,7 +487,8 @@ Kendall's $\tau$ values of $0.5$ for positive dependence and $-0.5$ for negative
 \subsection{Tools for bivariate exploratory data analysis}\label{sect:bicopselect}
 
 When analyzing (bivariate) data, the true copula describing the dependence is however always unknown.
-Hence, we require tools to determine an appropriate bivariate copula family to describe the observed dependence pattern.
+Hence, we require tools to determine an appropriate bivariate copula family to describe the observed dependence pattern
+(see Step 2 of the proposed workflow in Figure \ref{fig:workflow}).
 \pkg{CDVine} provides graphical as well as analytical tools.
 
 \subsubsection{Graphical tools}
@@ -464,16 +519,15 @@ Gamma & \code{"gamma"} & (shape, scale) \\
 \label{tab:margins}
 \end{table}
 
-The following example shows an empirical contour plot (contours based on an estimated bivariate density)
+Figure \ref{fig:contour} shows an empirical contour plot (contours based on an estimated bivariate density)
 as well as theoretical contour plots (contours based on the theoretical bivariate density) with standard normal and Gamma margins
-for a Gumbel copula with parameter $\theta=2$, where no data is needed for the theoretical contour plots.
-The additional arguments \code{bw}, \code{size} and \code{levels} define the bandwidth, number of grid points and contour levels used.
-The resulting plots are shown in Figure \ref{fig:contour}.   
+for a Gumbel copula with parameter $\theta=2$.
+Code is given in the appendix.
 
 <<BiCopMetaContour-seed, echo=FALSE>>=
 set.seed(10)
 @
-<<BiCopMetaContour, eval=FALSE>>=
+<<BiCopMetaContour, eval=FALSE, echo=FALSE>>=
 par(mfrow=c(1,3),cex.main=2,cex.lab=1.5,cex.axis=1.5)
 dat = BiCopSim(N=1000,family=4,par=2)
 BiCopMetaContour(u1=dat[,1],u2=dat[,2],bw=2,size=100,levels=c(0.01,0.05,0.1,0.15,0.2),par=0,family="emp",main="Empirical with N=1000")
@@ -505,17 +559,14 @@ The $\lambda$-function is characteristic for each copula family and defined as
 \end{equation*}
 where $K(v,\boldsymbol{\theta}) := P(C(U_1,U_2|\boldsymbol{\theta}) \leq v)$
 is Kendall's distribution function for a copula $C$ with parameter(s) $\boldsymbol{\theta}$, $v\in[0,1]$
-and $(U_1,U_2)$ distributed according to $C$ with uniform margins.
-For Archimedean copulas the $\lambda$-function is explicitly given in terms
-of the generator function $\varphi$ and its derivative $\varphi '$ \citep[see][for more details]{GenestRivest1993}:
-\begin{equation*}
-\lambda(v,\boldsymbol{\theta}) = \frac{\varphi(v)}{\varphi '(v)}.
-\end{equation*}
+and $(U_1,U_2)$ distributed according to $C$.
+Note that for Archimedean copulas the $\lambda$-function is explicitly given in terms
+of the generator function $\varphi$ and its derivative $\varphi '$ as $\lambda(v,\boldsymbol{\theta}) = \varphi(v)/\varphi '(v)$ \citep[see][for more details]{GenestRivest1993}.
 
 In \code{BiCopLambda} we implemented the $\lambda$-function for the copula families \code{1} - \code{10}.
 However note that for the bivariate Gaussian and Student-t copulas no closed form expressions of the theoretical $\lambda$-functions exist.
 Therefore they are simulated based on samples of size 1000.
-The plot of the theoretical $\lambda$-function also shows the bounds of the $\lambda$-function
+The plot of the theoretical $\lambda$-function also shows bounds of the $\lambda$-function
 corresponding to independence and comonotonicity ($\lambda=0$).
 For rotated bivariate copulas one can transform the input arguments \code{u1} and/or \code{u2} in order to use the $\lambda$-function.
 For copulas rotated by 90 degrees \code{u1} has to be set to \code{1-u1},
@@ -523,14 +574,15 @@ for 270 degrees \code{u2} to \code{1-u2} and for 180 degrees \code{u1} and \code
 Then $\lambda$-functions of the corresponding non-rotated copula families can be considered.
 
 Comparing empirical to theoretical $\lambda$-functions gives an indication
-which copula family might be appropriate to describe the observed dependence (cp. Section \ref{sect:example}).
+which copula family might be appropriate to describe the observed dependence (see Section \ref{sect:example}).
 An illustrative example for the Joe copula with parameter $\theta=2$ is shown here:
-we first produce a plot of the empirical $\lambda$-function, then of the theoretical one, and finally a plot showing both (see Figure \ref{fig:lambda}). 
+we first produce a plot of the empirical $\lambda$-function, then of the theoretical one, and finally a plot showing both
+(see Figure \ref{fig:lambda}; code can be found in the appendix).
 
 <<BiCopLambda-seed, echo=FALSE>>=
 set.seed(10)
 @
-<<BiCopLambda, eval=FALSE>>=
+<<BiCopLambda, eval=FALSE, echo=FALSE>>=
 dat = BiCopSim(N=1000,family=6,par=2)
 par(mfrow=c(1,3),cex.main=2,cex.lab=1.5,cex.axis=1.5)
 BiCopLambda(u1=dat[,1],u2=dat[,2])
@@ -564,7 +616,7 @@ The test exploits the asymptotic normality of the test statistic
 T := \sqrt{\frac{9N(N - 1)}{2(2N + 5)}} \ |\hat{\tau}|,
 \end{equation*}
 where $N$ is the number of observations and $\hat{\tau}$ the empirical Kendall's $\tau$ of the data.
-The $p$-value of the null hypothesis of bivariate independence hence is
+The approximate $p$-value of the null hypothesis of bivariate independence hence is
 \begin{equation*}
 p\text{-value}=2 \times \left(1 - \Phi\left(T\right)\right).
 \end{equation*}
@@ -575,34 +627,27 @@ is implemented in the function \code{BiCopGofKendall}.
 It computes the Cram\'er-von Mises and Kolmogorov-Smirnov test statistics as well as the corresponding estimated $p$-values by bootstrapping
 (the default are \code{B = 100} bootstrap samples; note that, if \code{B} is chosen rather large, computations may take very long).
 For rotated copulas the input arguments are transformed and the goodness-of-fit procedure for the corresponding non-rotated copula is used
-(cp. the discussion of the $\lambda$-function above).
-Using the simulated data of the Joe copula from above we get:
-
-<<BiCopGofKendall>>=
-gof = BiCopGofKendall(u1=dat[,1],u2=dat[,2],family=5)
-gof$p.value.CvM 
-gof$p.value.KS
-@
+(see the discussion of the $\lambda$-function above).
 
 A second goodness-of-fit test implemented in \pkg{CDVine} is based on a scoring approach.
 Given a set of bivariate copula families, the function \code{BiCopVuongClarke} 
 performs for each possible pair of families the asymptotic tests by \cite{Vuong1989} and by \cite{Clarke2007}.
-The Vuong as well as the Clarke test compare two models against each other and 
+The Vuong as well as the Clarke test compare two non-nested models against each other and
 based on their null hypothesis, allow for a statistically significant decision among the two models (see below).
 In the goodness-of-fit test proposed by \cite{Belgorodski2010} this is used for bivariate copula selection.
-It compares a bivariate copula model 0 to all other possible bivariate copula models under consideration
+It compares a bivariate copula model $C_0$ to all other possible bivariate copula models under consideration
 in order to determine which family fits the data better than the other families.
-If copula model 0 is favored over another copula model, a score of "+1" is assigned
+If copula model $C_0$ is favored over another copula model, a score of "+1" is assigned
 and similarly a score of "-1" if the other copula model is determined to be superior.
 No score is assigned, if the respective test cannot discriminate between two copula models.
 The total score is the sum of the scores from all pairwise comparisons.
 
-The Vuong and the Clarke tests are suitable to compare two models, which are non-nested.
+The Vuong and the Clarke tests are suitable to compare two non-nested models.
 Both are likelihood ratio based and related to the common Kullback-Leibler information criterion,
 which measures the distance between two statistical models.
 In the following let $c_1$ and $c_2$ be two competing bivariate copula densities with estimated parameters $\hat{\boldsymbol{\theta}}_1$ and $\hat{\boldsymbol{\theta}}_2$, respectively.
 For the Vuong test we then compute the standardized sum, $\nu$, of the log differences of their 
-pointwise likelihoods $m_i:=\log\left[\frac{c_1(u_{i,1},u_{i,2}|\hat{\boldsymbol{\theta}}_1)}{c_2(u_{i,1},u_{i,2}|\hat{\boldsymbol{\theta}}_2)}\right]$
+pointwise likelihoods $m_i:=\log(c_1(u_{i,1},u_{i,2}|\hat{\boldsymbol{\theta}}_1)) - \log(c_2(u_{i,1},u_{i,2}|\hat{\boldsymbol{\theta}}_2))$
 for observations $u_{i,j},\ i=1,...,N,\ j=1,2$, i.e.,
 \begin{equation}
 \nu=\frac{\frac{1}{n}\sum_{i=1}^N m_i}{\sqrt{\sum_{i=1}^N\left(m_i - \bar{m} \right)^2}}.
@@ -628,7 +673,7 @@ The test statistic
 B = \sum_{i=1}^N \mathbf{1}_{(0,\infty)}(m_i),
 \label{eq:clarkestat}
 \end{equation}
-where $\mathbf{1}$ is the indicator function, was proposed by \cite{Clarke2007} and is distributed Binomial with parameters $N$ and $p=0.5$.
+where $\mathbf{1}$ is the indicator function, was proposed by \cite{Clarke2007} and is asymptotically distributed Binomial with parameters $N$ and $p=0.5$.
 Based on this, critical values can easily be obtained \citep[see][]{Clarke2007}.
 Model 1 is interpreted as statistically equivalent to model 2 if $B$ is not significantly different from the expected value $Np = \frac{N}{2}$.
 
@@ -637,13 +682,8 @@ either using the Akaike or the parsimonious Schwarz correction,
 which correspond to the penalty terms of the AIC \citep{Akaike1973} and the BIC \citep{Schwarz1978}, respectively.
 These can be specified using the argument \code{correction}, while the significance level of the tests is set by \code{level}. 
 
-An example of this scoring goodness-of-fit test will be given in the Section \ref{sect:example}.
-For given marginally uniform data \code{u1} and \code{u2}
-and a set of copula families to compare, as specified by the argument \code{familyset}, the function call is as follows:
-
-<<BiCopVuongClarke, eval=FALSE>>=
-BiCopVuongClarke(u1, u2, familyset, correction, level)
-@
+An example of this scoring goodness-of-fit test will be given in Section \ref{sect:example}.
+The set of copula families to compare is specified by the argument \code{familyset}.
 
 Commonly used alternative criteria to discriminate among models are the above-mentioned AIC and BIC.
 They are however less reliable when non-nested models are compared.
@@ -652,34 +692,23 @@ they allow for an efficient comparison based on single numbers,
 namely among a class of models the model with smallest AIC/BIC is chosen.
 We implemented this selection procedure in the function \code{BiCopSelect}
 which estimates copula parameters for a given set of families to choose from (\code{familyset})
-using maximum likelihood estimation (cp. the discussion of \code{BiCopEst} in Section \ref{sect:bicopest})
+using maximum likelihood estimation (see the discussion of \code{BiCopEst} in Section \ref{sect:bicopest})
 and then selects the family based on the AIC (default) or the BIC.
-Furthermore, a preliminary independence test (cp. the description of \code{BiCopIndTest} above) can be performed to accommodate
+Furthermore, a preliminary independence test (see the description of \code{BiCopIndTest} above) can be performed to accommodate
 that an independence copula might be appropriate for the given bivariate data anyway.
 The function returns the selected bivariate copula family and the estimated parameter(s).
-
-We use one more time the simulated data of the Joe copula from above
-to select among all implemented bivariate copula families (\code{familyset = NA}) with a preliminary independence test (\code{indeptest = TRUE})
-at significance level $5\%$ (\code{level = 0.05}).
-The function returns the selected bivariate copula family (\code{family}) and the corresponding estimated copula parameters (\code{par} and \code{par2}).
-
-<<BiCopSelect>>=
-cop1 = BiCopSelect(u1=dat[,1],u2=dat[,2],familyset=NA,indeptest=TRUE,level=0.05)
-cop1$family
-cop1$par
-@
 
 
 \subsection{Estimation of bivariate copula families}\label{sect:bicopest}
 
 Having selected an appropriate bivariate copula family for given observations, e.g., using the graphical and analytical tools discussed above,
-the corresponding copula parameter(s) has/have to be estimated.
+the corresponding copula parameter(s) has/have to be estimated (see Step 3 of the suggested workflow in Figure \ref{fig:workflow}).
 This can be established using the function \code{BiCopEst} which performs either a method of moments (inversion of Kendall's $\tau$ (\code{method = "itau"});
-compare Tables \ref{tab:ellipfam} and \ref{tab:archfam} and the function \code{BiCopTau2Par}) or maximum likelihood estimation (MLE; \code{method = "mle"}).
+see Tables \ref{tab:ellipfam} and \ref{tab:archfam} and the function \code{BiCopTau2Par}) or maximum likelihood estimation (MLE; \code{method = "mle"}).
 Note again that the inversion of Kendall's $\tau$ is however not available for all bivariate copula families but only for the one parameter ones.
 If possible, starting values for the MLE are obtained by inversion of Kendall's $\tau$,
 while optimization is performed using the L-BFGS-B algorithm for constraint optimization to account for the parameter ranges
-(cp. Tables \ref{tab:ellipfam} and \ref{tab:archfam}). 
+(see Tables \ref{tab:ellipfam} and \ref{tab:archfam}).
 Furthermore, standard errors for both estimation methods are provided, too (if \code{se = TRUE}).
 For MLE standard errors are based on inversion of the Hessian matrix,
 while for inversion of Kendall's $\tau$ they are obtained as described in \cite{KojadinovicYan2010b}.
@@ -697,25 +726,7 @@ In particular, if the degrees of freedom parameter of the Student-t copula is es
 (as a rule of thumb 20-30 degrees of freedom can already be regarded as ``large''),
 the Student-t is very similar to the Gaussian copula
 and therefore it is preferable to work with the Gaussian because it has only one parameter and is thus more efficient when doing inference.
-A corresponding warning message is returned when running the following example with simulated data from a Gaussian copula with parameter $\rho=0.7$.
-
-<<BiCopEst-seed, echo=FALSE>>=
-set.seed(10)
-@
-<<BiCopEst>>=
-dat = BiCopSim(N=1000,family=1,par=0.7)
-BiCopEst(u1=dat[,1], u2=dat[,2], family=1, method="mle", se=TRUE)
-BiCopEst(u1=dat[,1], u2=dat[,2], family=2, method="mle", se=TRUE, max.df=30)
-@
-\begin{Schunk}
-\begin{Soutput}
-Warning:
-In MLE_intern(cbind(u1, u2), c(theta1, delta), family = family,  :
-  Degrees of freedom of the t-copula estimated to be larger than 30.
-  Consider using the Gaussian copula instead.
-\end{Soutput}
-\end{Schunk}
-
+A corresponding warning message is returned if this is the case.
 
 
 \section{Statistical inference of C- and D-vine copulas}
@@ -729,9 +740,9 @@ Finally, some numerical issues are discussed.
 
 \subsection{Specification of C- and D-vine copula models and data simulation} 
 
-As discussed in the introduction (Section \ref{sect:intro}), one has to select an order of the variables when specifying C- and D-vine copulas.
+As discussed in Section \ref{sect:meth}, one has to select an order of the variables when specifying C- and D-vine copulas.
 For the D-vine, the order of the variables in the first tree has to be chosen and for the C-vine, the root nodes for each tree need to be determined.
-Functions for inference of C- and D-vine copulas in the \pkg{CDVine} package assume that the order of the variables in the data set under investigation
+Functions for inference of C- and D-vine copulas in the package \pkg{CDVine} assume that the order of the variables in the data set under investigation
 exactly corresponds to this C- or D-vine order.
 E.g., in a C-vine the first column of a data set is the first root node, the second column the second root node, etc..
 According to this order arguments have to be provided to functions for C- and D-vine copula inference.
@@ -767,74 +778,48 @@ par2 = c(0,0,0,3,0,0)
 
 In particular, the pair-copula $c_{2,3|1}$ is a Student-t with dependence parameter $\rho=-0.3$ and $3$ degrees of freedom,
 while pair $c_{3,4|1,2}$ in the last tree is modeled by a Frank copula with parameter $\theta=1.7$.
-
 The strength of dependence modeled by each pair-copula term can be illustrated
-by transforming the parameter(s) of each pair-copula term into the corresponding Kendall's $\tau$ value (cp. \code{BiCopPar2Tau}):
-
-<<CDVinePar2Tau>>=
-CDVinePar2Tau(family=family,par=par,par2=par2)
-@
+by transforming the parameter(s) of each pair-copula term into the corresponding Kendall's $\tau$ value using \code{CDVinePar2Tau} (see \code{BiCopPar2Tau}).
 
 To simulate from a vine copula specification, the function \code{CDVineSim} can be used.
 The corresponding algorithms are given in \cite{AasCzadoFrigessiBakken2009}.
 They are based on the same idea as the bivariate simulation described in Section \ref{sect:bicopfam}.
-As an example we simulate \code{N = 500} samples from the four-dimensional C-vine copula model defined above.
-
-<<CDVineSim-seed, echo=FALSE>>=
-set.seed(10)
-@
-<<CVineSim>>=
-dat = CDVineSim(N=500, family=family, par=par, par2=par2, type=type)
-head(dat)
-@
 
 
 \subsection{Estimation}
 
 Having decided the structure of the C- or D-vine to be used,
 one has to select pair-copula families for each (conditional) pair of variables as described in Section \ref{sect:bicopselect}
-or using the function \code{CDVineCopSelect}.
+or using the function \code{CDVineCopSelect} (Step 2 in Figure \ref{fig:workflow}).
 Based on \code{BiCopSelect}, this function selects for a given copula data set (\code{data}) and vine type (\code{type}),
 appropriate bivariate copula families from a set of possible copula families (\code{familyset}) according to the AIC (default) or the BIC.
 As in \code{BiCopSelect} preliminary independence tests can also be performed for each (conditional) pair to obtain more parsimonious models.
-The function call is:
-
-<<CVineCopSelect, eval=FALSE>>=
-CDVineCopSelect(data, familyset, type, selectioncrit, indeptest, level)
-@
 
 This copula selection proceeds tree by tree, since the conditional pairs in trees $2,...,d-1$
-depend on the specification of the previous trees through the $h$-functions (see Section \ref{sect:intro}).
+depend on the specification of the previous trees through the $h$-functions (see Section \ref{sect:meth}).
 Hence, initially C- and D-vine copula models are typically fitted sequentially by proceeding iteratively tree by tree
 and thus only involving bivariate estimation for each individual pair-copula term
-(see, e.g., \cite{CzadoSchepsmeierMin2011} for a detailed description of sequential estimation in C-vines). 
+(see, e.g., \cite{CzadoSchepsmeierMin2011} for a detailed description of sequential estimation in C-vines; Step 3 in Figure \ref{fig:workflow}).
 This can be established using the function \code{CDVineSeqEst}
 which internally calls the function \code{BiCopEst} described in Section \ref{sect:bicopest}.
-Therefore, estimation can be carried out using inversion of Kendall's $\tau$ or MLE (\code{method = "itau"} or \code{"mle"}),
+Therefore, estimation of the parameter(s) of each pair-copula can be carried out
+using inversion of Kendall's $\tau$ or MLE (\code{method = "itau"} or \code{"mle"}),
 standard errors can be computed (\code{se = TRUE} or \code{FALSE})
 and upper bounds for the Student-t degrees of freedom and BB copula parameters can be set by \code{max.df} and \code{max.BB}.
-For a given marginally uniform data set (\code{data}) and pair-copula families (\code{family}) specified as described above,
-the function is then called as follows: 
-
-<<CDVineSeqEst, eval=FALSE>>=
-CDVineSeqEst(data, family, type, method, se, max.df, max.BB)
-@
-
 A detailed example will be given in Section \ref{sect:example}.
-Note that the estimated parameters returned by \code{CDVineCopSelect} correspond to sequential estimates obtained by bivariate MLE for the parameter of each pair-copula.
 
 Even though these sequential estimates often provide a good fit,
-one typically is interested in maximizing the (log-)likelihood of a vine copula specification (cp. \eqref{eq:cvinedens} and \eqref{eq:dvinedens})
+one typically is interested in maximizing the (log-)likelihood of a vine copula specification (see \eqref{eq:cvinedens} and \eqref{eq:dvinedens})
 for observations $\boldsymbol{u}=(u_{k,j})_{k=1,...,N,\ j=1,...,d}$:
 \begin{itemize}
-\item The C-vine log-likelihood with parameter set $\boldsymbol{\theta}_{CV}$ is given by
+\item The C-vine copula log-likelihood with parameter set $\boldsymbol{\theta}_{CV}$ is given by
 \begin{equation*}
 \ell_{CV}(\boldsymbol{\theta}_{CV}|\boldsymbol{u})= \sum_{k=1}^N \sum_{i=1}^{d-1} \sum_{j=1}^{d-i} \log[c_{i,i+j|1:(i-1)}(F_{i|1:(i-1)},F_{i+j|1:(i-1)}|\boldsymbol{\theta}_{i,i+j|1:(i-1)})],
 \label{eq:cvineloglik}
 \end{equation*}
 where $F_{j|i_1:i_m}:=F(u_{k,j}|u_{k,i_1},...,u_{k,i_m})$ and the marginal distributions are uniform, i.e., $f_k(u_k)=\mathbf{1}_{[0,1]}(u_k)$.
 Note that $F_{j|i_1:i_m}$ depends on the parameters of pair-copula terms in tree 1 up to tree $i_m$.
-\item Similarly, the D-vine log-likelihood with parameter set $\boldsymbol{\theta}_{DV}$ is:
+\item Similarly, the D-vine copula log-likelihood with parameter set $\boldsymbol{\theta}_{DV}$ is:
 \begin{align*}
 &\ell_{DV}(\boldsymbol{\theta}_{DV}|\boldsymbol{u})=\\
 &\sum_{k=1}^N \sum_{i=1}^{d-1} \sum_{j=1}^{d-i} \log[c_{j,j+i|(j+1):(j+i-1)}(F_{j|(j+1):(j+i-1)},F_{j+i|(j+1):(j+i-1)}|\boldsymbol{\theta}_{j,j+i|(j+1):(j+i-1)})].
@@ -844,10 +829,6 @@ Note that $F_{j|i_1:i_m}$ depends on the parameters of pair-copula terms in tree
 The log-likelihood of a vine copula for given data (\code{data}), pair-copula families (\code{family}) and parameters (\code{par} and \code{par2})
 can be obtained using the function \code{CDVineLogLik} which implements the algorithms given in \cite{AasCzadoFrigessiBakken2009}.  
 
-<<CDVineLogLik, eval=FALSE>>=
-CDVineLogLik(data, family, par, par2, type)
-@
-
 Using these log-likelihood calculations, we can now estimate parameters jointly using MLE---in contrast to the pairwise sequential estimation discussed above.
 This can be established using the function \code{CDVineMLE}
 with arguments for the given data (\code{data}), the pair-copula families (\code{family})
@@ -855,35 +836,25 @@ and corresponding starting values for the parameters (\code{start} and \code{sta
 the maximum number of iterations of the optimizer (\code{maxit}), where the L-BFGS-B algorithm for constraint optimization problems is again used here.
 Upper bounds for the Student-t degrees of freedom and BB copula parameters can also be set by \code{max.df} and \code{max.BB}.
 Starting values, if not provided, are obtained using the function \code{CDVineSeqEst}.
-The function call is then as follows:
-
-<<CDVineMLE, eval=FALSE>>=
-CDVineMLE(data, family, start, start2, type, maxit, max.df, max.BB)
-@
 
 Note again that here MLE corresponds to the IFM and MPL methods depending on the marginal transformations of the data.
 More details on the estimation of vine copulas can found in \cite{AasCzadoFrigessiBakken2009}, \cite{Haff2010} and \cite{CzadoSchepsmeierMin2011}.
 
+The usage of the estimation methods and the calculation of the log-likelihood will be illustrated in Section \ref{sect:example}.
 
 \subsection{Selection among vine copula models}
 
 Having fitted different vine copula models to a given data set, one typically is interested
-in determining the ``best'' model in terms of one or more criteria.
+in determining the ``best'' model in terms of one or more criteria (Step 4 in the suggested workflow in Figure \ref{fig:workflow}).
 Besides the classical AIC and BIC, implemented in \code{CDVineAIC} and \code{CDVineBIC},
 two such criteria are the Vuong and the Clarke tests described in Section \ref{sect:bicopselect}.
 They allow for pairwise comparisons of two competing models, e.g., a C- and a D-vine copula model,
 and can be performed using the functions \code{CDVineVuongTest} and \code{CDVineClarkeTest}. 
-In these functions, models have to be specified as usual. \code{Model1.family}, \code{Model1.par}, \code{Model1.par2} and \code{Model1.type}
+In these functions, models have to be specified as usual: \code{Model1.family}, \code{Model1.par}, \code{Model1.par2} and \code{Model1.type}
 for the first model and similarly for the second model. For each model an order of the variables has to be given,
 since the orders of C-vine root nodes or of the nodes in the first D-vine tree may be chosen differently in the two models.
 The arguments \code{Model1.order} and \code{Model2.order} therefore specify these orders corresponding to the respective vine type.
 As output, both functions return test statistics with and without correction for the number of parameters as well as corresponding $p$-values.
-
-<<CDVineVuongTest, eval=FALSE>>=
-CDVineVuongTest(data, Model1.order, Model2.order, Model1.family, Model2.family, Model1.par, Model2.par, Model1.par2, Model2.par2, Model1.type, Model2.type)
-@
-
-\code{CDVineClarkeTest} is called similarly.
 
 Furthermore, obtained vine specifications can be illustrated using the function \code{CDVineTreePlot}
 which plots one or all trees of a specified vine model (either \code{tree = "ALL"} or a tree number in $\{1,...,d-1\}$).
@@ -900,15 +871,12 @@ As edge labels the user is free to combine the following information in a vector
 Positions of the nodes are either determined automatically (default)
 or can be set by the argument \code{P} which gives $x$- and $y$-coordinates of the nodes.
 Node labels can be specified by the argument \code{names}.
- 
-<<CDVineTreePlot, eval=FALSE>>=
-CDVineTreePlot(data, family, par, par2, names, type, method, max.df, max.BB, tree, edge.labels, P)
-@
+An example with code will be given in Figure \ref{fig:tree} in Section \ref{sect:example} and in the appendix.
 
 
 \subsection{Implementation and numerical issues}
 
-In order to speed up computations we impemented the major parts of the algorithms in \proglang{C}.
+In order to speed up computations we implemented the major parts of the algorithms in \proglang{C}.
 In particular, the MLE is considerably faster by coding the log-likelihood of C- and D-vine copula models in \proglang{C}.
 We also implemented the method by \cite{Knight1966} for efficiently computing the empirical Kendall's tau.
 
@@ -929,7 +897,7 @@ Alternatively, running \code{CDVineCopSelect} also estimates parameters sequenti
 so that no such problems will occur.
 
 When estimating copula parameters, mostly some bounds have to be set in order to respect the parameter ranges
-(cp. Tables \ref{tab:ellipfam} and \ref{tab:archfam}).
+(see Tables \ref{tab:ellipfam} and \ref{tab:archfam}).
 This has been done based on experience and extensive stability tests.
 Similarly, copula data is bounded to the interval $[10^{-10},1-10^{-10}]$ because values too close to $0$ or $1$ lead to severe numerical problems.
 Apart from that, additional measures have been taken to improve the stability, but we will not go into the details here.
@@ -948,7 +916,7 @@ Each time series is filtered using an ARMA(1,1)-GARCH(1,1) model with Student-t 
 and standardized residuals are transformed non-parametrically to copula data using the respective empirical distribution function.
 
 <<data, eval=TRUE>>=
-data(worldindices)
+data("worldindices")
 @
 
 For a first impression of the data Figure \ref{fig:pairsplot} shows a pairs plot
@@ -957,15 +925,12 @@ In particular among the European indices there is evidently strong dependence,
 while the dependence to the two Asian indices is rather weak.
 
 <<EDA_pairs, eval=FALSE, echo=FALSE>>=
-panel.contour <- function(x, y, bw=2, size=100)
-{
-    usr <- par("usr")
-    on.exit(par(usr))
-    par(usr = c(-3,3,-3,3), new=TRUE)
-
-    BiCopMetaContour(x, y, bw, size, axes=FALSE)
+panel.contour <- function(x, y, bw=2, size=100){
+  usr <- par("usr")
+  on.exit(par(usr))
+  par(usr = c(-3,3,-3,3), new=TRUE)
+  BiCopMetaContour(x, y, bw, size, axes=FALSE)
 }
-
 pairs(worldindices, lower.panel=panel.contour, gap=0) 
 @
 
@@ -975,28 +940,30 @@ pairs(worldindices, lower.panel=panel.contour, gap=0)
 <<EDA_pairs>>           
 @
 \caption{Pairs plot of the \code{worldindices} data set with scatter plots above and contour plots with standard normal margins below the diagonal.
-Axes of the contour plots range from $-3$ to $3$ other than indicated here.
-(Compare the documentation of the \proglang{R}-function \code{pairs} for details on how to obtain such a plot.)}
+Axes of the contour plots range from $-3$ to $3$ other than indicated here (see the appendix for code how to generate this plot).}
 \label{fig:pairsplot}
 \end{center}
 \end{figure}
 
-To illustrate the usefulness of our functions and their handling
+Following the proposed workflow in Figure \ref{fig:workflow} in Section \ref{sect:meth}
 we will perform a detailed exploratory data analysis (EDA) of one particular variable pair
 and specify a C-vine copula model including copula selection, sequential estimation and MLE
-as well as log-likelihood computations and plotting of C-vine trees. 
+as well as log-likelihood computations and plotting of C-vine trees.
+This will illustrate the usefulness of our functions and their handling.
 The specification of a D-vine copula model is not explicitly discussed here,
 but could be covered in essentially the same way.
 Such a D-vine copula model is then compared to the selected C-vine copula model at the end of our presentation.
 
 Using the C-vine structure selection criterion described by \cite{CzadoSchepsmeierMin2011} we determine \^{}FCHI as the first root node
-(C-vine tree with strongest dependencies in terms of absolute empirical values of pairwise Kendall's $\tau$'s). 
+(C-vine tree with strongest dependencies in terms of absolute empirical values of pairwise Kendall's $\tau$'s;
+this is the first part of Step 1 in the proposed workflow in Figure \ref{fig:workflow}).
 We now exemplarily show the EDA for the pair (\^{}FCHI,\^{}FTSE)
 using the graphical tools \code{BiCopMetaContour} (see row 6, column 5 of Figure \ref{fig:pairsplot}),
 \code{BiCopKPlot}, \code{BiCopChiPlot} and \code{BiCopLambda},
-and the analytical tools \code{BiCopIndepTest}, \code{BiCopVuongClarke} and \code{BiCopSelect} in order to choose the best fitting copula.
+as well as the analytical tools \code{BiCopIndepTest}, \code{BiCopVuongClarke} and \code{BiCopSelect} in order to choose the best fitting copula
+(Step 2 in Figure \ref{fig:workflow}).
 
-<<EDA_graphical, eval=FALSE>>=
+<<EDA_graphical, eval=FALSE, echo=FALSE>>=
 par(mfrow=c(1,3),cex.main=2,cex.lab=1.5,cex.axis=1.5)
 BiCopKPlot(worldindices[,5],worldindices[,6],main="K-plot")
 BiCopChiPlot(worldindices[,5],worldindices[,6],xlim=c(-1,1),ylim=c(-1,1),main="Chi-plot")
@@ -1012,7 +979,8 @@ BiCopLambda(worldindices[,5],worldindices[,6],family=2,par=param$par,par2=param$
 \caption{Left panel: K-plot.
 Middle panel: chi-plot.
 Right panel: empirical $\lambda$-function (black line), theoretical $\lambda$-function of a Student-t copula
-with parameters estimated using \code{BiCopEst} (grey line) as well as independence and comonotonicity limits (dashed lines).}
+with parameters estimated using \code{BiCopEst} (grey line) as well as independence and comonotonicity limits (dashed lines).
+Code for this plot is given in the appendix.}
 \label{fig:eda_plots}
 \end{center}
 \end{figure}
@@ -1025,7 +993,7 @@ Additionally, the corresponding theoretical contour plot of the bivariate Studen
 has a similar shape as the empirical one in Figure \ref{fig:pairsplot}.
 The $\lambda$-function in the right panel supports our choice.
 
-The following pro forma independence test with a p-value of zero confirms the strong dependence.
+The following pro forma independence test with a $p$-value of zero confirms the strong dependence.
 
 <<EDA_analytical1>>=
 BiCopIndTest(worldindices[,5],worldindices[,6])$p.value
@@ -1047,20 +1015,22 @@ one can then use $h$-functions \eqref{eq:hfunc} to calculate inputs of the pair-
 This procedure is iterated tree by tree.
 
 By selecting all further C-vine root nodes as described in \cite{CzadoSchepsmeierMin2011} 
-the root node order in the data set is determined as \^{}FCHI, \^{}N225, \^{}GDAXI, \^{}SSEC and finally \^{}GSPC.
-Copula families (according to this order) are chosen as 9 ($c_{12}$),  2 ($c_{13}$),  2 ($c_{14}$), 19 ($c_{15}$),  19 ($c_{16}$), 
-0 ($c_{23|1}$), 34 ($c_{24|1}$),  1 ($c_{25|1}$),  0 ($c_{26|1}$),  0 ($c_{34|12}$),  1 ($c_{35|12}$),  0 ($c_{36|12}$), 
-0 ($c_{45|123}$),  4 ($c_{46|123}$),  0 ($c_{56|1234}$),
+the root node order in the data set is determined as \^{}FCHI, \^{}N225, \^{}FTSE, \^{}GSPC, \^{}GDAXI and finally \^{}SSEC.
+This completes Step 1 of the proposed workflow in Figure \ref{fig:workflow}.
+The results of the second step are the following.
+Copula families (according to the selected order) are chosen as 9 ($c_{12}$),  2 ($c_{13}$),  19 ($c_{14}$), 2 ($c_{15}$),  19 ($c_{16}$),
+0 ($c_{23|1}$), 0 ($c_{24|1}$),  34 ($c_{25|1}$),  1 ($c_{26|1}$),  0 ($c_{34|12}$),  0 ($c_{35|12}$),  1 ($c_{36|12}$),
+4 ($c_{45|123}$),  0 ($c_{46|123}$),  0 ($c_{56|1234}$),
 where bivariate independence tests have been used to identify possibly independent conditional variable pairs.
 
 <<cvine, results=hide>>=
-order = c(5, 2, 6, 4, 3, 1) 
-dat=worldindices[,order]
-family=c(9,  2,  2, 19,  19,  0, 34,  1,  0,  0,  1,  0,  0,  4,  0)
+order = c(5, 2, 6, 1, 4, 3)
+dat = worldindices[,order]
+family = c(9,  2,  19, 2,  19,  0, 0, 34,  1,  0,  0,  1,  4,  0,  0)
 @
 
 Using the function \code{CDVineSeqEst} with \code{method = "mle"}
-we get the following sequential estimates of the pair-copula parameters.
+we get the following sequential estimates of the pair-copula parameters (Step 3 of Figure \ref{fig:workflow}).
 
 <<seqest2,print=TRUE>>=
 seqPar=CDVineSeqEst(dat,family=family,type=1,method="mle")
@@ -1089,7 +1059,7 @@ options(digits=4)
 
 Finally we illustrate the C-vine trees using the function \code{CDVineTreePlot}. 
 Because of limited space in this manuscript we only plot the first tree in Figure \ref{fig:tree}
-(cp. to Figure \ref{fig:cdvine} which was produced in \LaTeX).
+(compare to Figure \ref{fig:cdvine} which was produced in \LaTeX).
 
 <<tree, eval=FALSE>>=
 P=CDVineTreePlot(data=NULL,family=family,par=mlePar$par,par2=mlePar$par2,names=colnames(dat),type=1,tree=1,edge.labels=c("family","theotau"))
@@ -1112,7 +1082,7 @@ ps.options(fonts=c("sans"))
 Similarly we also fitted a D-vine copula model with order of variables \code{order\_{}dvine}, pair-copula families \code{family\_{}dvine}
 and corresponding parameters \code{par\_{}dvine} and \code{par2\_{}dvine}. 
 In order to determine the better fitting vine copula model for the \code{worldindices} data set,
-we perform a Vuong test comparing both models.
+we perform a Vuong test comparing both models (see Step 4 of Figure \ref{fig:workflow}).
 
 <<dvine, echo=FALSE>>=
 order_dvine=c(1, 4, 5, 6, 2, 3)
@@ -1124,15 +1094,18 @@ par2_dvine=mle_dvine$par2
 @
 
 <<options2, echo=FALSE>>=
-options(width = 70)
+options(width = 65)
 @
 <<vuong>>=
-CDVineVuongTest(worldindices, Model1.order=order,Model2.order=order_dvine, Model1.family=family, Model2.family=family_dvine, Model1.par=mlePar$par, Model2.par=par_dvine,Model1.par2=mlePar$par2,Model2.par2=par2_dvine,Model1.type=1, Model2.type=2)
+CDVineVuongTest(worldindices, Model1.order=order, Model2.order=order_dvine, Model1.family=family, Model2.family=family_dvine, Model1.par=mlePar$par, Model2.par=par_dvine,Model1.par2=mlePar$par2,Model2.par2=par2_dvine,Model1.type=1, Model2.type=2)
+@
+<<options3, echo=FALSE>>=
+options(width = 78)
 @
 
 The test statistics close to zero (irrespective of the correction considered)
-and the large p-values indicate that the C- and the D-vine copula models for the \code{worldindices} data set cannot be distinguished statistically.
-Results from a Clarke test between both models, which are not shown here, confirm this.
+and the large $p$-values indicate that the C- and the D-vine copula models for the \code{worldindices} data set cannot be distinguished statistically.
+Results from a Clarke test between both models, which are not reported here, confirm this.
 
 To summarize, the above analysis showed strong positive dependencies among the European stock indices,
 where the French CAC 40 was determined to be central for explaining the overall dependence observed in the data.
@@ -1145,7 +1118,7 @@ where it should be noted that both models provide additional insights due to the
 
 In this paper, we present the \proglang{R}-package \pkg{CDVine} for statistical inference of C- and D-vine copulas
 and demonstrate its use and usefulness in a substantial example.
-For the first time, the \pkg{CDVine} package provides extensive functionality for vine copula inference and related data analysis.
+For the first time, the package \pkg{CDVine} provides extensive functionality for vine copula inference and related data analysis.
 In the future, we are planning to extend this to the more general class of regular vines as defined in \cite{KurowickaCooke2006}.
 Inference and model selection of these are treated in \cite{DissmannBrechmannCzadoKurowicka2011} and \cite{BrechmannCzadoAas2010},
 while a large scale financial application can be found in \cite{BrechmannCzado2011}.
@@ -1166,8 +1139,48 @@ Both authors gratefully acknowledge the support of the TUM Graduate School's Int
 Ulf Schepsmeier is further supported by the BMBF program ``Mathematik f\"ur Innovationen in Industrie und Dienstleistungen'',
 Eike Brechmann by a grant from Allianz Deutschland AG.
 
-
 \bibliography{references}
+
+\appendix
+
+\section{Code for figures}
+
+Code to generate Figure \ref{fig:cdfpdf}:
+
+<<BiCopCDFPDF-code, echo=TRUE, eval=FALSE>>=
+<<BiCopCDFPDF>>
+<<BiCopCDFPDFPlot>>
+@
+
+Code to generate Figure \ref{fig:claytonrot}:
+
+<<BiCopSim-code, echo=TRUE, eval=FALSE>>=
+<<BiCopSim>>
+<<BiCopSimPlot>>
+@
+
+Code to generate Figure \ref{fig:contour}:
+
+<<BiCopMetaContour-code, echo=TRUE, eval=FALSE>>=
+<<BiCopMetaContour>>
+@
+
+Code to generate Figure \ref{fig:lambda}:
+
+<<BiCopLambda-code, echo=TRUE, eval=FALSE>>=
+<<BiCopLambda>>
+@
+
+Code to generate Figure \ref{fig:pairsplot}:
+<<EDA_pairs-code, echo=TRUE, eval=FALSE>>=
+<<EDA_pairs>>
+@
+
+Code to generate Figure \ref{fig:eda_plots}:
+<<EDA_graphical-code, echo=TRUE, eval=FALSE>>=
+<<EDA_graphical>>
+@
+
 
 \end{document}
 
