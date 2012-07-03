@@ -1,7 +1,7 @@
-%\VignetteIndexEntry{Vignette: Modeling dependence with C- and D-vine copulas: The \proglang{R}-package \pkg{CDVine}}
+%\VignetteIndexEntry{Vignette: Modeling dependence with C- and D-vine copulas: The R-package CDVine}
 %\VignetteKeyword{copula, inference, MLE, model fitting, multivariate dependence model, pcc}
 %\VignettePackage{CDVine}
-%\VignetteDepends{MASS, mvtnorm, igraph}
+%\VignetteDepends{MASS, mvtnorm, igraph0}
 
 \documentclass[article,nojss]{jss}
 
@@ -124,7 +124,7 @@ on the Comprehensive \proglang{R} Archive Network (CRAN, \url{http://cran.r-proj
 the comprehensive package \pkg{copula} described in \cite{Yan2007} and \cite{KojadinovicYan2010a},
 the package \pkg{fCopulae} \citep{Wuertz2009}
 and finally the package \pkg{nacopula} \citep{nacopula} for so-called nested Archimedean copulas, a generalization of Archimedean copulas.
-Furthermore, our package depends on the packages \pkg{igraph} \citep{igraph} for illustrations of vine trees and \pkg{mvtnorm} \citep{mvtnorm},
+Furthermore, our package depends on the packages \pkg{igraph0} \citep{igraph} for illustrations of vine trees and \pkg{mvtnorm} \citep{mvtnorm},
 which provides efficient implementations of multivariate Gaussian and Student-t distributions.
 These will be loaded (if not already loaded) when loading the package \pkg{CDVine} by
 
@@ -859,7 +859,7 @@ As output, both functions return test statistics with and without correction for
 Furthermore, obtained vine specifications can be illustrated using the function \code{CDVineTreePlot}
 which plots one or all trees of a specified vine model (either \code{tree = "ALL"} or a tree number in $\{1,...,d-1\}$).
 If no parameters are provided, these are obtained using sequential estimation, where   arguments for \code{CDVineSeqEst} can be specified.
-The trees are plotted using the \pkg{igraph} package with individually chosen edge labels.
+The trees are plotted using the \pkg{igraph0} package with individually chosen edge labels.
 As edge labels the user is free to combine the following information in a vector or choose \code{edge.labels = FALSE} for no edge labels:
 \begin{itemize}
 \item \code{"family"}: pair-copula family names (default),

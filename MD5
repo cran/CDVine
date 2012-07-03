@@ -1,6 +1,6 @@
-c18dcec80d440d3d6d5b4250774380af *CDVine.pdf
-c4e5500811f8651e885b7f7af865bb32 *DESCRIPTION
-73e9c097634e2321e29de581acc49196 *NAMESPACE
+b48f49b7c2d9da710d7ae29732860990 *CDVine.pdf
+f088dab1ee132278f4da60c53a7a177f *DESCRIPTION
+604b3b45f01bd873e3358142b5cfce67 *NAMESPACE
 5fcfaed67878065744c8774699967567 *R/BiCopCDF.r
 bf1e86d6396e126a60c12992fb896286 *R/BiCopChiPlot.r
 50c8ef4eb2dcc1ada3aa064ef195970f *R/BiCopEst.R
@@ -30,9 +30,9 @@ c205d81454e5c34438ab72ed38d2b13d *R/CDVineSeqEst.R
 83fc557d46113604f36d75963d5963ab *R/zzz.R
 bc985ff6b6ff5d198ed6acfabd41d8ab *Thumbs.db
 acee73c43b92e0aa3066683bd11f2bd3 *data/worldindices.RData
-706c6d94cde3a1933d1fe61a41e0c553 *inst/ChangeLog
-cdeb37ef8af8c966705876627dd16bee *inst/doc/CDVine-package.pdf
-7f6402ff43553905df78b55e209cc968 *inst/doc/CDVine-package.rnw
+a4d77e6e97fc4b81105c41f428f8e056 *inst/ChangeLog
+3d96d80a674b66eac9555270918785f6 *inst/doc/CDVine-package.pdf
+70ae891df178f354229605e3835d3afd *inst/doc/CDVine-package.rnw
 acdfd122463175a6b2943f5790994b71 *inst/doc/cvine.pdf
 8d9456042b031ca3a53c9b96e7fa1a23 *inst/doc/dvine.pdf
 f34422247b8c7324c6d3ad41060e1b79 *inst/doc/references.bib
@@ -55,7 +55,7 @@ ca03a7c4e62589b87bc052d8f26b69fa *man/BiCopName.Rd
 8b8ec39774404d54f3d6fa3ca1781e7f *man/BiCopSim.Rd
 e851f37908f9b8d61429fa5c5ac9b018 *man/BiCopTau2Par.Rd
 9b0150892590961e7c009adfc0578a77 *man/BiCopVuongClarke.Rd
-05f5a5a6b00ed628a75efa780c150125 *man/CDVine-package.Rd
+3de816c11b8c8c83eb2c2bcd54c94fbc *man/CDVine-package.Rd
 8f588b405b5e2ca076f56a88eb323655 *man/CDVineAICBIC.Rd
 c514523a3bcb94a1c2a5f109b7bb6c3c *man/CDVineClarkeTest.Rd
 a4ac6c24ff0c257d9d04fef6e5cd8cce *man/CDVineCopSelect.Rd

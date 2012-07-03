@@ -1,6 +1,6 @@
 import(MASS)
 import(mvtnorm)
-import(igraph)
+import(igraph0)
 
 export(CDVineLogLik)
 export(CDVineAIC)
