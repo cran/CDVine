@@ -85,6 +85,8 @@ simdata = CDVineSim(1000,family,par,par2,type)
 
 # determine appropriate pair-copula families and parameters
 # of a D-vine structure
+\dontrun{
 CDVineCopSelect(simdata,type=2,familyset=c(1:10,13,14,23,24))
+}
 }
 

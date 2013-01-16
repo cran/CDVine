@@ -3,6 +3,21 @@ Changes for R-package CDVine
 Ulf Schepsmeier and Eike Christian Brechmann <CDVine@ma.tum.de>
 
 
+Version 1.1-11 (January 17, 2013)
+
+- Changes in the examples to pass the checks. Run time is reduced.
+
+
+Version 1.1-10 (January 15, 2013)
+
+- Vignette removed. Vignette is now published in the Journal of Statistical Software.
+
+  Brechmann, E. C. and U. Schepsmeier (2013).
+  Modeling Dependence with C- and D-Vine Copulas: The R Package CDVine.
+  Journal of Statistical Software, 52 (3), 1-27.
+  http://www.jstatsoft.org/v52/i03/
+  
+
 Version 1.1-9 (July 3, 2012)
 
 - Fixed compatibility issue with VineCopula.

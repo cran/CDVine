@@ -92,6 +92,7 @@ par1 = 3
 fam1 = 3
 dat1 = BiCopSim(500,fam1,par1)
 
+\dontrun{
 # perform the goodness-of-fit test for the true copula
 gof = BiCopGofKendall(dat1[,1],dat1[,2],fam1)
 gof$p.value.CvM
@@ -101,4 +102,5 @@ gof$p.value.KS
 gof = BiCopGofKendall(dat1[,1],dat1[,2],5)
 gof$p.value.CvM
 gof$p.value.KS
+}
 }

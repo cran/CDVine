@@ -1,0 +1,20 @@
+citHeader("To cite CDVine in publications use:")
+
+citEntry(entry = "Article",
+  title        = "Modeling Dependence with C- and D-Vine Copulas: The {R} Package {CDVine}",
+  author       = personList(as.person("Eike Christian Brechmann"),
+                   as.person("Ulf Schepsmeier")),
+  journal      = "Journal of Statistical Software",
+  year         = "2013",
+  volume       = "52",
+  number       = "3",
+  pages        = "1--27",
+  url          = "http://www.jstatsoft.org/v52/i03/",
+
+  textVersion  =
+  paste("Eike Christian Brechmann, Ulf Schepsmeier (2013).",
+        "Modeling Dependence with C- and D-Vine Copulas: The R Package CDVine.",
+        "Journal of Statistical Software, 52(3), 1-27.",
+        "URL http://www.jstatsoft.org/v52/i03/.")
+)
+

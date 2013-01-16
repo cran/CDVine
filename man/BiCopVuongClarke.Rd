@@ -115,8 +115,10 @@ Econometrica 57 (2), 307-333.
 dat = BiCopSim(500,2,0.7,5)
 
 # apply the test for families 1-10
+\dontrun{
 vcgof = BiCopVuongClarke(dat[,1],dat[,2],familyset=c(1:10))
 
 # display the Vuong test scores
 vcgof[1,]
+}
 }

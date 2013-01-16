@@ -83,8 +83,8 @@ We are especially grateful to Harry Joe for his contributions to the implementat
 \tabular{ll}{
 Package: \tab CDVine\cr
 Type: \tab Package\cr
-Version: \tab 1.1-9\cr
-Date: \tab 2012-07-03\cr
+Version: \tab 1.1-11\cr
+Date: \tab 2013-01-16\cr
 License: \tab GPL (>=2)\cr
 Depends: \tab R (\eqn{\geq 2.11.0}{>= 2.11.0}), MASS, mvtnorm, igraph0 \cr
 LazyLoad: \tab yes
@@ -116,14 +116,18 @@ Risk Management with High-Dimensional Vine Copulas: An Analysis of the Euro Stox
 Submitted for publication.
 \url{http://mediatum.ub.tum.de/doc/1079276/1079276.pdf}.
 
+Brechmann, E. C. and U. Schepsmeier (2013).
+Modeling Dependence with C- and D-Vine Copulas: The R Package CDVine.
+Journal of Statistical Software, 52 (3), 1-27.
+\url{http://www.jstatsoft.org/v52/i03/}.
+
 Czado, C., U. Schepsmeier, and A. Min (2012).
 Maximum likelihood estimation of mixed C-vines with application to exchange rates.
 Statistical Modelling, 12 (3), 229-255.
 
-Dissmann, J. F., E. C. Brechmann, C. Czado, and D. Kurowicka (2011).
+Dissmann, J. F., E. C. Brechmann, C. Czado, and D. Kurowicka (2013).
 Selecting and estimating regular vine copulae and application to financial returns.
-Submitted for publication.
-\url{http://mediatum.ub.tum.de/doc/1079277/1079277.pdf}
+Computational Statistics and Data Analysis, 59(1), 52-69.
 
 Joe, H. (1996).
 Families of m-variate distributions with given margins and m(m-1)/2 bivariate dependence parameters.
