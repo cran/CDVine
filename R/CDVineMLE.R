@@ -77,84 +77,53 @@ function(data,family,start=NULL, start2=NULL, type,maxit=200,max.df=30, max.BB=l
       start_par$par2=start2
     }
 
-# parm0 in die alte Form bringen
-parm0=start_par$par
-for(k in 1:dd)
-{
-	if(family[k] %in% c(2,7,8,9,10,17,18,19,20,27,28,29,30,37,38,39,40))
-	{
-	parm0=c(parm0,start_par$par2[k])
-	}
-}
 
 
+	parm0 = start_par$par[(family != 0)]
+    for (k in 1:dd) {
+        if (family[k] %in% c(2, 7, 8, 9, 10, 17, 18, 19, 20,27, 28, 29, 30, 37, 38, 39, 40)) {
+            parm0 = c(parm0, start_par$par2[k])
+        }
 
-# Transformation of the starting values
-#kk=1
-#for (j in 1:dd)
-#{
-#	parm0[j]=trafo1(parm0[j],family[j],1)
-#	if(family[j]==2 || family[j]==7 || family[j]==8 || family[j]==9)
-#	{
-#		parm0[dd+kk]=trafo1(parm0[dd+kk], family[j],2)
-#		kk=kk+1
-#	}
-#}
+    }
 
-
-    param1=parm0[family!=0]		# Die independent copulas rausnehmen
-
-	pscale1=numeric()
-	for(i in 1:dd)
-	{
-		pscale1[i] = ifelse(family[i] == 1, 0.01, 1)
-	}
-	pscale1=c(pscale1,rep(1,tt))
-	pscale=pscale1[family!=0]
-
-
+    param1 = parm0
+	pscale1 = numeric()
+    for (i in 1:dd) {
+        pscale1[i] = ifelse(family[i] == 1, 0.01, 1)
+    }
+    pscale = c(pscale1[family != 0], rep(1, tt))
+	
+	
     func <- function(parm,data,family,type)
     {
-	for(k in 1:dd)			# Die independent copula wieder aufnehmen
-	{
-		if(family[k]==0)
+		for(k in 1:dd)			# Die independent copula wieder aufnehmen
 		{
-			if(k==1){parm=c(0,parm)}
-			else if(k>length(parm)){parm=c(parm,0)}
-			else {parm=c(parm[1:(k-1)],0,parm[k:length(parm)])}
+			if(family[k]==0)
+			{
+				if(k==1){parm=c(0,parm)}
+				else if(k>length(parm)){parm=c(parm,0)}
+				else {parm=c(parm[1:(k-1)],0,parm[k:length(parm)])}
+			}
 		}
-	}
 
-	# Transformation
-	#kk=1
-	#for (jj in 1:dd)
-	#{
-	#	parm[jj]=trafo2(parm[jj],family[jj],1)
-	#	if((family[jj]==1 || family[jj]==2) && parm[jj] == 1) parm[jj] = 1-.Machine$double.eps
-	#	if((family[jj]==1 || family[jj]==2) && parm[jj] == -1) parm[jj] = -1+.Machine$double.eps
-	#	if(family[jj]==2 || family[jj]==7 || family[jj]==8 || family[jj]==9)
-	#	{
-	#		parm[dd+kk]=trafo2(parm[dd+kk], family[jj],2)
-	#		kk=kk+1
-	#	}
-	#}
 
-	parm1=parm[1:dd]
-	nu=numeric()
-	kk=1
-	for(k in 1:dd)
-	{
-		if(family[k] %in% c(2,7,8,9,10,17,18,19,20,27,28,29,30,37,38,39,40))
+		parm1=parm[1:dd]
+		nu=numeric()
+		kk=1
+		for(k in 1:dd)
 		{
-			nu[k]=parm[dd+kk]
-			kk=kk+1
+			if(family[k] %in% c(2,7,8,9,10,17,18,19,20,27,28,29,30,37,38,39,40))
+			{
+				nu[k]=parm[dd+kk]
+				kk=kk+1
+			}
+			else
+			{
+				nu[k]=0
+			}
 		}
-		else
-		{
-			nu[k]=0
-		}
-	}
-	CDVineLogLik(data,family,parm1,nu,type)$loglik
+		CDVineLogLik(data,family,parm1,nu,type)$loglik
     }
 
 	# Grenzen setzen f?r die Optimierung
@@ -254,18 +223,6 @@ for(k in 1:dd)
 		}
 	}
 
-# Ruecktrafo
-
-#kk=1
-#for (ll in 1:dd)
-#{
-#	out$par[ll]=trafo2(out$par[ll],family[ll],1)
-#	if(family[ll]==2 || family[ll]==7 || family[ll]==8 || family[ll]==9)
-#	{
-#		out$par[dd+kk]=trafo2(out$par[dd+kk], family[ll],2)
-#		kk=kk+1
-#	}
-#}
 
 
 # Parameter ordentlich ausgeben

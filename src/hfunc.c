@@ -154,12 +154,12 @@ void  Hfunc1(int* family,int* n,double* u,double* v,double* theta,double* nu,dou
   double *negv, *negu;
   negv = (double *) malloc(*n* sizeof(double));
   negu = (double *) malloc(*n*sizeof(double));
-  double ntheta, nnu;
-  int nfamily;
+  double ntheta=0.0, nnu=0.0;
+  int nfamily=0, i=0;
   ntheta = -*theta;
   nnu = -*nu;
 
-	for(int i=0;i<*n;i++)
+	for(i=0;i<*n;i++)
 	{
 		if(u[i]<UMIN) u[i]=UMIN;
 		else if(u[i]>UMAX) u[i]=UMAX;
@@ -170,15 +170,15 @@ void  Hfunc1(int* family,int* n,double* u,double* v,double* theta,double* nu,dou
   if(((*family==23) | (*family==24) | (*family==26) | (*family==27) | (*family==28) | (*family==29) | (*family==30)))
     {
 	  nfamily=(*family)-20;
-      for (int i = 0; i < *n; ++i) {negv[i]=1 - v[i];}
+      for (i = 0; i < *n; ++i) {negv[i]=1 - v[i];}
       Hfunc (&nfamily, n, u, negv, &ntheta, &nnu, out);
     }
   else if(((*family==33) | (*family==34) | (*family==36) | (*family==37) | (*family==38) | (*family==39) | (*family==40)))
 	{
 	  nfamily=(*family)-30;
-      for (int i = 0; i < *n; ++i) {negu[i]=1 - u[i];}
+      for (i = 0; i < *n; ++i) {negu[i]=1 - u[i];}
       Hfunc(&nfamily, n, negu, v, &ntheta, &nnu, out);
-		for (int i = 0; i < *n; i++) {out[i]=1-out[i];};
+		for (i = 0; i < *n; i++) {out[i]=1-out[i];};
 	}
   else {
     Hfunc (family, n, u, v, theta, nu, out);
@@ -192,12 +192,12 @@ void  Hfunc2(int* family,int* n,double* v,double* u,double* theta,double* nu,dou
   double *negv, *negu;
   negv = (double *) malloc(*n * sizeof(double));
   negu = (double *) malloc(*n * sizeof(double));
-  double ntheta, nnu;
-  int nfamily;
+  double ntheta=0.0, nnu=0.0;
+  int nfamily=0, i=0;
   ntheta = -*theta;
   nnu = -*nu;
 
-	for(int i=0;i<*n;i++)
+	for(i=0;i<*n;i++)
 	{
 		if(u[i]<UMIN) u[i]=UMIN;
 		else if(u[i]>UMAX) u[i]=UMAX;
@@ -208,14 +208,14 @@ void  Hfunc2(int* family,int* n,double* v,double* u,double* theta,double* nu,dou
   if(((*family==23) | (*family==24) | (*family==26) | (*family==27) | (*family==28) | (*family==29) | (*family==30)))
     {
 	  nfamily=(*family)-20;
-      for (int i = 0; i < *n; ++i) {negv[i]=1 - v[i];}
+      for (i = 0; i < *n; ++i) {negv[i]=1 - v[i];}
       Hfunc(&nfamily, n, negv, u, &ntheta, &nnu, out);
-		for (int i = 0; i < *n; i++) {out[i]=1-out[i];};
+		for (i = 0; i < *n; i++) {out[i]=1-out[i];};
     }
   else if(((*family==33) | (*family==34) | (*family==36) | (*family==37) | (*family==38) | (*family==39) | (*family==40)))
 	{
 	  nfamily=(*family)-30;
-      for (int i = 0; i < *n; ++i) {negu[i]=1 - u[i];}
+      for (i = 0; i < *n; ++i) {negu[i]=1 - u[i];}
       Hfunc(&nfamily, n, v, negu, &ntheta, &nnu, out);
 	}
   else
@@ -241,10 +241,10 @@ void  Hfunc2(int* family,int* n,double* v,double* u,double* theta,double* nu,dou
 //////////////////////////////////////////////////////////////
 void Hfunc(int* family, int* n, double* u, double* v, double* theta, double* nu, double* out)
 {
-  int j;
+  int j=0;
   double *h;
   h = Calloc(*n,double);
-  double x;
+  double x=0.0;
 
 	for(int i=0;i<*n;i++)
 	{
@@ -585,7 +585,7 @@ void HNumInv(int* family, double* u, double* v, double* theta, double* nu, doubl
 {
 
   int br=0, in=1;
-  double ans=0.0, tol=0.000001, x0=UMIN, x1=UMAX, fl, fh, val;
+  double ans=0.0, tol=0.000001, x0=UMIN, x1=UMAX, fl=0.0, fh=0.0, val=0.0;
   
   Hfunc(family,&in,&x0,v,theta,nu,&fl); fl -= *u; 
   Hfunc(family,&in,&x1,v,theta,nu,&fh); fh -= *u;
@@ -615,12 +615,12 @@ void Hinv1(int* family, int* n, double* u, double* v, double* theta, double* nu,
   double *negv, *negu;
   negv = (double*) Calloc(*n,double);
   negu = (double*) Calloc(*n,double);
-  double ntheta, nnu;
-  int nfamily;
+  double ntheta=0.0, nnu=0.0;
+  int nfamily=0, i=0;
   ntheta = -*theta;
   nnu = -*nu;
 
-	for(int i=0;i<*n;i++)
+	for(i=0;i<*n;i++)
 	{
 		if(u[i]<UMIN) u[i]=UMIN;
 		else if(u[i]>UMAX) u[i]=UMAX;
@@ -637,9 +637,9 @@ void Hinv1(int* family, int* n, double* u, double* v, double* theta, double* nu,
 	else if(((*family==33) | (*family==34) | (*family==36) | (*family ==37) | (*family ==38) | (*family==39) | (*family==40)))
       {
 	   nfamily=(*family)-30;
-		for (int i = 0; i < *n; i++) {negu[i]=1 - u[i];};
+		for (i = 0; i < *n; i++) {negu[i]=1 - u[i];};
 		Hinv(&nfamily,  n,  negu,  v,  &ntheta,  &nnu,  out);
-		for (int i = 0; i < *n; i++) {out[i]=1-out[i];};
+		for (i = 0; i < *n; i++) {out[i]=1-out[i];};
       }
    else {
      Hinv( family,  n,  u,  v,  theta,  nu,  out);
@@ -653,12 +653,12 @@ void Hinv2(int* family, int* n, double* v, double* u, double* theta, double* nu,
   double *negv, *negu;
   negv = (double *) malloc(*n*sizeof(double));
   negu = (double *) malloc(*n*sizeof(double));
-  double ntheta, nnu;
-  int nfamily;
+  double ntheta=0.0, nnu=0.0;
+  int nfamily=0, i=0;
   ntheta = -*theta;
   nnu = -*nu;
 
-	for(int i=0;i<*n;i++)
+	for(i=0;i<*n;i++)
 	{
 		if(u[i]<UMIN) u[i]=UMIN;
 		else if(u[i]>UMAX) u[i]=UMAX;
@@ -669,14 +669,14 @@ void Hinv2(int* family, int* n, double* v, double* u, double* theta, double* nu,
    if(((*family ==23) | (*family ==24) | (*family==26) | (*family ==27) | (*family ==28) | (*family==29) | (*family==30)))
       {
 	   nfamily = (*family)-20;
-		for (int i = 0; i < *n; ++i) {negv[i]=1 - v[i];}
+		for (i = 0; i < *n; ++i) {negv[i]=1 - v[i];}
 		Hinv(&nfamily,  n,  negv, u,  &ntheta,  &nnu,  out);
-		for (int i = 0; i < *n; i++) {out[i]=1-out[i];};
+		for (i = 0; i < *n; i++) {out[i]=1-out[i];};
       }
 	else if(((*family==33) | (*family==34) | (*family==36) | (*family ==37) | (*family ==38) | (*family==39) | (*family==40)))
       {
 	   nfamily=(*family)-30;
-		for (int i = 0; i < *n; ++i) {negu[i]=1 - u[i];}
+		for (i = 0; i < *n; ++i) {negu[i]=1 - u[i];}
 		Hinv(&nfamily,  n,  v,  negu,  &ntheta,  &nnu,  out);
 		//*out = 1-*out;
       }
@@ -701,11 +701,11 @@ void Hinv2(int* family, int* n, double* v, double* u, double* theta, double* nu,
 //////////////////////////////////////////////////////////////
 void Hinv(int* family, int* n, double* u, double* v, double* theta, double* nu, double* out)
 {
-  int j;
+  int j=0, i=0;
   double *hinv;
   hinv = Calloc(*n,double);
 
-	for(int i=0;i<*n;i++)
+	for(i=0;i<*n;i++)
 	{
 		if(u[i]<UMIN) u[i]=UMIN;
 		else if(u[i]>UMAX) u[i]=UMAX;
@@ -725,7 +725,7 @@ void Hinv(int* family, int* n, double* u, double* v, double* theta, double* nu, 
     }
     else if(*family==2) //student
     {
-      double temp1, temp2, mu, var;
+      double temp1=0.0, temp2=0.0, mu=0.0, var=0.0;
       temp1 = qt(u[j],*nu+1.0,1,0); temp2 = qt(v[j],*nu,1,0); mu = *theta*temp2; var=((*nu+(temp2*temp2))*(1.0-(*theta*(*theta))))/(*nu+1.0);
       hinv[j] = pt((sqrt(var)*temp1)+mu,*nu,1,0);
     }

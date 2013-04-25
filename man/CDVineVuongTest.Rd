@@ -115,27 +115,25 @@ Econometrica 57 (2), 307-333.
 }
 
 \examples{
-# compare 6-dimensional C-vine copula models
-# with Gaussian and with Student t pair-copulas
-d = 6
-dd = d*(d-1)/2
-fam1 = rep(1,dd)
-par1 = c(0.2,0.69,0.73,0.22,-0.09,0.51,0.32,0.01,0.82,0.01,
-         -0.2,-0.32,-0.19,-0.17,-0.06)
+\dontrun{
+# load data set
+data(worldindices)
+d = dim(worldindices)[2]
 
-fam2 = rep(2,dd)
-par2 = par1
-nu2 = rep(4,dd)
+# select the C-vine families and parameters
+cvine = CDVineCopSelect(worldindices,c(1:6),type="CVine")
 
-# simulate a sample of size 300 from the first C-vine copula model
-simdata = CDVineSim(300,fam1,par1,type=1)
+# select the D-vine families and parameters
+dvine = CDVineCopSelect(worldindices,c(1:6),type="DVine")
 
-# compare the two models based on this sample
-vuong = CDVineVuongTest(simdata,1:d,1:d,fam1,fam2,par1,par2,
-                        Model2.par2=nu2,Model1.type=1,Model2.type=1)
+# compare the two models based on the data
+vuong = CDVineVuongTest(worldindices,1:d,1:d,cvine$family,dvine$family,
+                        cvine$par,dvine$par,cvine$par2,dvine$par2,
+                        Model1.type=1,Model2.type=2)
 vuong$statistic
 vuong$statistic.Schwarz
 vuong$p.value
 vuong$p.value.Schwarz
+}
 }
 

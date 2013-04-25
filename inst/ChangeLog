@@ -3,6 +3,13 @@ Changes for R-package CDVine
 Ulf Schepsmeier and Eike Christian Brechmann <CDVine@ma.tum.de>
 
 
+Version 1.1-2 (April 16, 2013)
+
+- Bug fix:
+  * Combination of Student's t copula and independence copula in CDVineMLE (Reported by Tobias Erhardt. Thanks!)
+  * The C-function ktau had a memory-access error (Reported by Prof Brian Ripley. Thanks!)
+
+  
 Version 1.1-11 (January 17, 2013)
 
 - Changes in the examples to pass the checks. Run time is reduced.

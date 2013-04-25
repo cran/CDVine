@@ -32,8 +32,8 @@
 
 void pcc(int* n, int* d, int* family, int* type, double* par, double* nu, double* out)
 {
-  int i, j, in=1, k, **fam;
-  double *w, **v, t, **theta, **x, **ny;
+  int i=0, j=0, in=1, k=0, **fam;
+  double *w, **v, t=0.0, **theta, **x, **ny;
 
   GetRNGstate();
   //Allocate memory:
@@ -145,7 +145,7 @@ void pcc(int* n, int* d, int* family, int* type, double* par, double* nu, double
 void VineLogLikm(int* T, int* d, int* type, int* family, double* par, double* data, 
 		 double* out, double* ll, double* vv)
 {
-  int i, j, k, t, kk, **fam;
+  int i=0, j=0, k=0, t=0, kk=0, **fam;
   double loglik=0.0, sumloglik=0.0, **x, **theta, **nu, ***v;
   
   //Allocate memory:
@@ -313,7 +313,7 @@ void VineLogLikm(int* T, int* d, int* type, int* family, double* par, double* da
 void VineLogLikmP(int* T, int* d, int* type, int* family, double* par, int* mpar, double* data, 
 		  double* out, double* ll, double* vv)
 {
-  int i, j, ii, jj, k, t, kk,**fam, **ind;
+  int i=0, j=0, ii=0, jj=0, k=0, t=0, kk=0 ,**fam, **ind;
   double sumloglik=0.0,loglik=0.0,  **x, **theta, **nu, ***v;
   //Allocate memory:
   x = create_matrix(*d+1,*T);
@@ -558,7 +558,7 @@ void VineLogLikmP(int* T, int* d, int* type, int* family, double* par, int* mpar
 
 void SimulateVine(int* T, int* d, int* family, int* maxmat, int* matrix, int* conindirect, double* par, double* par2, double* out)
 {
-	int i, j, k, m, **fam, **cindirect, **mat, **mmat, **fam2, **cindirect2, **mat2, **mmat2;
+	int i=0, j=0, k=0, m=0, **fam, **cindirect, **mat, **mmat, **fam2, **cindirect2, **mat2, **mmat2;
 	double **theta, **nu, **theta2, **nu2, ***vdirect, ***vindirect;
 	
 	//Allocate memory

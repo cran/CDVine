@@ -22,9 +22,9 @@
 
 void condsim(int* n, int* d, int* d1, double* u1, int* family, double* par, double* nu, double* out)
 {
-  int i,j, k;
+  int i=0 ,j=0, k=0;
   double **uf,**ub,**th,**nuu;
-  double aux;
+  double aux=0.0;
   int **fam;
   uf = create_matrix(*d,*d);
   ub = create_matrix(*d,*d);
