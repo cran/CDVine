@@ -146,11 +146,12 @@ cop2$family
 cop2$par
 cop2$par2
 
-
+\dontrun{
 ## Example 3: empirical data
 data(worldindices)
 cop3 = BiCopSelect(worldindices[,1],worldindices[,4],familyset=c(1:10,13,14,16,23,24,26))
 cop3$family
 cop3$par
 cop3$par2
+}
 }
