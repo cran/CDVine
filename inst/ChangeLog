@@ -1,7 +1,14 @@
 Changes for R-package CDVine
 
-Ulf Schepsmeier and Eike Christian Brechmann <CDVine@ma.tum.de>
+Ulf Schepsmeier and Eike Christian Brechmann and Tobias Erhardt <tobias.erhardt@tum.de>
 
+
+Version 1.2 (March 26, 2014)
+
+- Maintainer changed from Ulf Schepsmeier to Tobias Erhardt (tobias.erhardt@tum.de)
+
+- Bug fix:
+  * Improved calculation of Kendall's tau for the Joe copula (Thanks to Harry Joe). 
 
 Version 1.1-13 (August 12, 2013)
 

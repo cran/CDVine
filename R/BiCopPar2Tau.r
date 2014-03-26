@@ -60,7 +60,11 @@ BiCopPar2Tau<-function(family,par,par2=0)
 	}
 	else if(family==6 || family==16)
 	{
-    tau=1+4/par^2*integrate(function(x) log(x)*x*(1-x)^(2*(1-par)/par), 0, 1)$value
+		#tau=1+4/par^2*integrate(function(x) log(x)*x*(1-x)^(2*(1-par)/par), 0, 1)$value
+		param1=2/par+1
+		tem=digamma(2)-digamma(param1)
+		tau=1+tem*2/(2-par)
+		tau[par==2]=1-trigamma(2)
 	}
 	else if(family==7 || family==17)
 	{
@@ -100,7 +104,13 @@ BiCopPar2Tau<-function(family,par,par2=0)
 	}
 	else if(family==26 || family==36)
 	{
-    tau=-1-4/par^2*integrate(function(x) log(x)*x*(1-x)^(2*(1+par)/-par), 0, 1)$value
+		#tau=-1-4/par^2*integrate(function(x) log(x)*x*(1-x)^(2*(1+par)/-par), 0, 1)$value
+		theta=-par
+		param1=2/theta+1
+		tem=digamma(2)-digamma(param1)
+		tau=1+tem*2/(2-theta)
+		tau[theta==2]=1-trigamma(2)
+		tau=-tau
 	}
 	else if(family==27 || family==37)
 	{
