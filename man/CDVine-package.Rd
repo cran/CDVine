@@ -6,8 +6,8 @@
 \title{Statistical inference of C- and D-vine copulas}
 
 \description{
-This package provides functions for statistical inference of canonical vine (C-vine) and D-vine copulas.
-It contains tools for bivariate exploratory data analysis and for bivariate as well as vine copula selection.
+Functions for statistical inference of canonical vine (C-vine) and D-vine copulas.
+Tools for bivariate exploratory data analysis and for bivariate as well as vine copula selection are provided.
 Models can be estimated either sequentially or by joint maximum likelihood estimation.
 Sampling algorithms and plotting methods are also included.
 Data is assumed to lie in the unit hypercube (so-called copula data).
@@ -83,10 +83,11 @@ We are especially grateful to Harry Joe for his contributions to the implementat
 \tabular{ll}{
 Package: \tab CDVine\cr
 Type: \tab Package\cr
-Version: \tab 1.1-13\cr
-Date: \tab 2013-08-12\cr
+Version: \tab 1.3\cr
+Date: \tab 2015-07-30\cr
 License: \tab GPL (>=2)\cr
-Depends: \tab R (\eqn{\geq 2.11.0}{>= 2.11.0}), MASS, mvtnorm, igraph \cr
+Depends: \tab R (\eqn{\geq 2.11.0}{>= 2.11.0})\cr
+Imports: MASS, mvtnorm, graphics, igraph, stats \cr
 LazyLoad: \tab yes
 }
 }

@@ -1,6 +1,9 @@
 import(MASS)
 import(mvtnorm)
-import(igraph)
+import(graphics)
+import(stats)
+importFrom(igraph, "E", "E<-", "V", "V<-",
+           "graph.adjacency", "plot.igraph", "layout.fruchterman.reingold")
 
 export(CDVineLogLik)
 export(CDVineAIC)
