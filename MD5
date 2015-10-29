@@ -1,4 +1,4 @@
-52ebe6a691b18836e1f1ca5f08b88ed3 *DESCRIPTION
+06a1188c11cd46d740858dbec9a0b213 *DESCRIPTION
 c419f7880ae7f400f20ec86ec4525fbe *NAMESPACE
 8650d839f2ef4ad223e6c16dde2dcb45 *R/BiCopCDF.r
 d6edcf0eb071d2b5f12eb2ba26b25d08 *R/BiCopChiPlot.r
@@ -26,7 +26,7 @@ c7941384e0492e2cf334d2212ba239ea *R/CDVineMLE.R
 084cf44db2fd637a80d4b8aedaf61429 *R/CDVineSim.R
 e99b158a200923b6c899be5fbd084de6 *R/CDVineTreePlot.R
 36394c88743e4b3aca4271b064c2d099 *R/CDVineVuongTest.r
-44594f5d41007cec8d6f237ad120a6ca *R/zzz.R
+5b9ab8fe88fbcaade6dadfa9f238163c *R/zzz.R
 acee73c43b92e0aa3066683bd11f2bd3 *data/worldindices.RData
 85dde876b1ed85e5d64cabf6bc57a285 *inst/CITATION
 f6c3e13c0c64ff1b34bc09673925a55c *inst/ChangeLog
@@ -47,7 +47,7 @@ ca03a7c4e62589b87bc052d8f26b69fa *man/BiCopName.Rd
 8b8ec39774404d54f3d6fa3ca1781e7f *man/BiCopSim.Rd
 e851f37908f9b8d61429fa5c5ac9b018 *man/BiCopTau2Par.Rd
 292ac71a285a1846913672fe3169fa06 *man/BiCopVuongClarke.Rd
-a603efd3a1919f44f92506e78dabcfaf *man/CDVine-package.Rd
+45adfa4a5cfbb97e67d629eec8305912 *man/CDVine-package.Rd
 8f588b405b5e2ca076f56a88eb323655 *man/CDVineAICBIC.Rd
 a55af7e6dcfd4c465390915cf8c0c749 *man/CDVineClarkeTest.Rd
 b2cce45651a3dd1f7a184a9e0ce5ca7b *man/CDVineCopSelect.Rd
